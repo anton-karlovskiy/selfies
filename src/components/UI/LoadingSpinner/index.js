@@ -22,8 +22,9 @@ import './loading-spinner.css';
 const LoadingSpinner = ({
   width = 48,
   height = 48,
-  margin = 60,
-  borderWidth = 0.6
+  borderWidth = 0.6,
+  margin = 0,
+  centerViewport = false
 }) => (
   <div
     style={{
@@ -32,7 +33,7 @@ const LoadingSpinner = ({
       margin: `${margin}px auto`,
       borderWidth: `${borderWidth}em`
     }}
-    className='loader'>
+    className={`loader ${centerViewport ? 'center-viewport' : ''}`}>
     Loading...
   </div>
 );

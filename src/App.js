@@ -12,7 +12,7 @@ const Gallery = lazy(() => import(/* webpackChunkName: 'gallery' */ 'pages/Galle
 const App = () => (
   <div className='App'>
     <Router>
-      <Suspense fallback={<LoadingSpinner />}>
+      <Suspense fallback={<LoadingSpinner centerViewport />}>
         <Switch>
           <Route exact path={PAGES.HOME} component={Home} />
           <Route exact path={PAGES.GALLERY} component={Gallery} />
