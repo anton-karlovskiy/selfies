@@ -1,3 +1,4 @@
+
 const configGlobal = require('./config-global');
 
 let configLocal;

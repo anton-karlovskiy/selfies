@@ -1,4 +1,6 @@
+
 module.exports = {
+	// TODO: should be CRA's env variables approach
 	clientId: process.env.CLIENT_ID,
 	apiKey: process.env.API_KEY,
 	fileScope: 'https://www.googleapis.com/auth/drive',
@@ -18,4 +20,4 @@ module.exports = {
 		{width: 200, label: 'Medium'},
 		{width: 400, label: 'Large'}
 	]
-}
+};

@@ -1,25 +1,24 @@
 
-import React, { Component, Fragment } from 'react';
+// ray test touch <
+import React, { useState, useEffect } from 'react';
 
-import CameraScreen from '../../components/CameraScreen';
-import config from '../../config';
+import CameraScreen from 'components/CameraScreen';
+import config from 'config';
 import PAGES from 'utils/pages';
 import './home.css';
 
-class Home extends Component {
-	state = {
-		isSignedIn: true
-	};
+const Home = ({ history }) => {
+	const [isSignedIn, setIsSignedIn] = useState(true);
 
-	componentDidMount() {
+	useEffect(() => {
 		if (window.gapi && window.gapi.client) {
-			this.loadHandler();
+			loadHandler();
 		} else {
-			setTimeout(this.loadHandler, 1000); // TODO: hardcoded & error prone
+			setTimeout(loadHandler, 1000); // TODO: hardcoded & error prone
 		}
-	}
+	}, []);
 
-	loadHandler = async () => {
+	const loadHandler = async () => {
 		try {
 			await window.gapi.client.init({
 				apiKey: config.apiKey,
@@ -28,25 +27,23 @@ class Home extends Component {
 				scope: `${config.readOnlyScope} ${config.fileScope}`
 			});
 		} catch (error) {
-			console.log('[Home componentDidMount] error =>', error);
+			console.log('[Home loadHandler] error => ', error);
 		}
-		this.getSignInState();
+		getSignInState();
 	};
 
-	signOutHandler = () => {
+	const signOutHandler = () => {
 		if (window.gapi.auth2.getAuthInstance()) {
 			window.gapi.auth2.getAuthInstance().signOut();
 			localStorage.removeItem('folderId');
 			localStorage.setItem('isSignedIn', 'false');
-			if (this.state.isSignedIn) {
-				this.setState({isSignedIn: false});
+			if (isSignedIn) {
+				setIsSignedIn(false);
 			}
 		}
 	};
 
-	signInHandler = async () => {
-		const { isSignedIn } = this.state;
-
+	const signInHandler = async () => {
 		try {
 			if (!window.gapi.auth2.getAuthInstance()) {
 				await window.gapi.auth2.init({ client_id: config.clientId });
@@ -54,66 +51,63 @@ class Home extends Component {
 			await window.gapi.auth2.getAuthInstance().signIn();
 			const signedIn = window.gapi.auth2.getAuthInstance().isSignedIn.get();
 			if (isSignedIn !== signedIn) {
-				this.setState({ isSignedIn: signedIn });
+				// setState({ isSignedIn: signedIn });
+				setIsSignedIn(signedIn);
 			}
 			localStorage.setItem('isSignedIn', signedIn);
 		} catch (error) {
-			console.log('[HomHomeePage signInHandler] error =>', error)
+			console.log('[Home signInHandler] error =>', error);
 		}
 	};
 
-	navigateToGalleryHandler = () => {
-		const { isSignedIn } = this.state;
-		const { history } = this.props;
+	const navigateToGalleryHandler = () => {
 		if (isSignedIn) {
 			history.push(PAGES.GALLERY);
 		}
 	};
 
-	getSignInState = () => {
-		let isSignedIn = true;
+	const getSignInState = () => {
+		let isSignedIn_ = true;
 		try {
-			isSignedIn = window.gapi.auth2.getAuthInstance().isSignedIn.get();
+			isSignedIn_ = window.gapi.auth2.getAuthInstance().isSignedIn.get();
 		} catch (error) {
-			isSignedIn = false;
+			isSignedIn_ = false;
 		}
-		if (!isSignedIn) {
+		if (!isSignedIn_) {
 			localStorage.removeItem('folderId');
-			localStorage.setItem('isSignedIn', isSignedIn);
+			localStorage.setItem('isSignedIn', isSignedIn_);
 		}
-		if (this.state.isSignedIn !== isSignedIn) {
-			this.setState({ isSignedIn });
+		if (isSignedIn !== isSignedIn_) {
+			setIsSignedIn(isSignedIn);
 		}
 	};
+	
+	const galleryButtonStyle = isSignedIn ? 'icon-button library' : 'icon-button library disabled';
 
-	render() {
-		const { isSignedIn } = this.state;
-		const galleryButtonStyle = isSignedIn ? 'icon-button library' : 'icon-button library disabled';
-
-		return (
-			<Fragment>
-				<footer
-					className='controllers'>
-					{!isSignedIn && (
-						<div
-							className='icon-button login'
-							onClick={this.signInHandler} />
-					)}
-					{isSignedIn && (
-						<div
-							className='icon-button logout'
-							onClick={this.signOutHandler} />
-					)}
+	return (
+		<>
+			<footer
+				className='controllers'>
+				{!isSignedIn && (
 					<div
-						className={galleryButtonStyle}
-						onClick={this.navigateToGalleryHandler} />
-				</footer>
-				<div className='camera-screen'>
-					<CameraScreen />
-				</div>
-			</Fragment>
-		);
-	}
-}
+						className='icon-button login'
+						onClick={signInHandler} />
+				)}
+				{isSignedIn && (
+					<div
+						className='icon-button logout'
+						onClick={signOutHandler} />
+				)}
+				<div
+					className={galleryButtonStyle}
+					onClick={navigateToGalleryHandler} />
+			</footer>
+			<div className='camera-screen'>
+				<CameraScreen />
+			</div>
+		</>
+	);
+};
 
 export default Home;
+// ray test touch >
