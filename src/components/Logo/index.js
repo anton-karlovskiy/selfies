@@ -44,8 +44,8 @@ const Logo = ({ classes, history }) => {
         className={classes.logoIcon}
         src={logoIcon}
         onClick={navigateToHomeHandler}
-        alt='Selfie Webapp' />
-      <span className={classes.logoText}>Selfie Webapp</span>
+        alt='Visage' />
+      <span className={classes.logoText}>Visage</span>
     </div>
   );
 };
