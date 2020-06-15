@@ -1,68 +1,73 @@
+
+## Build version on Firebase
+
+https://visage-86afe.web.app
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+### Architecture
 
-In the project directory, you can run:
+1. Authentication
 
-### `yarn start`
+User signs in the app with google account in the first page.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+2. Taking a picture
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+User can take a picture and store it.
+If signed-in user takes a picture, it is uploaded to 'Selfie-Webapp' folder in google drive.
+If non-signed in user takes a picture, it is stored in local.
 
-### `yarn test`
+3. View taken pictures and gif generation
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Signed-in user can see taken pictures.
 
-### `yarn build`
+User can see all the taken pictures from the 'Selfie-Webapp' folder of google drive.
+User can generate a gif file made up of them. User can also choose one gif size of small/medium/large options. The generated gif file is downloaded to local.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+4. Pages hierarchy
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+This app consists of 2 pages - Camera page and Gallery Page.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### How the app is built
 
-### `yarn eject`
+This web app is built with create-react-app.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+It uses browser API called getUserMedia to access device camera and take a picture.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+It uses Google API to login and store pictures to google drive.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+This app uses [code spliting](https://reactjs.org/docs/code-splitting.html) for performance optimization.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+It is deployed to [https://selfie-everyday-app.firebaseapp.com](https://selfie-everyday-app.firebaseapp.com)
 
-## Learn More
+### `Camera Page`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The first page consists of front-facing camera screen, login/out buttons, and gallery button.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Taken pictures are saved as jpg on google drive or local according to logged-in state.
 
-### Code Splitting
+[Google APIs](https://developers.google.com/drive/api/v3/about-auth) are used to login with google account
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+[react-html5-camera-photo](https://www.npmjs.com/package/react-html5-camera-photo) package is used to take a picture with a front-facing camera.
 
-### Analyzing the Bundle Size
+[file-saver](https://www.npmjs.com/package/file-saver) package is used to create an image file from base64 code.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+### `Gallery Page`
 
-### Making a Progressive Web App
+The second page(gallery) includes gif generating menu and pictures gallery that shows taken pictures in 'Sefie-Webapp' folder of google drive.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+User can select pictures for generating a gif file.
 
-### Advanced Configuration
+User can choose one gif width of small/medium/large options.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+[Google APIs](https://developers.google.com/drive/api/v3/about-files) are used to create a folder inside, fetch pictures from, and upload pictures to google drive.
 
-### Deployment
+[gifshot](https://www.npmjs.com/package/gifshot) package is used to generate gif file from the selected pictures
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+### `Folder structure`
 
-### `yarn build` fails to minify
+The src folder mainly consists of container, components, config, and utils subfolders.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+'config' folder includes sort of settings info of the app while 'utils' folder includes API functions to access google drive and image manipulation utilities. 'containers' and 'components' folder includes components.
