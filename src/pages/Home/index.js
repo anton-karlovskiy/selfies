@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react';
 
 import CameraScreen from '../../components/CameraScreen';
 import config from '../../config';
-import { routes } from '../../utils/links';
+import PAGES from 'utils/pages';
 import './home.css';
 
 class Home extends Component {
@@ -66,7 +66,7 @@ class Home extends Component {
 		const { isSignedIn } = this.state;
 		const { history } = this.props;
 		if (isSignedIn) {
-			history.push(routes.gallery);
+			history.push(PAGES.GALLERY);
 		}
 	};
 

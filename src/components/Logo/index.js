@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 
 import logoIcon from '../../assets/images/logo-icon.png';
-import { routes } from '../../utils/links';
+import PAGES from 'utils/pages';
 
 const styles = theme => ({
   root: {
@@ -35,7 +35,7 @@ const styles = theme => ({
 
 const Logo = ({ classes, history }) => {
   const navigateToHomeHandler = () => {
-		history.push(routes.home);
+		history.push(PAGES.HOME);
   };
   
   return (

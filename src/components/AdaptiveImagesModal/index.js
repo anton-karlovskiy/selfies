@@ -1,7 +1,7 @@
 
 import React, { lazy, Fragment, Suspense } from 'react';
 
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from 'components/UI/LoadingSpinner';
 
 const LazyAdaptiveImagesModal = lazy(() => {
   return new Promise(resolve => {

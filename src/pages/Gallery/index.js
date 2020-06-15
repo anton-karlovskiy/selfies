@@ -6,7 +6,7 @@ import GifGenWidget from './GifGenWidget';
 import ImageList from './ImageList';
 import Logo from '../../components/Logo';
 import ProgressBar from '../../components/ProgressBar';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import LoadingSpinner from 'components/UI/LoadingSpinner';
 import AdaptiveImagesModal from '../../components/AdaptiveImagesModal';
 import config from '../../config';
 import { createGIF, getMetaInfo } from '../../utils/utility';
