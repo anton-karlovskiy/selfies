@@ -26,7 +26,8 @@
     "eject": "react-scripts eject",
     "firebase-deploy": "firebase deploy",
     "now-deploy": "now --prod",
-    "netlify-deploy": "netlify deploy --prod"
+    "netlify-deploy": "netlify deploy --prod",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -42,5 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "source-map-explorer": "^2.4.2"
   }
 }

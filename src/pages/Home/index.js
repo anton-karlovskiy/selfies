@@ -1,5 +1,8 @@
 
-import React, { useState, useEffect } from 'react';
+import React, {
+	useState,
+	useEffect,
+} from 'react';
 
 import CameraScreen from 'components/CameraScreen';
 import Footer from 'parts/Footer';
