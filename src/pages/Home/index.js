@@ -1,5 +1,4 @@
 
-// ray test touch <
 import React, { useState, useEffect } from 'react';
 
 import CameraScreen from 'components/CameraScreen';
@@ -7,9 +6,9 @@ import Footer from 'parts/Footer';
 import config from 'config';
 import PAGES from 'utils/pages';
 import { LOCAL_STORAGE_KEYS } from 'utils/constants';
-import './home.css';
 
 const Home = ({ history }) => {
+	// ray test touch <
 	const [signedIn, setSignedIn] = useState(true);
 
 	useEffect(() => {
@@ -82,20 +81,18 @@ const Home = ({ history }) => {
 			setSignedIn(signedIn);
 		}
 	};
+	// ray test touch >
 	
 	return (
 		<>
+			<CameraScreen />
 			<Footer
 				signedIn={signedIn}
 				signIn={signInHandler}
 				signOut={signOutHandler}
 				navigateToGallery={navigateToGalleryHandler} />
-			<div className='camera-screen'>
-				<CameraScreen />
-			</div>
 		</>
 	);
 };
 
 export default Home;
-// ray test touch >
