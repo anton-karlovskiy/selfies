@@ -3,12 +3,14 @@
 import React, { useState, useEffect } from 'react';
 
 import CameraScreen from 'components/CameraScreen';
+import Footer from 'parts/Footer';
 import config from 'config';
 import PAGES from 'utils/pages';
+import { LOCAL_STORAGE_KEYS } from 'utils/constants';
 import './home.css';
 
 const Home = ({ history }) => {
-	const [isSignedIn, setIsSignedIn] = useState(true);
+	const [signedIn, setSignedIn] = useState(true);
 
 	useEffect(() => {
 		if (window.gapi && window.gapi.client) {
@@ -35,10 +37,10 @@ const Home = ({ history }) => {
 	const signOutHandler = () => {
 		if (window.gapi.auth2.getAuthInstance()) {
 			window.gapi.auth2.getAuthInstance().signOut();
-			localStorage.removeItem('folderId');
-			localStorage.setItem('isSignedIn', 'false');
-			if (isSignedIn) {
-				setIsSignedIn(false);
+			localStorage.removeItem(LOCAL_STORAGE_KEYS.FOLDER_ID);
+			localStorage.setItem(LOCAL_STORAGE_KEYS.SIGNED_IN, 'false');
+			if (signedIn) {
+				setSignedIn(false);
 			}
 		}
 	};
@@ -49,19 +51,18 @@ const Home = ({ history }) => {
 				await window.gapi.auth2.init({ client_id: config.clientId });
 			}
 			await window.gapi.auth2.getAuthInstance().signIn();
-			const signedIn = window.gapi.auth2.getAuthInstance().isSignedIn.get();
-			if (isSignedIn !== signedIn) {
-				// setState({ isSignedIn: signedIn });
-				setIsSignedIn(signedIn);
+			const signedIn_ = window.gapi.auth2.getAuthInstance().isSignedIn.get();
+			if (signedIn !== signedIn_) {
+				setSignedIn(signedIn_);
 			}
-			localStorage.setItem('isSignedIn', signedIn);
+			localStorage.setItem(LOCAL_STORAGE_KEYS.SIGNED_IN, signedIn_);
 		} catch (error) {
 			console.log('[Home signInHandler] error =>', error);
 		}
 	};
 
 	const navigateToGalleryHandler = () => {
-		if (isSignedIn) {
+		if (signedIn) {
 			history.push(PAGES.GALLERY);
 		}
 	};
@@ -74,34 +75,21 @@ const Home = ({ history }) => {
 			isSignedIn_ = false;
 		}
 		if (!isSignedIn_) {
-			localStorage.removeItem('folderId');
-			localStorage.setItem('isSignedIn', isSignedIn_);
+			localStorage.removeItem(LOCAL_STORAGE_KEYS.FOLDER_ID);
+			localStorage.setItem(LOCAL_STORAGE_KEYS.SIGNED_IN, isSignedIn_);
 		}
-		if (isSignedIn !== isSignedIn_) {
-			setIsSignedIn(isSignedIn);
+		if (signedIn !== isSignedIn_) {
+			setSignedIn(signedIn);
 		}
 	};
 	
-	const galleryButtonStyle = isSignedIn ? 'icon-button library' : 'icon-button library disabled';
-
 	return (
 		<>
-			<footer
-				className='controllers'>
-				{!isSignedIn && (
-					<div
-						className='icon-button login'
-						onClick={signInHandler} />
-				)}
-				{isSignedIn && (
-					<div
-						className='icon-button logout'
-						onClick={signOutHandler} />
-				)}
-				<div
-					className={galleryButtonStyle}
-					onClick={navigateToGalleryHandler} />
-			</footer>
+			<Footer
+				signedIn={signedIn}
+				signIn={signInHandler}
+				signOut={signOutHandler}
+				navigateToGallery={navigateToGalleryHandler} />
 			<div className='camera-screen'>
 				<CameraScreen />
 			</div>

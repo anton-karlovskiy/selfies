@@ -1,0 +1,5 @@
+
+.log-in-fab {
+  background-image: url('/assets/images/person.svg');
+  background-color: var(--palette-purple-500);
+}

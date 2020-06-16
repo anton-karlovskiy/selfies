@@ -1,0 +1,5 @@
+
+.library-fab {
+  background-image: url('/assets/images/library.svg');
+  background-color: var(--palette-pink-500);
+}

@@ -24,9 +24,11 @@
   --typography-font-weight-regular: 400;
   --typography-font-weight-medium: 500;
   --typography-font-weight-bold: 700;
+  --palette-pink-500: #e91e63;
+  --palette-purple-500: #9c27b0;
 
   --palette-bg-viewport: #0dc5c1;
-  --palette-action-disabled: rgba(255, 255, 255, 0.3);
+  --palette-action-disabled-background: rgba(0, 0, 0, 0.12);
 }
 
 * {

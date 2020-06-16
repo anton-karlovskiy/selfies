@@ -1,0 +1,5 @@
+
+.log-out-fab {
+  background-image: url('/assets/images/person.svg');
+  background-color: var(--palette-pink-500);
+}

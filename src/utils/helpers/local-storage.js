@@ -1,5 +1,4 @@
 
-// ray test touch <
 const STORAGE_KEY = 'visage';
 
 const saveState = state => {
@@ -32,4 +31,3 @@ export {
   saveState,
   loadState
 };
-// ray test touch >
