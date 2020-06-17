@@ -1,25 +1,24 @@
 
 module.exports = {
-	// TODO: should be CRA's env variables approach
-	// TODO: PASCAL_CASE
-	clientId: process.env.CLIENT_ID,
-	apiKey: process.env.API_KEY,
-	fileScope: 'https://www.googleapis.com/auth/drive',
-	readOnlyScope: 'https://www.googleapis.com/auth/drive.metadata.readonly',
-	discoveryDocs: 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
-	folderName: 'Selfie-Webapp',
-	filePrefix: 'Selfie-',
-	appId: '663657110257', // console.developer.google.com
-	idealWidth: 720,
-	idealHeight: 405,
-	resolution1: {width: 720, height: 405},
-	resolution2: {width: 640, height: 480},
+	// TODO: could use CRA's env variables
+	CLIENT_ID: process.env.CLIENT_ID,
+	API_KEY: process.env.API_KEY,
+	FILE_SCOPE: 'https://www.googleapis.com/auth/drive',
+	READ_ONLY_SCOPE: 'https://www.googleapis.com/auth/drive.metadata.readonly',
+	DISCOVERY_DOCS: 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
+	FOLDER_NAME: 'visage',
+	FILE_PREFIX: 'visage-',
+	APP_ID: '663657110257', // TODO: not used
+	IDEAL_WIDTH: 720, // TODO: not used
+	IDEAL_HEIGHT: 405, // TODO: not used
+	RESOLUTION_1: {WIDTH: 720, HEIGHT: 405},
+	RESOLUTION_2: {WIDTH: 640, HEIGHT: 480},
 	// TODO: we should have used https://github.com/google/google-api-javascript-client/blob/master/docs/cors.md instead of this proxy
-	prefixUrl: 'https://cors-anywhere.herokuapp.com/',
-	gifName: 'Selfie-Gif.gif',
-	gifSizes: [
-		{width: 100, label: 'Small'},
-		{width: 200, label: 'Medium'},
-		{width: 400, label: 'Large'}
+	PREFIX_URL: 'https://cors-anywhere.herokuapp.com/',
+	GIF_NAME: 'visage.gif',
+	GIF_SIZES: [
+		{WIDTH: 100, LABEL: 'Small'},
+		{WIDTH: 200, LABEL: 'Medium'},
+		{WIDTH: 400, LABEL: 'Large'}
 	]
 };

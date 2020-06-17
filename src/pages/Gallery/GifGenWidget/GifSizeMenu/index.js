@@ -10,7 +10,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 
 import FabWrapper from '../../../../hoc/FabWrapper';
-import config from '../../../../config';
+import config from 'config';
 
 const styles = theme => ({
 	popper: {
@@ -76,11 +76,11 @@ class GifSizeMenu extends Component {
               <Paper className={classes.menuList}>
                 <ClickAwayListener onClickAway={this.menuCloseHandler}>
                   <MenuList>
-                    { config.gifSizes.map((gifSize, index) =>
+                    { config.GIF_SIZES.map((GIF_SIZE, index) =>
                       <MenuItem
                         key={index}
-                        onClick={() => this.createGifHandler(gifSize.width)}>
-                        {gifSize.label}
+                        onClick={() => this.createGifHandler(GIF_SIZE.WIDTH)}>
+                        {GIF_SIZE.LABEL}
                       </MenuItem>
                     ) }
                   </MenuList>

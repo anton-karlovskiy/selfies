@@ -1,5 +1,5 @@
 
-import config from '../config';
+import config from 'config';
 import { generateFileTitle } from './utility';
 import { LOCAL_STORAGE_KEYS } from 'utils/constants';
 
@@ -12,10 +12,10 @@ const searchFolder = async folderName => {
 	try {
     // TODO: double check usage and expose as common module
 		await window.gapi.client.init({
-			apiKey: config.apiKey,
-			clientId: config.clientId,
-			discoveryDocs: [config.discoveryDocs],
-			scope: `${config.readOnlyScope} ${config.fileScope}`
+			apiKey: config.API_KEY,
+			clientId: config.CLIENT_ID,
+			discoveryDocs: [config.DISCOVERY_DOCS],
+			scope: `${config.READ_ONLY_SCOPE} ${config.FILE_SCOPE}`
 		});
 
 		const response = await window.gapi.client.drive.files.list({

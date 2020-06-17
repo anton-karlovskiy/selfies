@@ -1,5 +1,5 @@
 import { saveAs } from 'file-saver';
-import config from '../config';
+import config from 'config';
 import { searchFolder, createPermission, deletePermission } from './apis';
 
 const generateFileTitle = () => {
@@ -13,7 +13,7 @@ const saveBase64AsImageFile = ( dataUri, fileName ) => {
 };
 
 const createGIF = async (imageUrlList, completeCallback, width, height) => {
-  const folderId = await searchFolder(config.folderName);
+  const folderId = await searchFolder(config.FOLDER_NAME);
   const res = await createPermission(folderId);
   if (res && res.result) {
 		setTimeout(async () => {
@@ -27,12 +27,12 @@ const createGIF = async (imageUrlList, completeCallback, width, height) => {
 			const gifshot = await import('gifshot');
 			await gifshot.createGIF(param, async obj => {
 				if (!obj.error) {
-					saveBase64AsImageFile(obj.image, config.gifName);
+					saveBase64AsImageFile(obj.image, config.GIF_NAME);
 				} else {
 					setTimeout(async () => {
 						await gifshot.createGIF(param, obj => {
 							if (!obj.error) {
-								saveBase64AsImageFile(obj.image, config.gifName);
+								saveBase64AsImageFile(obj.image, config.GIF_NAME);
 							} else {
 								alert('Failed to creating gif');
 								console.log('[createGIF failed] error =>', obj.error);
@@ -64,12 +64,18 @@ const getCameraResolution = () => {
 	const height = window.outerHeight;
 	const width = window.outerWidth;
 	const ratio = parseFloat(Math.min(width, height)) / Math.max(width, height);
+	// 16:9
 	if (ratio < 0.6) {
-		// 16:9
-		return config.resolution1;
+		return {
+			width: config.RESOLUTION_1.WIDTH,
+			height: config.RESOLUTION_1.HEIGHT
+		};
 	}
 	// 4:3
-	return config.resolution2;
+	return {
+		width: config.RESOLUTION_2.WIDTH,
+		height: config.RESOLUTION_2.HEIGHT
+	};
 };
 
 export {

@@ -17,11 +17,11 @@ const onTakePhotoHandler = async dataUri => {
 		return;
   }
 
-  const folderId = await searchFolder(config.folderName);
+  const folderId = await searchFolder(config.FOLDER_NAME);
   if (folderId) {
     uploadImageFile(dataUri, folderId);
   } else {
-    createFolderAndUploadImageFile(dataUri, config.folderName);
+    createFolderAndUploadImageFile(dataUri, config.FOLDER_NAME);
   }
 };
 

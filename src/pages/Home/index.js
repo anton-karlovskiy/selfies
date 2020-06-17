@@ -25,10 +25,10 @@ const Home = ({ history }) => {
 	const loadHandler = async () => {
 		try {
 			await window.gapi.client.init({
-				apiKey: config.apiKey,
-				clientId: config.clientId,
-				discoveryDocs: [config.discoveryDocs],
-				scope: `${config.readOnlyScope} ${config.fileScope}`
+				apiKey: config.API_KEY,
+				clientId: config.CLIENT_ID,
+				discoveryDocs: [config.DISCOVERY_DOCS],
+				scope: `${config.READ_ONLY_SCOPE} ${config.FILE_SCOPE}`
 			});
 		} catch (error) {
 			console.log('[Home loadHandler] error => ', error);
@@ -50,7 +50,7 @@ const Home = ({ history }) => {
 	const signInHandler = async () => {
 		try {
 			if (!window.gapi.auth2.getAuthInstance()) {
-				await window.gapi.auth2.init({ client_id: config.clientId });
+				await window.gapi.auth2.init({ client_id: config.CLIENT_ID });
 			}
 			await window.gapi.auth2.getAuthInstance().signIn();
 			const signedIn_ = window.gapi.auth2.getAuthInstance().isSignedIn.get();

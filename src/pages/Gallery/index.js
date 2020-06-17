@@ -8,7 +8,7 @@ import Logo from '../../components/Logo';
 import ProgressBar from '../../components/ProgressBar';
 import LoadingSpinner from 'components/UI/LoadingSpinner';
 import AdaptiveImagesModal from '../../components/AdaptiveImagesModal';
-import config from '../../config';
+import config from 'config';
 import { createGIF, getMetaInfo } from '../../utils/utility';
 import { searchFolder } from '../../utils/apis';
 
@@ -40,13 +40,13 @@ class Gallery extends Component {
 	gapiInitHandler = async () => {
 		try {
 			await window.gapi.client.init({
-				apiKey: config.apiKey,
-				clientId: config.clientId,
-				discoveryDocs: [config.discoveryDocs],
-				scope: `${config.readOnlyScope} ${config.fileScope}`
+				apiKey: config.API_KEY,
+				clientId: config.CLIENT_ID,
+				discoveryDocs: [config.DISCOVERY_DOCS],
+				scope: `${config.READ_ONLY_SCOPE} ${config.FILE_SCOPE}`
 			});
 
-			const folderId = await searchFolder(config.folderName);
+			const folderId = await searchFolder(config.FOLDER_NAME);
 			this.getImagesFromGoogleDrive(folderId);
 		} catch(error) {
 			console.log('[Gallery gapiInitHandler] error => ', error);
