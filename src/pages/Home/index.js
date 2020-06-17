@@ -1,7 +1,8 @@
 
 import React, {
 	useState,
-	useEffect
+	useEffect,
+	useCallback
 } from 'react';
 
 import CameraScreen from 'components/CameraScreen';
@@ -15,6 +16,7 @@ const Home = ({ history }) => {
 	useEffect(() => {
 		console.log('[Home useEffect] window.gapi => ', window.gapi);
 		gapiClientLoad();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const gapiClientLoad = () => {
@@ -45,19 +47,19 @@ const Home = ({ history }) => {
 		setSignedIn(newSignedIn);
 	};
 
-	const signInHandler = () => {
+	const signInHandler = useCallback(() => {
 		window.gapi.auth2.getAuthInstance().signIn();
-	};
+	}, []);
 
-	const signOutHandler = () => {
+	const signOutHandler = useCallback(() => {
 		window.gapi.auth2.getAuthInstance().signOut();
-	};
+	}, []);
 
-	const navigateToGalleryHandler = () => {
+	const navigateToGalleryHandler = useCallback(() => {
 		if (signedIn) {
 			history.push(PAGES.GALLERY);
 		}
-	};
+	}, [signedIn, history]);
 	
 	return (
 		<>
