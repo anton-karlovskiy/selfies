@@ -1,20 +1,4 @@
 
-/* ray test touch < */
 .App {
-  min-height: 100%;
+  text-align: center;
 }
-
-.react-html5-camera-photo > video {
-  display: block !important;
-}
-
-html {
-  overflow: scroll;
-  overflow-x: hidden;
-}
-
-::-webkit-scrollbar {
-  width: 0px;  /* Remove scrollbar space */
-  background: transparent;  /* Optional: just make scrollbar invisible */
-}
-/* ray test touch > */

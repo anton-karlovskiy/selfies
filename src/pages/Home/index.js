@@ -8,59 +8,49 @@ import CameraScreen from 'components/CameraScreen';
 import Footer from 'parts/Footer';
 import config from 'config';
 import PAGES from 'utils/pages';
-import { LOCAL_STORAGE_KEYS } from 'utils/constants';
 
 const Home = ({ history }) => {
-	// ray test touch <
-	const [signedIn, setSignedIn] = useState(true);
-
+	const [signedIn, setSignedIn] = useState(false);
+	
 	useEffect(() => {
-		if (window.gapi && window.gapi.client) {
-			loadHandler();
-		} else {
-			setTimeout(loadHandler, 1000); // TODO: hardcoded & error prone
-		}
+		console.log('[Home useEffect] window.gapi => ', window.gapi);
+		gapiClientLoad();
 	}, []);
 
-	const loadHandler = async () => {
-		try {
-			await window.gapi.client.init({
-				apiKey: config.API_KEY,
-				clientId: config.CLIENT_ID,
-				discoveryDocs: [config.DISCOVERY_DOCS],
-				scope: `${config.READ_ONLY_SCOPE} ${config.FILE_SCOPE}`
-			});
-		} catch (error) {
-			console.log('[Home loadHandler] error => ', error);
-		}
-		getSignInState();
+	const gapiClientLoad = () => {
+		// Load the API client and auth2 library
+		window.gapi.load('client:auth2', gapiInitClient); // TODO: double check if we need to load client excluding auth2 here
+	};
+
+	const gapiInitClient = () => {
+		// RE: double check https://github.com/google/google-api-javascript-client/blob/master/docs/cors.md#how-to-use-cors-to-access-google-apis
+		// RE: double check https://github.com/google/google-api-javascript-client/blob/master/docs/auth.md#the-standalone-auth-client
+		// TODO: we could save script download size
+		window.gapi.client.init({
+			apiKey: config.API_KEY,
+			// discoveryDocs: config.DISCOVERY_DOCS, // TODO: error prone
+			clientId: config.CLIENT_ID,
+			scope: `${config.READ_ONLY_SCOPE} ${config.FILE_SCOPE}` // TODO: double check
+		}).then(function () {
+			// Listen for sign-in state changes.
+			window.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+			// Handle the initial sign-in state.
+			updateSigninStatus(window.gapi.auth2.getAuthInstance().isSignedIn.get());
+		});
+	};
+
+	const updateSigninStatus = newSignedIn => {
+		console.log('[Home updateSigninStatus] signedIn, newSignedIn => ', signedIn, newSignedIn);
+		setSignedIn(newSignedIn);
+	};
+
+	const signInHandler = () => {
+		window.gapi.auth2.getAuthInstance().signIn();
 	};
 
 	const signOutHandler = () => {
-		if (window.gapi.auth2.getAuthInstance()) {
-			window.gapi.auth2.getAuthInstance().signOut();
-			localStorage.removeItem(LOCAL_STORAGE_KEYS.FOLDER_ID);
-			localStorage.setItem(LOCAL_STORAGE_KEYS.SIGNED_IN, 'false');
-			if (signedIn) {
-				setSignedIn(false);
-			}
-		}
-	};
-
-	const signInHandler = async () => {
-		try {
-			if (!window.gapi.auth2.getAuthInstance()) {
-				await window.gapi.auth2.init({ client_id: config.CLIENT_ID });
-			}
-			await window.gapi.auth2.getAuthInstance().signIn();
-			const signedIn_ = window.gapi.auth2.getAuthInstance().isSignedIn.get();
-			if (signedIn !== signedIn_) {
-				setSignedIn(signedIn_);
-			}
-			localStorage.setItem(LOCAL_STORAGE_KEYS.SIGNED_IN, signedIn_);
-		} catch (error) {
-			console.log('[Home signInHandler] error =>', error);
-		}
+		window.gapi.auth2.getAuthInstance().signOut();
 	};
 
 	const navigateToGalleryHandler = () => {
@@ -68,27 +58,10 @@ const Home = ({ history }) => {
 			history.push(PAGES.GALLERY);
 		}
 	};
-
-	const getSignInState = () => {
-		let isSignedIn_ = true;
-		try {
-			isSignedIn_ = window.gapi.auth2.getAuthInstance().isSignedIn.get();
-		} catch (error) {
-			isSignedIn_ = false;
-		}
-		if (!isSignedIn_) {
-			localStorage.removeItem(LOCAL_STORAGE_KEYS.FOLDER_ID);
-			localStorage.setItem(LOCAL_STORAGE_KEYS.SIGNED_IN, isSignedIn_);
-		}
-		if (signedIn !== isSignedIn_) {
-			setSignedIn(signedIn);
-		}
-	};
-	// ray test touch >
 	
 	return (
 		<>
-			<CameraScreen />
+			<CameraScreen signedIn={signedIn} />
 			<Footer
 				signedIn={signedIn}
 				signIn={signInHandler}

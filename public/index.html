@@ -29,10 +29,6 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <title>Visage</title>
-    <!-- ray test touch < -->
-    <!-- TODO: we could load dynamically in the component -->
-    <script async type="text/javascript" src="https://apis.google.com/js/client.js"></script>
-    <!-- ray test touch > -->
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -47,5 +43,8 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <!-- RE: https://github.com/google/google-api-javascript-client/blob/master/samples/authSample.html -->
+    <!-- TODO: we could load dynamically in the component with both async and defer -->
+    <script type="text/javascript" src="https://apis.google.com/js/api.js"></script>
   </body>
 </html>

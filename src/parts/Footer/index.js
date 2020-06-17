@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 
 import LogInFab from 'components/LogInFab';
 import LogOutFab from 'components/LogOutFab';
@@ -24,4 +24,4 @@ const Footer = ({
   </footer>
 );
 
-export default Footer;
+export default memo(Footer);

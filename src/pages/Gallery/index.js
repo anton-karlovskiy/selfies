@@ -56,8 +56,8 @@ class Gallery extends Component {
 
 	getImagesFromGoogleDrive = async folderId => {
 		const query = folderId ?
-			`mimeType='image/jpeg' and '${folderId}' in parents and fullText contains '${config.filePrefix}' and trashed = false` :
-			`mimeType='image/jpeg' and fullText contains '${config.filePrefix}' and trashed = false`;
+			`mimeType='image/jpeg' and '${folderId}' in parents and fullText contains '${config.FILE_PREFIX}' and trashed = false` :
+			`mimeType='image/jpeg' and fullText contains '${config.FILE_PREFIX}' and trashed = false`;
 		const response = await window.gapi.client.drive.files.list({
 			'q': query,
 			'fields': 'files(id, name, parents, createdTime)',

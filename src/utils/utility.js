@@ -4,7 +4,7 @@ import { searchFolder, createPermission, deletePermission } from './apis';
 
 const generateFileTitle = () => {
   const date = new Date();
-  const fileTitle = `${config.filePrefix}${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}-${date.getTime()}.jpg`;
+  const fileTitle = `${config.FILE_PREFIX}${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}-${date.getTime()}.jpg`;
   return fileTitle;
 };
 
