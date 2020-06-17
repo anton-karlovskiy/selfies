@@ -1,6 +1,7 @@
 
 module.exports = {
 	// TODO: should be CRA's env variables approach
+	// TODO: PASCAL_CASE
 	clientId: process.env.CLIENT_ID,
 	apiKey: process.env.API_KEY,
 	fileScope: 'https://www.googleapis.com/auth/drive',
@@ -11,8 +12,9 @@ module.exports = {
 	appId: '663657110257', // console.developer.google.com
 	idealWidth: 720,
 	idealHeight: 405,
-	resolution1: { width: 720, height: 405 },
-	resolution2: { width: 640, height: 480 },
+	resolution1: {width: 720, height: 405},
+	resolution2: {width: 640, height: 480},
+	// TODO: we should have used https://github.com/google/google-api-javascript-client/blob/master/docs/cors.md instead of this proxy
 	prefixUrl: 'https://cors-anywhere.herokuapp.com/',
 	gifName: 'Selfie-Gif.gif',
 	gifSizes: [

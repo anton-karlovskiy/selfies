@@ -1,7 +1,7 @@
 
 import React, {
 	useState,
-	useEffect,
+	useEffect
 } from 'react';
 
 import CameraScreen from 'components/CameraScreen';

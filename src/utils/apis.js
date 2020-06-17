@@ -1,8 +1,10 @@
+
 import config from '../config';
 import { generateFileTitle } from './utility';
+import { LOCAL_STORAGE_KEYS } from 'utils/constants';
 
 const searchFolder = async folderName => {
-  let folderId = localStorage.getItem('folderId', '');
+  let folderId = localStorage.getItem(LOCAL_STORAGE_KEYS.FOLDER_ID, '');
   if (folderId) {
     return folderId;
   }
@@ -24,7 +26,7 @@ const searchFolder = async folderName => {
 		const files = response.result.files;
 		if (files && files.length > 0) {
 			folderId = files[0].id;
-			localStorage.setItem('folderId', folderId);
+			localStorage.setItem(LOCAL_STORAGE_KEYS.FOLDER_ID, folderId);
 		}
 	} catch (error) {
 		console.log('[searchFolder] error => ', error);
@@ -48,7 +50,7 @@ const uploadImageFile = (dataUri, folderId) => {
   });
 };
 
-const generateImageFile = (base64Data, metadata, callback) => {
+const generateImageFile = (base64Data, metadata) => {
   const boundary = '-------314159265358979323846';
   const delimiter = "\r\n--" + boundary + "\r\n";
   const close_delim = "\r\n--" + boundary + "--";
