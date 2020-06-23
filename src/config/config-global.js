@@ -3,11 +3,13 @@ module.exports = {
 	// TODO: could use CRA's env variables
 	API_KEY: process.env.API_KEY,
 	// RE: https://github.com/google/google-api-javascript-client/blob/master/docs/start.md#option-2-use-gapiclientrequest
-	// TODO: we might not need it
-	DISCOVERY_DOCS: 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest', // TODO: seems broken
+	DISCOVERY_DOCS: 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
 	CLIENT_ID: process.env.CLIENT_ID,
+
+	// TODO: double check the scope
 	FILE_SCOPE: 'https://www.googleapis.com/auth/drive',
 	READ_ONLY_SCOPE: 'https://www.googleapis.com/auth/drive.metadata.readonly',
+
 	FOLDER_NAME: 'visage',
 	FILE_PREFIX: 'visage-',
 	// APP_ID: '663657110257', // TODO: not used

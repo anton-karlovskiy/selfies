@@ -18,13 +18,13 @@ const resolution = getCameraResolution();
 
 const CameraScreen = ({	signedIn }) => {
 	const onTakePhotoHandler = async dataUri => {
-		// ray test touch <
 		if (!signedIn) {
 			const filename = generateFilename();
 			saveBase64AsImageFile(dataUri, filename);
 			return;
 		}
-	
+		
+		// ray test touch <
 		const folderId = await searchFolder(config.FOLDER_NAME);
 		if (folderId) {
 			uploadImageFile(dataUri, folderId);

@@ -21,18 +21,19 @@ const Home = ({ history }) => {
 
 	const gapiClientLoad = () => {
 		// Load the API client and auth2 library
-		window.gapi.load('client:auth2', gapiInitClient); // TODO: double check if we need to load client excluding auth2 here
+		window.gapi.load('client:auth2', gapiInitClient); // TODO: double check https://github.com/google/google-api-javascript-client/blob/master/docs/auth.md#the-standalone-auth-client
 	};
 
 	const gapiInitClient = () => {
 		// RE: double check https://github.com/google/google-api-javascript-client/blob/master/docs/cors.md#how-to-use-cors-to-access-google-apis
-		// RE: double check https://github.com/google/google-api-javascript-client/blob/master/docs/auth.md#the-standalone-auth-client
 		// TODO: we could save script download size
 		window.gapi.client.init({
 			apiKey: config.API_KEY,
-			// discoveryDocs: config.DISCOVERY_DOCS, // TODO: error prone
 			clientId: config.CLIENT_ID,
-			scope: `${config.READ_ONLY_SCOPE} ${config.FILE_SCOPE}` // TODO: double check
+			// ray test touch <
+			discoveryDocs: [config.DISCOVERY_DOCS],
+			// ray test touch >
+			scope: `${config.READ_ONLY_SCOPE} ${config.FILE_SCOPE}` // TODO: double check the scope
 		}).then(function () {
 			// Listen for sign-in state changes.
 			window.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
