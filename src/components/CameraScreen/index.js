@@ -18,7 +18,7 @@ import './camera-screen.css';
 const resolution = getCameraResolution();
 // ray test touch >
 
-const CameraScreen = ({ signedIn }) => {
+const CameraScreen = ({	signedIn }) => {
 	const onTakePhotoHandler = async dataUri => {
 		// ray test touch <
 		if (!signedIn) {
@@ -37,13 +37,15 @@ const CameraScreen = ({ signedIn }) => {
 	};
 
 	return (
-		<Camera
-			onTakePhoto={onTakePhotoHandler}
-			idealFacingMode={FACING_MODES.USER}
-			idealResolution={resolution}
-			imageType={IMAGE_TYPES.JPG}
-			isFullscreen // TODO: tweak for correct aspect ratio
-			isMaxResolution={true} />
+		<div className='camera-screen'>
+			<Camera
+				onTakePhoto={onTakePhotoHandler}
+				idealFacingMode={FACING_MODES.USER}
+				idealResolution={resolution}
+				imageType={IMAGE_TYPES.JPG}
+				isFullscreen // TODO: tweak for correct aspect ratio
+				isMaxResolution={true} />
+		</div>
 	);
 };
 
