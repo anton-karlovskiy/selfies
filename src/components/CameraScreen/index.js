@@ -5,10 +5,8 @@ import Camera, { FACING_MODES, IMAGE_TYPES } from 'react-html5-camera-photo';
 import config from 'config';
 import generateFilename from 'utils/helpers/generate-filename';
 import saveBase64AsImageFile from 'utils/helpers/save-base64-as-image-file';
+import getCameraResolution from 'utils/helpers/get-camera-resolution';
 // ray test touch <
-import {
-	getCameraResolution
-} from 'utils/utility';
 import { searchFolder, createFolderAndUploadImageFile, uploadImageFile } from 'utils/apis';
 // ray test touch >
 import 'react-html5-camera-photo/build/css/index.css';
@@ -41,7 +39,7 @@ const CameraScreen = ({	signedIn }) => {
 			<Camera
 				onTakePhoto={onTakePhotoHandler}
 				idealFacingMode={FACING_MODES.USER}
-				idealResolution={resolution}
+				idealResolution={resolution} // TODO: do we need it for sure?
 				imageType={IMAGE_TYPES.JPG}
 				isFullscreen // TODO: tweak for correct aspect ratio
 				isMaxResolution={true} />

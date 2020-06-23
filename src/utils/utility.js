@@ -51,26 +51,7 @@ const getMetaInfo = (url, callback) => {
 	});
 };
 
-const getCameraResolution = () => {
-	const height = window.outerHeight;
-	const width = window.outerWidth;
-	const ratio = parseFloat(Math.min(width, height)) / Math.max(width, height);
-	// 16:9
-	if (ratio < 0.6) {
-		return {
-			width: config.RESOLUTION_1.WIDTH,
-			height: config.RESOLUTION_1.HEIGHT
-		};
-	}
-	// 4:3
-	return {
-		width: config.RESOLUTION_2.WIDTH,
-		height: config.RESOLUTION_2.HEIGHT
-	};
-};
-
 export {
 	createGIF,
-	getMetaInfo,
-	getCameraResolution
+	getMetaInfo
 };
