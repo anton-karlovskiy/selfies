@@ -3,8 +3,14 @@ import React, { memo } from 'react';
 import Camera, { FACING_MODES, IMAGE_TYPES } from 'react-html5-camera-photo';
 
 import config from 'config';
-import { generateFileTitle, saveBase64AsImageFile, getCameraResolution } from 'utils/utility';
+import generateFilename from 'utils/helpers/generate-filename';
+// ray test touch <
+import {
+	saveBase64AsImageFile,
+	getCameraResolution
+} from 'utils/utility';
 import { searchFolder, createFolderAndUploadImageFile, uploadImageFile } from 'utils/apis';
+// ray test touch >
 import 'react-html5-camera-photo/build/css/index.css';
 import './camera-screen.css';
 
@@ -16,7 +22,7 @@ const CameraScreen = ({ signedIn }) => {
 	const onTakePhotoHandler = async dataUri => {
 		// ray test touch <
 		if (!signedIn) {
-			const filename = generateFileTitle();
+			const filename = generateFilename();
 			saveBase64AsImageFile(dataUri, filename);
 			return;
 		}

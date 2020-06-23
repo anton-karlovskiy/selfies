@@ -2,12 +2,6 @@ import { saveAs } from 'file-saver';
 import config from 'config';
 import { searchFolder, createPermission, deletePermission } from './apis';
 
-const generateFileTitle = () => {
-  const date = new Date();
-  const fileTitle = `${config.FILE_PREFIX}${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}-${date.getTime()}.jpg`;
-  return fileTitle;
-};
-
 const saveBase64AsImageFile = ( dataUri, fileName ) => {
   saveAs(dataUri, fileName);
 };
@@ -79,7 +73,6 @@ const getCameraResolution = () => {
 };
 
 export {
-	generateFileTitle,
 	saveBase64AsImageFile,
 	createGIF,
 	getMetaInfo,

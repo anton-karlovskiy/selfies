@@ -1,6 +1,6 @@
 
 import config from 'config';
-import { generateFileTitle } from './utility';
+import generateFilename from 'utils/helpers/generate-filename';
 import { LOCAL_STORAGE_KEYS } from 'utils/constants';
 
 const searchFolder = async folderName => {
@@ -37,7 +37,7 @@ const searchFolder = async folderName => {
 
 const uploadImageFile = (dataUri, folderId) => {
   window.gapi.client.load('drive','v3', () => {
-    const fileTitle = generateFileTitle();
+    const fileTitle = generateFilename();
     const mimeType = 'image/jpeg';
     const metadata = {
       name: fileTitle,
