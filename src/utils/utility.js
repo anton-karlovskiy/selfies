@@ -1,10 +1,7 @@
-import { saveAs } from 'file-saver';
+
 import config from 'config';
 import { searchFolder, createPermission, deletePermission } from './apis';
-
-const saveBase64AsImageFile = ( dataUri, fileName ) => {
-  saveAs(dataUri, fileName);
-};
+import saveBase64AsImageFile from 'utils/helpers/save-base64-as-image-file';
 
 const createGIF = async (imageUrlList, completeCallback, width, height) => {
   const folderId = await searchFolder(config.FOLDER_NAME);
@@ -73,7 +70,6 @@ const getCameraResolution = () => {
 };
 
 export {
-	saveBase64AsImageFile,
 	createGIF,
 	getMetaInfo,
 	getCameraResolution

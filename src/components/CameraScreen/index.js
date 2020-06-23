@@ -4,9 +4,9 @@ import Camera, { FACING_MODES, IMAGE_TYPES } from 'react-html5-camera-photo';
 
 import config from 'config';
 import generateFilename from 'utils/helpers/generate-filename';
+import saveBase64AsImageFile from 'utils/helpers/save-base64-as-image-file';
 // ray test touch <
 import {
-	saveBase64AsImageFile,
 	getCameraResolution
 } from 'utils/utility';
 import { searchFolder, createFolderAndUploadImageFile, uploadImageFile } from 'utils/apis';
