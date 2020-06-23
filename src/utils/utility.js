@@ -1,6 +1,10 @@
 
 import config from 'config';
-import { searchFolder, createPermission, deletePermission } from './apis';
+import searchFolder from 'services/search-folder';
+import {
+	createPermission,
+	deletePermission
+} from './apis';
 import saveBase64AsImageFile from 'utils/helpers/save-base64-as-image-file';
 
 const createGIF = async (imageUrlList, completeCallback, width, height) => {
@@ -8,7 +12,7 @@ const createGIF = async (imageUrlList, completeCallback, width, height) => {
   const res = await createPermission(folderId);
   if (res && res.result) {
 		setTimeout(async () => {
-			const imageUrlListForCors = imageUrlList.map(imageUrl => `${config.prefixUrl}${imageUrl}`);
+			const imageUrlListForCors = imageUrlList.map(imageUrl => `${config.PREFIX_URL}${imageUrl}`);
 			const param = {
 				images: imageUrlListForCors.reverse(),
 				interval: .4,

@@ -10,7 +10,7 @@ import LoadingSpinner from 'components/UI/LoadingSpinner';
 import AdaptiveImagesModal from '../../components/AdaptiveImagesModal';
 import config from 'config';
 import { createGIF, getMetaInfo } from '../../utils/utility';
-import { searchFolder } from '../../utils/apis';
+import searchFolder from 'services/search-folder';
 
 class Gallery extends Component {
 	state = {

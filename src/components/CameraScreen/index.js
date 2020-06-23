@@ -6,15 +6,15 @@ import config from 'config';
 import generateFilename from 'utils/helpers/generate-filename';
 import saveBase64AsImageFile from 'utils/helpers/save-base64-as-image-file';
 import getCameraResolution from 'utils/helpers/get-camera-resolution';
-// ray test touch <
-import { searchFolder, createFolderAndUploadImageFile, uploadImageFile } from 'utils/apis';
-// ray test touch >
+import searchFolder from 'services/search-folder';
+import {
+	createFolderAndUploadImageFile,
+	uploadImageFile
+} from 'utils/apis';
 import 'react-html5-camera-photo/build/css/index.css';
 import './camera-screen.css';
 
-// ray test touch <
 const resolution = getCameraResolution();
-// ray test touch >
 
 const CameraScreen = ({	signedIn }) => {
 	const onTakePhotoHandler = async dataUri => {
