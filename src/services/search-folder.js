@@ -7,10 +7,17 @@ import { LOCAL_STORAGE_KEYS } from 'utils/constants';
 const searchFolder = async folderName => {
   let folderId;
   // TODO: block cache for now
-  folderId = localStorage.getItem(LOCAL_STORAGE_KEYS.FOLDER_ID, '');
+  // folderId = localStorage.getItem(LOCAL_STORAGE_KEYS.FOLDER_ID, '');
   if (folderId) {
     return folderId;
   }
+
+  // ray test touch <<
+  const test = await window.gapi.client.request({
+    path: 'https://www.googleapis.com/drive/v3/files'
+  });
+  console.log('ray : ***** test => ', test);
+  // ray test touch >>
 
   // TODO: double check the approach
 	try {

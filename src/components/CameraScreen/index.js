@@ -7,10 +7,8 @@ import generateFilename from 'utils/helpers/generate-filename';
 import saveBase64AsImageFile from 'utils/helpers/save-base64-as-image-file';
 import getCameraResolution from 'utils/helpers/get-camera-resolution';
 import searchFolder from 'services/search-folder';
-import {
-	createFolderAndUploadImageFile,
-	uploadImageFile
-} from 'utils/apis';
+import uploadImageFile from 'services/upload-image-file';
+import createFolderAndUploadImageFile from 'services/create-folder-and-upload-image-file';
 import 'react-html5-camera-photo/build/css/index.css';
 import './camera-screen.css';
 
@@ -24,14 +22,13 @@ const CameraScreen = ({	signedIn }) => {
 			return;
 		}
 		
-		// ray test touch <
+		// TODO: we could combine this logic into one
 		const folderId = await searchFolder(config.FOLDER_NAME);
 		if (folderId) {
 			uploadImageFile(dataUri, folderId);
 		} else {
 			createFolderAndUploadImageFile(dataUri, config.FOLDER_NAME);
 		}
-		// ray test touch >
 	};
 
 	return (
