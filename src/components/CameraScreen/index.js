@@ -14,6 +14,16 @@ import './camera-screen.css';
 
 const resolution = getCameraResolution();
 
+const uploadImageHandler = async dataUri => {
+	// TODO: we could combine this logic into one
+	const folderId = await searchFolder(config.FOLDER_NAME);
+	if (folderId) {
+		uploadImageFile(dataUri, folderId);
+	} else {
+		createFolderAndUploadImageFile(dataUri, config.FOLDER_NAME);
+	}
+};
+
 const CameraScreen = ({	signedIn }) => {
 	const onTakePhotoHandler = async dataUri => {
 		if (!signedIn) {
@@ -21,13 +31,13 @@ const CameraScreen = ({	signedIn }) => {
 			saveBase64AsImageFile(dataUri, filename);
 			return;
 		}
-		
-		// TODO: we could combine this logic into one
-		const folderId = await searchFolder(config.FOLDER_NAME);
-		if (folderId) {
-			uploadImageFile(dataUri, folderId);
+
+		if (window.gapi.client) {
+			uploadImageHandler(dataUri);
 		} else {
-			createFolderAndUploadImageFile(dataUri, config.FOLDER_NAME);
+			window.gapi.load('client', () => {
+				window.gapi.client.init({}).then(uploadImageHandler(dataUri));
+			});
 		}
 	};
 

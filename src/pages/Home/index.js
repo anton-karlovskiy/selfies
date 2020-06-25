@@ -20,23 +20,29 @@ const Home = ({ history }) => {
 	}, []);
 
 	const gapiClientLoad = () => {
-		// Load the API client and auth2 library
-		window.gapi.load('client:auth2', gapiInitClient); // TODO: double check https://github.com/google/google-api-javascript-client/blob/master/docs/auth.md#the-standalone-auth-client
+		// TODO: cache logic by local storage to avoid unnecessary request
+		// RE: https://github.com/google/google-api-javascript-client/blob/master/docs/auth.md#the-standalone-auth-client
+		// RE: https://github.com/google/google-api-javascript-client/blob/master/docs/samples.md#authorizing-and-making-authorized-requests
+		// Load the auth2 library
+		window.gapi.load('auth2', gapiInitAuth2);
 	};
 
-	const gapiInitClient = () => {
-		// RE: double check https://github.com/google/google-api-javascript-client/blob/master/docs/cors.md#how-to-use-cors-to-access-google-apis
-		// TODO: we could save script download size
-		window.gapi.client.init({
+	const gapiInitAuth2 = () => {
+		const gapiAuth2 = window.gapi.auth2;
+
+		gapiAuth2.init({
 			apiKey: config.API_KEY,
 			clientId: config.CLIENT_ID,
-			scope: `${config.READ_ONLY_SCOPE} ${config.FILE_SCOPE}` // TODO: double check the scope
-		}).then(function () {
+			scope: config.READ_ONLY_SCOPE // TODO: double check the scope
+		}).then(() => {
+			// TODO: cache logic by local storage to avoid unnecessary request
+			const authInstance = gapiAuth2.getAuthInstance();
+
 			// Listen for sign-in state changes.
-			window.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+			authInstance.isSignedIn.listen(updateSigninStatus);
 
 			// Handle the initial sign-in state.
-			updateSigninStatus(window.gapi.auth2.getAuthInstance().isSignedIn.get());
+			updateSigninStatus(authInstance.isSignedIn.get());
 		});
 	};
 
