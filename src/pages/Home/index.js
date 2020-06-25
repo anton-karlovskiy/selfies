@@ -11,6 +11,7 @@ import config from 'config';
 import PAGES from 'utils/pages';
 
 const Home = ({ history }) => {
+	// TODO: double check rendering -> just two times due to the following
 	const [signedIn, setSignedIn] = useState(false);
 	
 	useEffect(() => {
@@ -48,7 +49,9 @@ const Home = ({ history }) => {
 
 	const updateSigninStatus = newSignedIn => {
 		console.log('[Home updateSigninStatus] signedIn, newSignedIn => ', signedIn, newSignedIn);
-		setSignedIn(newSignedIn);
+		if (newSignedIn !== signedIn) {
+			setSignedIn(newSignedIn);
+		}
 	};
 
 	const signInHandler = useCallback(() => {
