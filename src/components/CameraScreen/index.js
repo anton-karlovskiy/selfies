@@ -48,6 +48,7 @@ const CameraScreen = ({	signedIn }) => {
 				idealFacingMode={FACING_MODES.USER}
 				idealResolution={resolution} // TODO: do we need it for sure?
 				imageType={IMAGE_TYPES.JPG}
+				isDisplayStartCameraError={false}
 				isFullscreen // TODO: tweak for correct aspect ratio
 				isMaxResolution={true} />
 		</div>
