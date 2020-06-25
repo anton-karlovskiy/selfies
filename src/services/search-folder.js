@@ -1,9 +1,8 @@
 
-// ray test touch <
 import { LOCAL_STORAGE_KEYS } from 'utils/constants';
+import serializeToQueryParam from 'utils/helpers/serialize-to-query-param';
 
 // RE: https://developers.google.com/drive/api/v3/reference/files/list
-// RE: https://developers.google.com/drive/api/v2/reference/
 const searchFolder = async folderName => {
   let folderId;
   // TODO: block cache for now
@@ -12,19 +11,17 @@ const searchFolder = async folderName => {
     return folderId;
   }
 
-  // ray test touch <<
-  const test = await window.gapi.client.request({
-    path: 'https://www.googleapis.com/drive/v3/files'
-  });
-  console.log('ray : ***** test => ', test);
-  // ray test touch >>
-
-  // TODO: double check the approach
 	try {
-		const response = await window.gapi.client.drive.files.list({
-			'q': `mimeType='application/vnd.google-apps.folder' and fullText contains '${folderName}' and trashed = false`,
-			'fields': 'nextPageToken, files(id, name, parents)'
-		});
+    const v3GoogleDriveFilesAPI = 'https://www.googleapis.com/drive/v3/files';
+    const queryObject = {
+      q: `mimeType="application/vnd.google-apps.folder" and fullText contains "${folderName}" and trashed=false`,
+      fields: 'nextPageToken, files(id)',
+      spaces: 'drive',
+      corpora: 'user'
+    };
+    const response = await window.gapi.client.request({
+      path: serializeToQueryParam(queryObject, v3GoogleDriveFilesAPI)
+    });
 
 		const files = response.result.files;
 		if (files?.length > 0) {
@@ -41,4 +38,3 @@ const searchFolder = async folderName => {
 };
 
 export default searchFolder;
-// ray test touch >

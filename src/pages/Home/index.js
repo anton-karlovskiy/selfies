@@ -30,9 +30,6 @@ const Home = ({ history }) => {
 		window.gapi.client.init({
 			apiKey: config.API_KEY,
 			clientId: config.CLIENT_ID,
-			// ray test touch <
-			discoveryDocs: [config.DISCOVERY_DOCS],
-			// ray test touch >
 			scope: `${config.READ_ONLY_SCOPE} ${config.FILE_SCOPE}` // TODO: double check the scope
 		}).then(function () {
 			// Listen for sign-in state changes.

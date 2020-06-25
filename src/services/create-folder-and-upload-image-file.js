@@ -11,7 +11,7 @@ const createFolderAndUploadImageFile = (dataUri, folderName) => {
       'method': 'POST',
       'headers': {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + accessToken,
+        'Authorization': 'Bearer ' + accessToken
       },
       'body': {
         'name': folderName,
