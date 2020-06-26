@@ -18,7 +18,7 @@ const Home = ({
 	const navigateToGalleryHandler = useCallback(() => {
 		history.push(PAGES.GALLERY);
 	}, [history]);
-	
+
 	return (
 		<>
 			<CameraScreen signedIn={signedIn} />

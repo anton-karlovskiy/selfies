@@ -1,5 +1,5 @@
 
-import React, { Suspense, lazy, useState, useEffect, useCallback } from 'react';
+import React, { Suspense, lazy, useState, useCallback } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import LoadingSpinner from 'components/UI/LoadingSpinner';
@@ -59,9 +59,7 @@ const App = () => {
 
 	const updateSigninStatus = newSignedIn => {
 		console.log('[App updateSigninStatus] signedIn, newSignedIn => ', signedIn, newSignedIn);
-		if (newSignedIn !== signedIn) {
-			setSignedIn(newSignedIn);
-		}
+    setSignedIn(newSignedIn);
 	};
 
 	const signInHandler = useCallback(() => {
@@ -70,7 +68,7 @@ const App = () => {
 
 	const signOutHandler = useCallback(() => {
 		window.gapi.auth2.getAuthInstance().signOut();
-	}, []);
+  }, []);
   
   return (
     <div className='App'>
