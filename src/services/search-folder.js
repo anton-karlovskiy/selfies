@@ -5,8 +5,7 @@ import serializeToQueryParam from 'utils/helpers/serialize-to-query-param';
 // RE: https://developers.google.com/drive/api/v3/reference/files/list
 const searchFolder = async folderName => {
   let folderId;
-  // TODO: block cache for now
-  // folderId = localStorage.getItem(LOCAL_STORAGE_KEYS.FOLDER_ID, '');
+  folderId = localStorage.getItem(LOCAL_STORAGE_KEYS.FOLDER_ID, '');
   if (folderId) {
     return folderId;
   }

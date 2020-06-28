@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 
 import logoIcon from '../../assets/images/logo-icon.png';
-import PAGES from 'utils/pages';
+import { PAGES } from 'utils/constants/links';
 
 const styles = theme => ({
   root: {

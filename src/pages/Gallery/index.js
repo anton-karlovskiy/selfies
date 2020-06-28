@@ -1,4 +1,5 @@
 
+// ray test touch <
 import React, { Component, Fragment } from 'react';
 import Grid from '@material-ui/core/Grid';
 
@@ -171,3 +172,4 @@ class Gallery extends Component {
 }
 
 export default Gallery;
+// ray test touch >

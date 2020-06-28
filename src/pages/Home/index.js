@@ -6,8 +6,7 @@ import React, {
 
 import CameraScreen from 'components/CameraScreen';
 import Footer from 'parts/Footer';
-
-import PAGES from 'utils/pages';
+import { PAGES } from 'utils/constants/links';
 
 const Home = ({
 	history,

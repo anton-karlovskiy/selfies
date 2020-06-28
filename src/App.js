@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import LoadingSpinner from 'components/UI/LoadingSpinner';
 import useScript from 'utils/hooks/use-script';
 import config from 'config';
-import PAGES from 'utils/pages';
+import { PAGES } from 'utils/constants/links';
 import './App.css';
 
 const Home = lazy(() => import(/* webpackChunkName: 'home' */ 'pages/Home'));

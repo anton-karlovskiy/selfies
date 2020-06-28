@@ -4,4 +4,6 @@ const PAGES = {
   GALLERY: '/gallery'
 };
 
-export default PAGES;
+export {
+  PAGES
+};
