@@ -30,7 +30,7 @@ const Gallery = ({
 		try {
 			const queryObject = {
 				q: `mimeType="${mimeType}" and "${folderId}" in parents and fullText contains "${config.FILE_PREFIX}" and trashed = false`,
-				fields: 'nextPageToken, files(id, name, parents, createdTime)',
+				fields: 'nextPageToken, files(id, createdTime, webContentLink)',
 				spaces: 'drive',
 				corpora: 'user'
 			};
@@ -44,8 +44,7 @@ const Gallery = ({
 
 			const images = json.files.map(file => ({
 				id: file.id,
-				// TODO: double check how to create public links to images from Google Drive
-				src: `https://drive.google.com/uc?export=view&id=${file.id}`,
+				src: file.webContentLink,
 				createdTime: file.createdTime
 			}));
 			images.sort((a, b) => (a.createdTime < b.createdTime ? 1 : -1));
@@ -139,7 +138,6 @@ const Gallery = ({
 					selectedStatusList={selectedStatusList}
 					onClick={imageOnClickHandler} />
 			)}
-			{/* TODO: https://developers.google.com/drive/api/v3/manage-downloads#viewing_files_in_a_browser */}
 			<AdaptiveImagesModal
 				views={images}
 				open={imagesModalOpen}

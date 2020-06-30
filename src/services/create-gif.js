@@ -1,12 +1,9 @@
 
 import config from 'config';
-import searchFolder from 'services/search-folder';
 import saveBase64AsImageFile from 'utils/helpers/save-base64-as-image-file';
 import convertBlobToBase64 from 'utils/helpers/convert-blob-to-base64';
 
 const createGIF = async (oauthToken, images, width, height) => {
-	const folderId = await searchFolder(config.FOLDER_NAME);
-
   let base64Images = [];
   for (const image of images) {
     try {
