@@ -1,6 +1,6 @@
 
 .drop-button {
-  outline: none;
+  outline: 0;
   background-color: #2196f3;
   color: white;
   padding: 16px;

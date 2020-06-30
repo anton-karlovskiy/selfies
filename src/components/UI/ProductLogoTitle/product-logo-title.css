@@ -27,7 +27,7 @@
 
 .product-link:hover,
 .product-link:focus {
-  outline: none;
+  outline: 0;
   opacity: .7;
   text-decoration: none;
 }

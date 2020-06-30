@@ -3,7 +3,7 @@ import React from 'react';
 
 import SelectAllCheckbox from './SelectAllCheckbox';
 import GifDropdown from './GifDropdown';
-import ToggleButton from 'components/ToggleButton';
+import GifToggleButton from 'components/GifToggleButton';
 import './gif-generation.css';
 
 const GifGeneration = ({
@@ -22,7 +22,7 @@ const GifGeneration = ({
         <GifDropdown createGif={createGif} />
       </>
     )}
-    <ToggleButton
+    <GifToggleButton
       open={open}
       onClick={toggle} />
   </div>

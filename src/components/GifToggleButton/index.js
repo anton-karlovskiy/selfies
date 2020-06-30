@@ -4,7 +4,7 @@ import React from 'react';
 import ChevronLeftFab from './ChevronLeftFab';
 import ChevronRightFab from './ChevronRightFab';
 
-const ToggleButton = ({
+const GifToggleButton = ({
   open,
   onClick
 }) => (
@@ -17,4 +17,4 @@ const ToggleButton = ({
   </>
 );
 
-export default ToggleButton;
+export default GifToggleButton;

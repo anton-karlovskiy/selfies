@@ -14,11 +14,11 @@ const DropdownContentItem = ({
   };
   
   return (
-    <button
+    <li
       className='dropdown-content-item'
       onClick={onClickHandler}>
       {label}
-    </button>
+    </li>
   );
 };
 

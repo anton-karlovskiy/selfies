@@ -3,7 +3,7 @@
   width: 56px;
   height: 56px;
   border: none;
-  outline: none;
+  outline: 0;
   cursor: pointer;
   border-radius: 50%;
   background-size: 50% 50%;

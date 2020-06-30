@@ -21,7 +21,7 @@ const Dropdown = ({ listItems }) => {
       <DropButton
         className='mui-box-shadow mui-border-radius'
         onClick={openHandler}>
-        Dropdown
+        GIF
       </DropButton>
       {/* TODO: click away listener needed */}
       <DropdownContent

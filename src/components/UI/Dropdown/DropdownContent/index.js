@@ -9,7 +9,7 @@ const DropdownContent = ({
   listItems,
   close
 }) => (
-  <div className={`dropdown-content ${className}`}>
+  <ul className={`dropdown-content ${className}`}>
     {listItems.map(listItem => (
       <DropdownContentItem
         key={listItem.id}
@@ -17,7 +17,7 @@ const DropdownContent = ({
         close={close}
         onClick={listItem.onClick} />
     ))}
-  </div>
+  </ul>
 );
 
 export default DropdownContent;
