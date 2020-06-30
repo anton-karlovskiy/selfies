@@ -1,14 +1,15 @@
 
 .drop-button {
   outline: 0;
-  background-color: #2196f3;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
   cursor: pointer;
+  background-color: var(--palette-blue-500);
+  color: #FFF;
+  padding: 6px 16px;
+  min-height: 56px;
+  font-size: 1rem;
+  border: none;
 }
 
 .drop-button:hover, .drop-button:focus {
-  background-color: #2980B9;
+  background-color: #1769aa;
 }
