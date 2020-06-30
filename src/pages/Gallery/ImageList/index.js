@@ -1,21 +1,24 @@
 
-import React, { Fragment } from 'react';
+import React from 'react';
 
 import Image from './Image';
+import './image-list.css';
 
-const ImageList = ({ images, selectedStatusList, toggleHandler }) => {
-  return (
-    <Fragment>
-      { images.map((image, index) => (
-        <Image
-          key={image.id}
-          selectedStatus={selectedStatusList[index]}
-          imageUrl={image.src}
-          dateTime={image.dateTime}
-          onToggle={() => toggleHandler(index)} />
-      )) }
-    </Fragment>
-  );
-};
+const ImageList = ({
+  images,
+  selectedStatusList,
+  onClick
+}) => (
+  <div className='image-list'>
+    {images.map((image, index) => (
+      <Image
+        key={image.id}
+        src={image.src}
+        createdTime={image.createdTime}
+        selectedStatus={selectedStatusList[index]}
+        onClick={onClick(index)} />
+    ))}
+  </div>
+);
 
 export default ImageList;

@@ -1,175 +1,152 @@
 
-// ray test touch <
-import React, { Component, Fragment } from 'react';
-import Grid from '@material-ui/core/Grid';
+import React, { useState, useEffect, useCallback } from 'react';
 
-import GifGenWidget from './GifGenWidget';
+import GalleryHeader from './GalleryHeader';
 import ImageList from './ImageList';
-import Logo from '../../components/Logo';
-import ProgressBar from '../../components/ProgressBar';
 import LoadingSpinner from 'components/UI/LoadingSpinner';
 import AdaptiveImagesModal from '../../components/AdaptiveImagesModal';
 import config from 'config';
-import { createGIF, getMetaInfo } from '../../utils/utility';
+import createGIF from 'services/create-gif';
 import searchFolder from 'services/search-folder';
+import serializeToQueryParam from 'utils/helpers/serialize-to-query-param';
+import validateArg from 'utils/helpers/validate-arg';
+import getImageRatio from 'utils/helpers/get-image-ratio';
 
-class Gallery extends Component {
-	state = {
-		images: [],
-		selectedStatusList: [],
-		isProgressBarShown: false,
-		loading: false,
-		allSelected: false,
-		isGifWidgetOpen: false,
-		isImagesModalOpen: false,
-		currentModalIndex: null
-	};
+const Gallery = ({
+	oauthToken,
+	loadingGAPI,
+	loadingAuth2GAPI
+}) => {
+	const [images, setImages] = useState([]);
+	const [gifGenerationOpen, setGifGenerationOpen] = useState(false);
+	// TODO: Get Unique Values From An Array from https://blog.bitsrc.io/10-super-useful-tricks-for-javascript-developers-f1b76691199b
+	const [selectedStatusList, setSelectedStatusList] = useState([]);
+	const [allSelected, setAllSelected] = useState(false);
+	const [imagesModalOpen, setImagesModalOpen] = useState(false);
+	const [currentModalIndex, setCurrentModalIndex] = useState(null);
+	const [loading, setLoading] = useState(true);
 
-	componentDidMount() {
-		if (window.gapi && window.gapi.client) {
-			this.loadHandler();
-		} else {
-			setTimeout(this.loadHandler, 1000); // TODO: hardcoded & error prone
-		}
-	}
-	
-	loadHandler = () => {
-		this.setState({loading: true});
-		window.gapi.load('auth', {'callback': this.gapiInitHandler});
-	};
-
-	gapiInitHandler = async () => {
+	const getImagesFromGoogleDrive = useCallback(async (folderId = validateArg(), mimeType) => {
 		try {
-			await window.gapi.client.init({
-				apiKey: config.API_KEY,
-				clientId: config.CLIENT_ID,
-				discoveryDocs: [config.DISCOVERY_DOCS],
-				scope: `${config.READ_ONLY_SCOPE} ${config.FILE_SCOPE}`
+			const queryObject = {
+				q: `mimeType="${mimeType}" and "${folderId}" in parents and fullText contains "${config.FILE_PREFIX}" and trashed = false`,
+				fields: 'nextPageToken, files(id, name, parents, createdTime)',
+				spaces: 'drive',
+				corpora: 'user'
+			};
+			const response = await fetch(serializeToQueryParam(queryObject, config.V3_GOOGLE_DRIVE_FILES_API_ENDPOINT), {
+				headers: new Headers({
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${oauthToken}`
+				})
 			});
+			const json = await response.json();
 
-			const folderId = await searchFolder(config.FOLDER_NAME);
-			this.getImagesFromGoogleDrive(folderId);
-		} catch(error) {
-			console.log('[Gallery gapiInitHandler] error => ', error);
-			this.setState({loading: false});
+			const images = json.files.map(file => ({
+				id: file.id,
+				// TODO: double check how to create public links to images from Google Drive
+				src: `https://drive.google.com/uc?export=view&id=${file.id}`,
+				createdTime: file.createdTime
+			}));
+			images.sort((a, b) => (a.createdTime < b.createdTime ? 1 : -1));
+
+			setImages(images);
+			setSelectedStatusList(new Array(images.length).fill(false));
+			setLoading(false);
+		} catch (error) {
+			console.log('[Gallery getImagesFromGoogleDrive] error => ', error);
+			// TODO: force sign out if 401 response comes via service
+			setLoading(false);
 		}
-	};
+	}, [setLoading, setSelectedStatusList, setImages, oauthToken]);
+	
+	const initGalleryHandler = useCallback(async () => {
+		const folderId = await searchFolder(oauthToken, config.FOLDER_NAME);
+		getImagesFromGoogleDrive(folderId, config.IMAGE_MIME_TYPE);
+	}, [getImagesFromGoogleDrive, oauthToken]);
 
-	getImagesFromGoogleDrive = async folderId => {
-		const query = folderId ?
-			`mimeType='image/jpeg' and '${folderId}' in parents and fullText contains '${config.FILE_PREFIX}' and trashed = false` :
-			`mimeType='image/jpeg' and fullText contains '${config.FILE_PREFIX}' and trashed = false`;
-		const response = await window.gapi.client.drive.files.list({
-			'q': query,
-			'fields': 'files(id, name, parents, createdTime)',
+	useEffect(() => {
+		if (!loadingGAPI && !loadingAuth2GAPI) {
+			console.log('[Gallery useEffect] init gallery');
+			initGalleryHandler();
+		}
+	}, [loadingGAPI, loadingAuth2GAPI, initGalleryHandler]);
+
+	const toggleGifGenerationHandler = useCallback(() => {
+		setGifGenerationOpen(prevState => !prevState);
+	}, [setGifGenerationOpen]);
+
+	const toggleImage = useCallback(index => {
+		setSelectedStatusList(prevState => {
+			const nextState = [...prevState];
+			nextState[index] = !nextState[index];
+			return nextState;
 		});
-		const images = response.result.files.map(file => ({
-			id: file.id,
-			src: `https://drive.google.com/uc?export=view&id=${file.id}`,
-			dateTime: file.createdTime
-		}));
-		images.sort((a, b) => (a.dateTime < b.dateTime ? 1 : -1));
-		this.setState({
-			images: images,
-			selectedStatusList: new Array(images.length).fill(false),
-			loading: false
-		});
-	};
+	}, [setSelectedStatusList]);
 
-	toggleWidgetHandler = () => {
-    this.setState(prevState => ({isGifWidgetOpen: !prevState.isGifWidgetOpen}));
-	};
+	const toggleAllImagesHandler = useCallback(event => {
+		event.persist();
+		setSelectedStatusList(prevState => prevState.fill(event.target.checked));
+		setAllSelected(event.target.checked);
+	}, [setSelectedStatusList, setAllSelected]);
 
-	imageClickHandler = index => {
-		const { isGifWidgetOpen } = this.state;
-		if (isGifWidgetOpen) {
-			this.toggleImage(index);
+	const closeImagesModalHandler = useCallback(() => {
+		setImagesModalOpen(false);
+		setCurrentModalIndex(null);
+	}, [setImagesModalOpen]);
+
+	const openImagesModal = useCallback(index => {
+		setImagesModalOpen(true);
+		setCurrentModalIndex(index);
+	}, [setImagesModalOpen, setCurrentModalIndex]);
+
+	const imageOnClickHandler = useCallback(index => () => {
+		if (gifGenerationOpen) {
+			toggleImage(index);
 		} else {
-			this.showFullSizeImage(index);
+			openImagesModal(index);
 		}
-	};
+	}, [gifGenerationOpen, toggleImage, openImagesModal]);
 
-	toggleImage = index => {
-		const { selectedStatusList } = this.state;
-		const newSelectedStatusList = [...selectedStatusList];
-		newSelectedStatusList[index] = !newSelectedStatusList[index];
-		this.setState({selectedStatusList: newSelectedStatusList});
-	};
+	const createGifHandler = async width => {
+		// TODO: UX for starting GIF generation
 
-	showFullSizeImage = index => {
-		this.openCloseImagesModal(true, index);
-	};
+		const selectedImages = images.filter((_, index) => selectedStatusList[index]);
+		const selectedImageSrcs = selectedImages.map(image => image.src);
 
-	openCloseImagesModal = (isOpen, currentModalIndex=null) => {
-		this.setState({isImagesModalOpen: isOpen, currentModalIndex});
-	};
-
-	toggleAllImagesHandler = event => {
-		const { images } = this.state;
-		const newSelectedStatusList = new Array(images.length).fill(event.target.checked);
-		this.setState({
-			selectedStatusList: newSelectedStatusList,
-			allSelected: event.target.checked
-		});
-	};
-
-	completionCallback = () => {
-		this.setState({isProgressBarShown: false});
-	};
-
-	createGifHandler = width => {
-		const { images, selectedStatusList } = this.state;
-		const selectedImageList = images.filter((image, index) => selectedStatusList[index]);
-		const selectedImageUrlList = selectedImageList.map(image => image.src);
-		if (selectedImageUrlList.length > 0) {
-			this.setState({isProgressBarShown: true});
-			getMetaInfo(selectedImageUrlList[0], ratio => createGIF(selectedImageUrlList, this.completionCallback, width, width * ratio));
+		if (selectedImageSrcs.length > 0) {
+			// TODO: how to handle if ratio is not consistent across photos
+			const ratio = await getImageRatio(selectedImageSrcs[0]);
+			const height = width / ratio;
+			await createGIF(oauthToken, selectedImageSrcs, width, height);
 		}
+
+		// TODO: UX for ending GIF generation
 	};
 
-	render() {
-		const {
-			loading,
-			images,
-			isProgressBarShown,
-			allSelected,
-			selectedStatusList,
-			isGifWidgetOpen,
-			isImagesModalOpen,
-			currentModalIndex
-		} = this.state;
-		return (
-			<Fragment>
-				<Grid container direction='column'>
-					<Grid
-						container
-						direction='row'
-						justify='space-between'
-						alignItems='center'>
-						<Logo />
-						<GifGenWidget
-							isOpen={isGifWidgetOpen}
-							toggleWidget={this.toggleWidgetHandler}
-							allSelected={allSelected}
-							toggleAllImages={this.toggleAllImagesHandler}
-							createGif={this.createGifHandler}
-							disabled={isProgressBarShown} />
-					</Grid>
-					{ isProgressBarShown && <ProgressBar />}
-					<Grid container justify='center'>
-						<ImageList images={images} selectedStatusList={selectedStatusList} toggleHandler={this.imageClickHandler} />
-						{ loading && <LoadingSpinner /> }
-					</Grid>
-				</Grid>
-				<AdaptiveImagesModal
+	return (
+		<>
+			<GalleryHeader
+				gifGenerationOpen={gifGenerationOpen}
+				toggleGifGeneration={toggleGifGenerationHandler}
+				allSelected={allSelected}
+				toggleAllImages={toggleAllImagesHandler}
+				createGif={createGifHandler} />
+			{loadingGAPI || loading ? (
+				<LoadingSpinner centerViewport />
+			) : (
+				<ImageList
 					images={images}
-					isOpen={isImagesModalOpen}
-					close={() => this.openCloseImagesModal(false)}
-					currentIndex={currentModalIndex} />
-			</Fragment>
-		);
-	}
-}
+					selectedStatusList={selectedStatusList}
+					onClick={imageOnClickHandler} />
+			)}
+			<AdaptiveImagesModal
+				views={images}
+				open={imagesModalOpen}
+				onClose={closeImagesModalHandler}
+				currentIndex={currentModalIndex} />
+		</>
+	);
+};
 
 export default Gallery;
-// ray test touch >

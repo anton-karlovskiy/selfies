@@ -1,14 +1,16 @@
 
 module.exports = {
+	APP_NAME: 'Visage',
+	GAPI_ENDPOINT: 'https://apis.google.com/js/api.js',
+	V3_GOOGLE_DRIVE_FILES_API_ENDPOINT: 'https://www.googleapis.com/drive/v3/files',
+	V3_GOOGLE_DRIVE_UPLOAD_FILES_API_ENDPOINT: 'https://www.googleapis.com/upload/drive/v3/files',
+	IMAGE_MIME_TYPE: 'image/jpeg',
 	// TODO: could use CRA's env variables
 	API_KEY: process.env.API_KEY,
-	// RE: https://github.com/google/google-api-javascript-client/blob/master/docs/start.md#option-2-use-gapiclientrequest
-	DISCOVERY_DOCS: 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
 	CLIENT_ID: process.env.CLIENT_ID,
 
-	// TODO: double check the scope
-	FILE_SCOPE: 'https://www.googleapis.com/auth/drive',
-	READ_ONLY_SCOPE: 'https://www.googleapis.com/auth/drive.metadata.readonly',
+	// TODO: double check the scope usage
+	GOOGLE_DRIVE_SCOPE: 'https://www.googleapis.com/auth/drive',
 
 	FOLDER_NAME: 'visage',
 	FILE_PREFIX: 'visage-',
@@ -19,7 +21,7 @@ module.exports = {
 	RESOLUTION_1: {WIDTH: 720, HEIGHT: 405},
 	RESOLUTION_2: {WIDTH: 640, HEIGHT: 480},
 	// TODO: we should have used https://github.com/google/google-api-javascript-client/blob/master/docs/cors.md instead of this proxy
-	PREFIX_URL: 'https://cors-anywhere.herokuapp.com/',
+	CORS_PREFIX_URL: 'https://cors-anywhere.herokuapp.com',
 	GIF_NAME: 'visage.gif',
 	GIF_SIZES: [
 		{WIDTH: 100, LABEL: 'Small'},

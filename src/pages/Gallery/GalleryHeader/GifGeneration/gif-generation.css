@@ -1,0 +1,13 @@
+
+.gif-generation {
+  display: flex;
+  align-items: center;
+}
+
+.gif-generation > * {
+  margin-right: 12px;
+}
+
+.gif-generation > *:last-child {
+  margin-right: 0;
+}

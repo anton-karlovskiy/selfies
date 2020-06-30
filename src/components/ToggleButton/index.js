@@ -1,22 +1,20 @@
 
-import React, { Fragment } from 'react';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
+import React from 'react';
 
-import FabWrapper from '../../hoc/FabWrapper';
+import ChevronLeftFab from './ChevronLeftFab';
+import ChevronRightFab from './ChevronRightFab';
 
-const ToggleButton = ({ isOpen, toggler }) => {
-  return (
-    <Fragment>
-      <FabWrapper color='primary' onClick={toggler}>
-        { isOpen ? (
-          <ChevronRight fontSize='large' />
-        ) : (
-          <ChevronLeft fontSize='large' />
-        ) }
-      </FabWrapper>
-    </Fragment>
-  );
-};
+const ToggleButton = ({
+  open,
+  onClick
+}) => (
+  <>
+    {open ? (
+      <ChevronRightFab onClick={onClick} />
+    ) : (
+      <ChevronLeftFab onClick={onClick} />
+    )}
+  </>
+);
 
 export default ToggleButton;

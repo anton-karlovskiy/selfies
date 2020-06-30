@@ -1,74 +1,105 @@
 
 import React, { Suspense, lazy, useState, useCallback } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import LoadingSpinner from 'components/UI/LoadingSpinner';
 import useScript from 'utils/hooks/use-script';
 import config from 'config';
 import { PAGES } from 'utils/constants/links';
+import { LOCAL_STORAGE_KEYS } from 'utils/constants';
+import { saveState, loadState } from 'utils/helpers/local-storage';
 import './App.css';
 
 const Home = lazy(() => import(/* webpackChunkName: 'home' */ 'pages/Home'));
 const Gallery = lazy(() => import(/* webpackChunkName: 'gallery' */ 'pages/Gallery'));
 
 const App = () => {
-  const [loading, error] = useScript({
-    src: 'https://apis.google.com/js/api.js',
+  const [loadingAuth2GAPI, setLoadingAuth2GAPI] = useState(true);
+  const [errorAuth2GAPI, setErrorAuth2GAPI] = useState(null);
+  const [loadingGAPI, errorGAPI] = useScript({
+    src: config.GAPI_ENDPOINT,
     checkForExisting: true,
     async: true,
     defer: true,
     onload: () => {
       console.log('[GAPI script onload] window.gapi => ', window.gapi);
-			gapiClientLoad();
+			gapiAuth2Load();
     }
   });
 
-  // TODO: loading spinner on buttons
-  console.log('[App] GAPI script loading => ', loading);
-  console.log('[App] GAPI script error => ', error);
+  // TODO: loadingGAPI spinner on buttons
+  console.log('[App] GAPI script loadingGAPI => ', loadingGAPI);
+  console.log('[App] GAPI script errorGAPI => ', errorGAPI);
+  console.log('[App] GAPI script loadingAuth2GAPI => ', loadingAuth2GAPI);
+  console.log('[App] GAPI script errorAuth2GAPI => ', errorAuth2GAPI);
   
   // TODO: double check rendering -> just two times due to the following
 	const [signedIn, setSignedIn] = useState(false);
 
-  const gapiClientLoad = () => {
+  const gapiAuth2Load = () => {
 		// TODO: cache logic by local storage to avoid unnecessary request
-		// RE: https://github.com/google/google-api-javascript-client/blob/master/docs/auth.md#the-standalone-auth-client
-		// RE: https://github.com/google/google-api-javascript-client/blob/master/docs/samples.md#authorizing-and-making-authorized-requests
+    // RE: https://github.com/google/google-api-javascript-client/blob/master/docs/auth.md#the-standalone-auth-client
+    // RE: https://github.com/google/google-api-javascript-client/blob/master/docs/cors.md#how-to-use-cors-to-access-google-apis
 		// Load the auth2 library
-		window.gapi.load('auth2', gapiInitAuth2);
+		window.gapi.load('auth2', gapiAuth2Init);
   };
   
-  const gapiInitAuth2 = () => {
+  const gapiAuth2Init = () => {
 		const gapiAuth2 = window.gapi.auth2;
 
 		gapiAuth2.init({
 			apiKey: config.API_KEY,
-			clientId: config.CLIENT_ID,
-			scope: config.READ_ONLY_SCOPE // TODO: double check the scope
+      clientId: config.CLIENT_ID,
+      scope: config.GOOGLE_DRIVE_SCOPE // TODO: double check the scope
 		}).then(() => {
-			// TODO: cache logic by local storage to avoid unnecessary request when reloading
-			const authInstance = gapiAuth2.getAuthInstance();
+      setLoadingAuth2GAPI(false);
+      
+      const authInstance = gapiAuth2.getAuthInstance();
 
 			// Listen for sign-in state changes.
-			authInstance.isSignedIn.listen(updateSigninStatus);
-
+      authInstance.isSignedIn.listen(updateSigninStatus);
+      
 			// Handle the initial sign-in state.
 			updateSigninStatus(authInstance.isSignedIn.get());
-		});
+		}).catch(error => {
+      setLoadingAuth2GAPI(false);
+      setErrorAuth2GAPI(true);
+      console.log('[App gapiAuth2Init] error => ', error);
+    });
 	};
 
 	const updateSigninStatus = newSignedIn => {
-		console.log('[App updateSigninStatus] signedIn, newSignedIn => ', signedIn, newSignedIn);
+    console.log('[App updateSigninStatus] signedIn, newSignedIn => ', signedIn, newSignedIn);
+
+    if (newSignedIn) {
+      const user = window.gapi.auth2.getAuthInstance().currentUser.get();
+      const oauthToken = user.getAuthResponse().access_token;
+      saveState({[LOCAL_STORAGE_KEYS.OAUTH_TOKEN]: oauthToken});
+    } else {
+      saveState({[LOCAL_STORAGE_KEYS.OAUTH_TOKEN]: ''});
+    }
+
     setSignedIn(newSignedIn);
 	};
 
-	const signInHandler = useCallback(() => {
-		window.gapi.auth2.getAuthInstance().signIn();
+	const signInHandler = useCallback(async () => {
+    try {
+      await window.gapi.auth2.getAuthInstance().signIn();
+    } catch (error) {
+      console.log('[App signInHandler] error => ', error);
+    }
 	}, []);
 
-	const signOutHandler = useCallback(() => {
-		window.gapi.auth2.getAuthInstance().signOut();
+	const signOutHandler = useCallback(async () => {
+    try {
+      await window.gapi.auth2.getAuthInstance().signOut();
+    } catch (error) {
+      console.log('[App signOutHandler] error => ', error);
+    }
   }, []);
+
+  const oauthToken = (loadState() || {})[LOCAL_STORAGE_KEYS.OAUTH_TOKEN];
+  console.log('[App] oauthToken => ', oauthToken);
   
   return (
     <div className='App'>
@@ -81,17 +112,32 @@ const App = () => {
               render={
                 props => (
                   <Home
+                    {...props}
+                    oauthToken={oauthToken}
                     signedIn={signedIn}
                     signIn={signInHandler}
-                    signOut={signOutHandler}
-                    {...props} />
+                    signOut={signOutHandler} />
                 )
               } />
-            {/* TODO: block unsigned routing to gallery in the router level */}
             <Route
               exact
               path={PAGES.GALLERY}
-              component={Gallery} />
+              render={
+                props => (
+                  <>
+                    {/* TODO: distinguish with access token from local storage */}
+                    {signedIn ? (
+                      <Gallery
+                        {...props}
+                        oauthToken={oauthToken}
+                        loadingAuth2GAPI={loadingAuth2GAPI}
+                        loadingGAPI={loadingGAPI} />
+                    ) : (
+                      <Redirect to={PAGES.HOME} />
+                    )}
+                  </>
+                )
+              } />
           </Switch>
         </Suspense>
       </Router>

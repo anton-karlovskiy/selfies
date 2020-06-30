@@ -26,6 +26,10 @@
   --typography-font-weight-bold: 700;
   --palette-pink-500: #e91e63;
   --palette-purple-500: #9c27b0;
+  --palette-indigo-500: #3f51b5;
+  --palette-blue-500: #2196f3;
+  --palette-pink-300: #f06292;
+  --palette-yellow-500: #ffeb3b;
 
   --palette-bg-viewport: #0dc5c1;
   --palette-action-disabled-background: rgba(0, 0, 0, 0.12);

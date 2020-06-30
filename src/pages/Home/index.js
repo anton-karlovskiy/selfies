@@ -10,6 +10,7 @@ import { PAGES } from 'utils/constants/links';
 
 const Home = ({
 	history,
+	oauthToken,
 	signedIn,
 	signIn,
 	signOut
@@ -20,7 +21,9 @@ const Home = ({
 
 	return (
 		<>
-			<CameraScreen signedIn={signedIn} />
+			<CameraScreen
+				signedIn={signedIn}
+				oauthToken={oauthToken} />
 			<Footer
 				signedIn={signedIn}
 				signIn={signIn}

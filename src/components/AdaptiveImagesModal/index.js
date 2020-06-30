@@ -1,21 +1,24 @@
 
-import React, { lazy, Fragment, Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import LoadingSpinner from 'components/UI/LoadingSpinner';
 
-const LazyAdaptiveImagesModal = lazy(() => {
+const ImagesModal = lazy(() => {
   return new Promise(resolve => {
     navigator.connection ? resolve(navigator.connection.effectiveType) : resolve(null);
   }).then(
     effectiveType => {
-      console.log('[LazyAdaptiveImagesModal] effectiveType => ', effectiveType);
-      switch(effectiveType) {
+      console.log('[ImagesModal] effectiveType => ', effectiveType);
+      switch (effectiveType) {
         case '4g':
           return import(/* webpackChunkName: 'images-modal' */ './ImagesModal');
         case '3g':
         case '2g':
         case 'slow-2g':
-          return null;
+          // ray test touch <<
+          // return null;
+          return import(/* webpackChunkName: 'images-modal' */ './ImagesModal');
+          // ray test touch >>
         default:
           return import(/* webpackChunkName: 'images-modal' */ './ImagesModal');
       }
@@ -23,17 +26,22 @@ const LazyAdaptiveImagesModal = lazy(() => {
   );
 });
 
-const AdaptiveImagesModal = ({ isOpen, ...rest }) => (
-  <Fragment>
-    {/* conditionally render for not loading chunk until modal is open */}
-    { isOpen ? (
+const AdaptiveImagesModal = ({
+  open,
+  views,
+  onClose,
+  currentIndex
+}) => (
+  <>
+    {open && (
       <Suspense fallback={<LoadingSpinner />}>
-        <LazyAdaptiveImagesModal isOpen={isOpen} { ...rest } />
+        <ImagesModal
+          views={views}
+          onClose={onClose}
+          currentIndex={currentIndex} />
       </Suspense>
-    ) : (
-      null
-    ) }
-  </Fragment>
+    )}
+  </>
 );
 
 export default AdaptiveImagesModal;
