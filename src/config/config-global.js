@@ -20,8 +20,6 @@ module.exports = {
 	// TODO: do we need them for sure? what made us set like so?
 	RESOLUTION_1: {WIDTH: 720, HEIGHT: 405},
 	RESOLUTION_2: {WIDTH: 640, HEIGHT: 480},
-	// TODO: we should have used https://github.com/google/google-api-javascript-client/blob/master/docs/cors.md instead of this proxy
-	CORS_PREFIX_URL: 'https://cors-anywhere.herokuapp.com',
 	GIF_NAME: 'visage.gif',
 	GIF_SIZES: [
 		{WIDTH: 100, LABEL: 'Small'},

@@ -1,10 +1,10 @@
 
-// TODO: handle rejected for error
-const getImageRatio = src => new Promise((resolved, rejected) => {
+const getImageRatio = src => new Promise((resolve, reject) => {
   const image = new Image();
   image.onload = function() {
-    resolved(image.width / image.height);
+    resolve(image.width / image.height);
   };
+  image.onerror = reject;
   image.src = src;
 });
 

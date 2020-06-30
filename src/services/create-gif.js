@@ -1,25 +1,37 @@
 
 import config from 'config';
 import searchFolder from 'services/search-folder';
-import createPermission from 'services/create-permission';
-import deletePermission from 'services/delete-permission';
 import saveBase64AsImageFile from 'utils/helpers/save-base64-as-image-file';
+import convertBlobToBase64 from 'utils/helpers/convert-blob-to-base64';
 
-const createGIF = async (oauthToken, imageSrcs, width, height) => {
+const createGIF = async (oauthToken, images, width, height) => {
 	const folderId = await searchFolder(config.FOLDER_NAME);
-  const permissionId = await createPermission(oauthToken, folderId);
+
+  let base64Images = [];
+  for (const image of images) {
+    try {
+      const response = await fetch(`${config.V3_GOOGLE_DRIVE_FILES_API_ENDPOINT}/${image.id}?alt=media`, {
+        headers: new Headers({
+          'Authorization': `Bearer ${oauthToken}`
+        })
+      });
+      const blob = await response.blob();
+      const base64Image = await convertBlobToBase64(blob);
+      base64Images.push(base64Image);
+    } catch (error) {
+      console.log('[createGIF] error => ', error);
+    }
+  }
   
-	const imageSrcsWithCorsPrefixed = imageSrcs.map(imageSrc => `${config.CORS_PREFIX_URL}/${imageSrc}`);
 	const options = {
-		images: imageSrcsWithCorsPrefixed.reverse(),
+    images: base64Images,
 		// TODO: double check options usage
-		// interval: .4,
-		gifWidth: width || 200,
-		gifHeight: height || width || 200
+		gifWidth: width,
+		gifHeight: height
   };
   
   console.log('[createGIF] options => ', options);
-  
+
 	const gifshot = await import('gifshot');
 	await gifshot.createGIF(options, async obj => {
 		if (!obj.error) {
@@ -29,7 +41,6 @@ const createGIF = async (oauthToken, imageSrcs, width, height) => {
 			console.log('[createGIF] GIF error obj.error => ', obj.error);
 		}
 	});
-	await deletePermission(oauthToken, folderId, permissionId);
 };
 
 export default createGIF;

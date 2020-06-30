@@ -112,13 +112,12 @@ const Gallery = ({
 		// TODO: UX for starting GIF generation
 
 		const selectedImages = images.filter((_, index) => selectedStatusList[index]);
-		const selectedImageSrcs = selectedImages.map(image => image.src);
 
-		if (selectedImageSrcs.length > 0) {
+		if (selectedImages.length > 0) {
 			// TODO: how to handle if ratio is not consistent across photos
-			const ratio = await getImageRatio(selectedImageSrcs[0]);
+			const ratio = await getImageRatio(selectedImages[0].src);
 			const height = width / ratio;
-			await createGIF(oauthToken, selectedImageSrcs, width, height);
+			await createGIF(oauthToken, selectedImages, width, height);
 		}
 
 		// TODO: UX for ending GIF generation
@@ -140,6 +139,7 @@ const Gallery = ({
 					selectedStatusList={selectedStatusList}
 					onClick={imageOnClickHandler} />
 			)}
+			{/* TODO: https://developers.google.com/drive/api/v3/manage-downloads#viewing_files_in_a_browser */}
 			<AdaptiveImagesModal
 				views={images}
 				open={imagesModalOpen}
