@@ -24,7 +24,7 @@ const Gallery = ({
 	const [allSelected, setAllSelected] = useState(false);
 	const [imagesModalOpen, setImagesModalOpen] = useState(false);
 	const [currentModalIndex, setCurrentModalIndex] = useState(null);
-	const [loading, setLoading] = useState(true);
+	const [loadingImagesFromGoogleDrive, setLoadingImagesFromGoogleDrive] = useState(true);
 
 	const getImagesFromGoogleDrive = useCallback(async (folderId = validateArg(), mimeType) => {
 		try {
@@ -51,13 +51,13 @@ const Gallery = ({
 
 			setImages(images);
 			setSelectedStatusList(new Array(images.length).fill(false));
-			setLoading(false);
+			setLoadingImagesFromGoogleDrive(false);
 		} catch (error) {
 			console.log('[Gallery getImagesFromGoogleDrive] error => ', error);
 			// TODO: force sign out if 401 response comes via service
-			setLoading(false);
+			setLoadingImagesFromGoogleDrive(false);
 		}
-	}, [setLoading, setSelectedStatusList, setImages, oauthToken]);
+	}, [setLoadingImagesFromGoogleDrive, setSelectedStatusList, setImages, oauthToken]);
 	
 	const initGalleryHandler = useCallback(async () => {
 		const folderId = await searchFolder(oauthToken, config.FOLDER_NAME);
@@ -85,7 +85,7 @@ const Gallery = ({
 
 	const toggleAllImagesHandler = useCallback(event => {
 		event.persist();
-		setSelectedStatusList(prevState => [...prevState].fill(event.target.checked));
+		setSelectedStatusList(prevState => [...prevState].fill(event.target.checked)); // for immutable
 		setAllSelected(event.target.checked);
 	}, [setSelectedStatusList, setAllSelected]);
 
@@ -130,7 +130,7 @@ const Gallery = ({
 				allSelected={allSelected}
 				toggleAllImages={toggleAllImagesHandler}
 				createGif={createGifHandler} />
-			{loadingGAPI || loading ? (
+			{loadingGAPI || loadingImagesFromGoogleDrive ? (
 				<LoadingSpinner centerViewport />
 			) : (
 				<ImageList
