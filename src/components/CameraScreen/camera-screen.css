@@ -7,4 +7,9 @@
   position: fixed;
   bottom: 90px;
   z-index: 500;
+  cursor: pointer;
+}
+
+.camera-screen.disabled-capture-button > div > #container-circles {
+  pointer-events: none;
 }

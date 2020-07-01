@@ -19,6 +19,7 @@ const resolution = getCameraResolution();
 const checkWebcam = media => !!(media?.devices || []).find(device => device.kind === 'videoinput');
 
 const CameraScreen = ({
+	loading,
 	signedIn,
 	oauthToken
 }) => {
@@ -41,7 +42,7 @@ const CameraScreen = ({
 	};
 
 	return (
-		<div className='camera-screen'>
+		<div className={`camera-screen ${loading ? 'disabled-capture-button' : ''}`}>
 			{hasWebcam ? (
 				<Camera
 					onTakePhoto={onTakePhotoHandler}

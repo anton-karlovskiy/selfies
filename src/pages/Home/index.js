@@ -23,6 +23,7 @@ const Home = ({
 	return (
 		<>
 			<CameraScreen
+				loading={loading}
 				signedIn={signedIn}
 				oauthToken={oauthToken} />
 			<Footer
