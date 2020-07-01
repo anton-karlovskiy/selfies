@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 
 import Image from './Image';
 import './image-list.css';
@@ -21,4 +21,4 @@ const ImageList = ({
   </div>
 );
 
-export default ImageList;
+export default memo(ImageList);

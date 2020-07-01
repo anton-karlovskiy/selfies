@@ -36,6 +36,8 @@
   --palette-pink-700: #c2185b;
   --palette-blue-700: #1976d2;
   --palette-green-700: #388e3c;
+  --palette-teal-500: #009688;
+  --palette-teal-700: #00796b;
   --palette-background-paper: #424242;
   --palette-action-disabled-background: rgba(255, 255, 255, 0.3);
 }

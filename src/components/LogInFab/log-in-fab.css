@@ -1,5 +1,9 @@
 
 .log-in-fab {
   background-image: url('/assets/images/person.svg');
-  background-color: var(--palette-purple-500);
+  background-color: var(--palette-teal-500);
+}
+
+.log-in-fab:hover:not(:disabled) {
+  background-color: var(--palette-teal-700); 
 }

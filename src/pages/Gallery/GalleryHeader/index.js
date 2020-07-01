@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 
 import ProductLogoTitle from 'components/UI/ProductLogoTitle';
 import GifGeneration from './GifGeneration';
@@ -25,4 +25,4 @@ const GalleryHeader = ({
   </div>
 );
 
-export default GalleryHeader;
+export default memo(GalleryHeader);

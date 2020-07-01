@@ -1,5 +1,9 @@
 
-import React, { lazy, Suspense } from 'react';
+import React, {
+  lazy,
+  Suspense,
+  memo
+} from 'react';
 
 import LoadingSpinner from 'components/UI/LoadingSpinner';
 
@@ -44,4 +48,4 @@ const AdaptiveImagesModal = ({
   </>
 );
 
-export default AdaptiveImagesModal;
+export default memo(AdaptiveImagesModal);

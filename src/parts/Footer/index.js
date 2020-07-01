@@ -7,6 +7,7 @@ import LibraryFab from 'components/LibraryFab';
 import './footer.css';
 
 const Footer = ({
+  loading,
   signedIn,
   signIn,
   signOut,
@@ -14,11 +15,15 @@ const Footer = ({
 }) => (
   <footer className='footer'>
     {signedIn ? (
-      <LogOutFab onClick={signOut} />
+      <LogOutFab
+        onClick={signOut} />
     ) : (
-      <LogInFab onClick={signIn} />
+      <LogInFab
+        loading={loading}
+        onClick={signIn} />
     )}
     <LibraryFab
+      loading={loading}
       disabled={!signedIn}
       onClick={navigateToGallery} />
   </footer>

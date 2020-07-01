@@ -31,7 +31,7 @@ const Gallery = ({
 }) => {
 	const [images, setImages] = useState([]);
 	const [gifGenerationOpen, setGifGenerationOpen] = useState(false);
-	// TODO: Get Unique Values From An Array from https://blog.bitsrc.io/10-super-useful-tricks-for-javascript-developers-f1b76691199b
+	// RE: Get Unique Values From An Array from https://blog.bitsrc.io/10-super-useful-tricks-for-javascript-developers-f1b76691199b
 	const [selectedStatusList, setSelectedStatusList] = useState([]);
 	const [allSelected, setAllSelected] = useState(false);
 	const [imagesModalOpen, setImagesModalOpen] = useState(false);

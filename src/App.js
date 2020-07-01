@@ -116,6 +116,7 @@ const App = () => {
                 props => (
                   <Home
                     {...props}
+                    loading={loadingGAPI || loadingAuth2GAPI}
                     oauthToken={oauthToken}
                     signedIn={signedIn}
                     signIn={signInHandler}

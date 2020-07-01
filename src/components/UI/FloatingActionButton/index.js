@@ -6,10 +6,13 @@ import './floating-action-button.css';
 
 const FloatingActionButton = ({
   className,
+  loading,
   ...rest
 }) => (
   <Button
     {...rest}
+    loading={loading}
+    style={{opacity: loading ? '.6' : '1'}}
     className={`floating-action-button ${className}`} />
 );
 

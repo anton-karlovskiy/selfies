@@ -10,6 +10,7 @@ import { PAGES } from 'utils/constants/links';
 
 const Home = ({
 	history,
+	loading,
 	oauthToken,
 	signedIn,
 	signIn,
@@ -25,6 +26,7 @@ const Home = ({
 				signedIn={signedIn}
 				oauthToken={oauthToken} />
 			<Footer
+				loading={loading}
 				signedIn={signedIn}
 				signIn={signIn}
 				signOut={signOut}

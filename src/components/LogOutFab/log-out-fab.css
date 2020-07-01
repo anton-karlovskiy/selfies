@@ -3,3 +3,7 @@
   background-image: url('/assets/images/person.svg');
   background-color: var(--palette-pink-500);
 }
+
+.log-out-fab:hover:not(:disabled) {
+  background-color: var(--palette-pink-700);
+}
