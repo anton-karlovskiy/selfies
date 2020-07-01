@@ -8,7 +8,8 @@ const Checkbox = ({
   checked,
   ...rest
 }) => (
-  <label className='container'>{label}
+  <label className='container'>
+    {label}
     <input
       {...rest}
       type='checkbox'

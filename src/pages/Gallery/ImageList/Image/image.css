@@ -33,7 +33,7 @@
   object-fit: contain;
 }
 
-@media screen and (min-width: 640px) {
+@media screen and (min-width: 600px) {
   .dot {
     top: 16px;
     right: 16px;

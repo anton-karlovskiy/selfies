@@ -81,14 +81,22 @@ body {
   color: var(--palette-text-primary);
   font-family: var(--typography-font-family);
   font-weight: var(--typography-font-weight-regular);
-  font-size: var(--typography-body1-font-size);
-  line-height: var(--typography-body1-line-height);
-  letter-spacing: var(--typography-body1-letter-spacing);
+  font-size: var(--typography-body2-font-size);
+  line-height: var(--typography-body2-line-height);
+  letter-spacing: var(--typography-body2-letter-spacing);
   margin: 0;
   text-align: center;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--palette-background-paper);
+}
+
+@media screen and (min-width: 600px) {
+  body {
+    font-size: var(--typography-body1-font-size);
+    line-height: var(--typography-body1-line-height);
+    letter-spacing: var(--typography-body1-letter-spacing);  
+  }
 }
 
 div#root {

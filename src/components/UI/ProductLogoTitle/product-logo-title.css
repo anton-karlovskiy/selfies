@@ -38,6 +38,7 @@
 
 .product-title {
   color: var(--palette-text-secondary);
+  display: none;
   white-space: nowrap;
 }
 
@@ -45,4 +46,10 @@
 .product-title:focus {
   color: var(--palette-text-primary);
   transition: color .2s;
+}
+
+@media screen and (min-width: 600px) {
+  .product-title {
+    display: block;
+  }
 }

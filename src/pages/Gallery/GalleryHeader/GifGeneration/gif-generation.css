@@ -11,3 +11,9 @@
 .gif-generation > *:last-child {
   margin-right: 0;
 }
+
+@media screen and (min-width: 600px) {
+  .gif-generation > * {
+    margin-right: 14px;
+  }
+}
