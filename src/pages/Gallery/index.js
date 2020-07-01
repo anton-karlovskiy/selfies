@@ -1,21 +1,33 @@
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, {
+	useState,
+	useEffect,
+	useCallback,
+	useMemo,
+	memo
+} from 'react';
 
 import GalleryHeader from './GalleryHeader';
 import ImageList from './ImageList';
 import LoadingSpinner from 'components/UI/LoadingSpinner';
-import AdaptiveImagesModal from '../../components/AdaptiveImagesModal';
+import AdaptiveImagesModal from 'components/AdaptiveImagesModal';
 import config from 'config';
 import createGIF from 'services/create-gif';
 import searchFolder from 'services/search-folder';
 import serializeToQueryParam from 'utils/helpers/serialize-to-query-param';
 import validateArg from 'utils/helpers/validate-arg';
 import getImageRatio from 'utils/helpers/get-image-ratio';
+import { PAGES } from 'utils/constants/links';
 
 const Gallery = ({
 	oauthToken,
 	loadingGAPI,
-	loadingAuth2GAPI
+	loadingAuth2GAPI,
+	errorGAPI,
+	errorAuth2GAPI,
+	history,
+	signOut,
+	getRefreshedOauthToken
 }) => {
 	const [images, setImages] = useState([]);
 	const [gifGenerationOpen, setGifGenerationOpen] = useState(false);
@@ -25,8 +37,9 @@ const Gallery = ({
 	const [imagesModalOpen, setImagesModalOpen] = useState(false);
 	const [currentModalIndex, setCurrentModalIndex] = useState(null);
 	const [loadingImagesFromGoogleDrive, setLoadingImagesFromGoogleDrive] = useState(true);
+	const [errorImagesFromGoogleDrive, setErrorImagesFromGoogleDrive] = useState(null);
 
-	const getImagesFromGoogleDrive = useCallback(async (folderId = validateArg(), mimeType) => {
+	const getImagesFromGoogleDrive = async (folderId = validateArg(), mimeType) => {
 		try {
 			const queryObject = {
 				q: `mimeType="${mimeType}" and "${folderId}" in parents and fullText contains "${config.FILE_PREFIX}" and trashed = false`,
@@ -42,6 +55,10 @@ const Gallery = ({
 			});
 			const json = await response.json();
 
+			if (json.error) {
+				throw new Error(json.error.message);
+			}
+
 			const images = json.files.map(file => ({
 				id: file.id,
 				src: file.webContentLink,
@@ -53,23 +70,42 @@ const Gallery = ({
 			setSelectedStatusList(new Array(images.length).fill(false));
 			setLoadingImagesFromGoogleDrive(false);
 		} catch (error) {
-			console.log('[Gallery getImagesFromGoogleDrive] error => ', error);
-			// TODO: force sign out if 401 response comes via service
+			console.log('[Gallery getImagesFromGoogleDrive] error => ', error.name, error.message);
+			setErrorImagesFromGoogleDrive(error.message);
 			setLoadingImagesFromGoogleDrive(false);
 		}
-	}, [setLoadingImagesFromGoogleDrive, setSelectedStatusList, setImages, oauthToken]);
+	};
 	
-	const initGalleryHandler = useCallback(async () => {
+	const initGalleryHandler = async oauthToken => {
 		const folderId = await searchFolder(oauthToken, config.FOLDER_NAME);
 		getImagesFromGoogleDrive(folderId, config.IMAGE_MIME_TYPE);
-	}, [getImagesFromGoogleDrive, oauthToken]);
+	};
 
 	useEffect(() => {
 		if (!loadingGAPI && !loadingAuth2GAPI) {
-			console.log('[Gallery useEffect] init gallery');
-			initGalleryHandler();
+			if (errorGAPI === null && errorAuth2GAPI === null) {
+				console.log('[Gallery useEffect] init gallery');
+				initGalleryHandler(oauthToken);
+			} else {
+				console.log('[Gallery useEffect] something went wrong errorGAPI, errorAuth2GAPI => ', errorGAPI, errorAuth2GAPI);
+			}
 		}
-	}, [loadingGAPI, loadingAuth2GAPI, initGalleryHandler]);
+	}, [loadingGAPI, loadingAuth2GAPI, errorGAPI, errorAuth2GAPI]);
+
+	useEffect(() => {
+		// TODO: hardcoded
+		if (errorImagesFromGoogleDrive === 'Invalid Credentials') {
+			try {
+				const refreshedOauthToken = getRefreshedOauthToken();
+				console.log('[Gallery useEffect Invalid Credentials] refreshedOauthToken => ', refreshedOauthToken);
+				initGalleryHandler(refreshedOauthToken);
+			} catch (error) {
+				console.log('[Gallery useEffect Invalid Credentials] error => ', error);
+				signOut();
+				history.replace(PAGES.HOME);
+			}
+		}
+	}, [errorImagesFromGoogleDrive]);
 
 	const toggleGifGenerationHandler = useCallback(() => {
 		setGifGenerationOpen(prevState => !prevState);
@@ -147,4 +183,4 @@ const Gallery = ({
 	);
 };
 
-export default Gallery;
+export default memo(Gallery);

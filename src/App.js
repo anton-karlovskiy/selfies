@@ -7,7 +7,9 @@ import useScript from 'utils/hooks/use-script';
 import config from 'config';
 import { PAGES } from 'utils/constants/links';
 import { LOCAL_STORAGE_KEYS } from 'utils/constants';
-import { saveState, loadState } from 'utils/helpers/local-storage';
+import { loadState } from 'utils/helpers/local-storage';
+import getRefreshedOauthToken from 'services/get-refreshed-oauth-token';
+import eraseOauthToken from 'services/erase-oauth-token';
 import './App.css';
 
 const Home = lazy(() => import(/* webpackChunkName: 'home' */ 'pages/Home'));
@@ -24,6 +26,9 @@ const App = () => {
     onload: () => {
       console.log('[GAPI script onload] window.gapi => ', window.gapi);
 			gapiAuth2Load();
+    },
+    onerror: () => {
+      setLoadingAuth2GAPI(false);
     }
   });
 
@@ -63,7 +68,7 @@ const App = () => {
 			updateSigninStatus(authInstance.isSignedIn.get());
 		}).catch(error => {
       setLoadingAuth2GAPI(false);
-      setErrorAuth2GAPI(true);
+      setErrorAuth2GAPI(error);
       console.log('[App gapiAuth2Init] error => ', error);
     });
 	};
@@ -72,11 +77,9 @@ const App = () => {
     console.log('[App updateSigninStatus] signedIn, newSignedIn => ', signedIn, newSignedIn);
 
     if (newSignedIn) {
-      const user = window.gapi.auth2.getAuthInstance().currentUser.get();
-      const oauthToken = user.getAuthResponse().access_token;
-      saveState({[LOCAL_STORAGE_KEYS.OAUTH_TOKEN]: oauthToken});
+      getRefreshedOauthToken();
     } else {
-      saveState({[LOCAL_STORAGE_KEYS.OAUTH_TOKEN]: ''});
+      eraseOauthToken();
     }
 
     setSignedIn(newSignedIn);
@@ -125,13 +128,16 @@ const App = () => {
               render={
                 props => (
                   <>
-                    {/* TODO: distinguish with access token from local storage */}
-                    {signedIn ? (
+                    {oauthToken ? (
                       <Gallery
                         {...props}
                         oauthToken={oauthToken}
+                        loadingGAPI={loadingGAPI}
                         loadingAuth2GAPI={loadingAuth2GAPI}
-                        loadingGAPI={loadingGAPI} />
+                        errorGAPI={errorGAPI}
+                        errorAuth2GAPI={errorAuth2GAPI}
+                        signOut={signOutHandler}
+                        getRefreshedOauthToken={getRefreshedOauthToken} />
                     ) : (
                       <Redirect to={PAGES.HOME} />
                     )}
