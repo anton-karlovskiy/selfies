@@ -1,0 +1,8 @@
+
+.gif-toggle-button {
+  background-color: var(--palette-green-500);
+}
+
+.gif-toggle-button:hover:not(:disabled) {
+  background-color: var(--palette-green-700);
+}

@@ -3,6 +3,7 @@ import React from 'react';
 
 import ChevronLeftFab from './ChevronLeftFab';
 import ChevronRightFab from './ChevronRightFab';
+import './gif-toggle-button.css';
 
 const GifToggleButton = ({
   open,
@@ -10,9 +11,13 @@ const GifToggleButton = ({
 }) => (
   <>
     {open ? (
-      <ChevronRightFab onClick={onClick} />
+      <ChevronRightFab
+        className='gif-toggle-button'
+        onClick={onClick} />
     ) : (
-      <ChevronLeftFab onClick={onClick} />
+      <ChevronLeftFab
+        className='gif-toggle-button'
+        onClick={onClick} />
     )}
   </>
 );

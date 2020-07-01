@@ -1,13 +1,14 @@
 
 import React from 'react';
 
+import Button from 'components/UI/Button';
 import './floating-action-button.css';
 
 const FloatingActionButton = ({
   className,
   ...rest
 }) => (
-  <button
+  <Button
     {...rest}
     className={`floating-action-button ${className}`} />
 );

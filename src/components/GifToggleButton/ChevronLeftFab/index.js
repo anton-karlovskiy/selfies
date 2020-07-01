@@ -4,10 +4,13 @@ import React from 'react';
 import FloatingActionButton from 'components/UI/FloatingActionButton';
 import './chevron-left-fab.css';
 
-const ChevronLeftFab = props => (
+const ChevronLeftFab = ({
+  className,
+  ...rest
+}) => (
   <FloatingActionButton
-    {...props}
-    className='chevron-left-fab' />
+    {...rest}
+    className={`chevron-left-fab ${className}`} />
 );
 
 export default ChevronLeftFab;

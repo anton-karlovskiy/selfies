@@ -30,6 +30,9 @@
   --palette-blue-500: #2196f3;
   --palette-pink-300: #f06292;
   --palette-yellow-500: #ffeb3b;
+  --palette-pink-700: #c2185b;
+  --palette-blue-700: #1976d2;
+  --palette-green-700: #388e3c;
 
   --palette-bg-viewport: #0dc5c1;
   --palette-action-disabled-background: rgba(0, 0, 0, 0.12);
@@ -99,28 +102,6 @@ p {
   margin: 0 auto 1em auto;
   text-align: justify;
 }
-
-/* TODO: block for now */
-/* button {
-  color: var(--palette-text-primary);
-  cursor: pointer;
-  outline: 0;
-  border: 0;
-  border-radius: 2px;
-  height: 36px;
-  user-select: none;
-  transition: background-color .2s, box-shadow .2s;
-  
-  min-width: 64px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  font-size: var(--typography-button-font-size);
-  letter-spacing: var(--typography-button-letter-spacing);
-  font-weight: var(--typography-font-weight-bold);
-  text-transform: uppercase;
-} */
 
 .font-weight-bold {
   font-weight: var(--typography-font-weight-bold);
