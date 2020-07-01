@@ -7,6 +7,7 @@ import GifToggleButton from 'components/GifToggleButton';
 import './gif-generation.css';
 
 const GifGeneration = ({
+  gifButtonDisabled,
   open,
   toggle,
   toggleAllImages,
@@ -32,6 +33,7 @@ const GifGeneration = ({
             checked={allSelected}
             onChange={toggleAllImages} />
           <GifDropdown
+            disabled={gifButtonDisabled}
             loading={loadingGif}
             openLoadingGif={openLoadingGifHandler}
             closeLoadingGif={closeLoadingGifHandler}

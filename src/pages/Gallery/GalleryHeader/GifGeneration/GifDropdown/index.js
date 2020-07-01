@@ -5,8 +5,9 @@ import Dropdown from 'components/UI/Dropdown';
 import config from 'config';
 
 const GifDropdown = ({
-  createGif,
+  disabled,
   loading,
+  createGif,
   openLoadingGif,
   closeLoadingGif
 }) => {
@@ -22,6 +23,7 @@ const GifDropdown = ({
 
   return (
     <Dropdown
+      disabled={disabled}
       loading={loading}
       listItems={listItems} />
   );

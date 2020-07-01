@@ -6,6 +6,7 @@ import GifGeneration from './GifGeneration';
 import './gallery-header.css';
 
 const GalleryHeader = ({
+  gifButtonDisabled,
   gifGenerationOpen,
   toggleGifGeneration,
   toggleAllImages,
@@ -15,6 +16,7 @@ const GalleryHeader = ({
   <div className='gallery-header'>
     <ProductLogoTitle />
     <GifGeneration
+      gifButtonDisabled={gifButtonDisabled}
       open={gifGenerationOpen}
       toggle={toggleGifGeneration}
       toggleAllImages={toggleAllImages}

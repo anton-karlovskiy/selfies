@@ -7,7 +7,8 @@ import './dropdown.css';
 
 const Dropdown = ({
   listItems,
-  loading
+  loading,
+  disabled
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -22,6 +23,7 @@ const Dropdown = ({
   return (
     <div className='dropdown'>
       <DropButton
+        disabled={disabled}
         loading={loading}
         className='mui-box-shadow mui-border-radius'
         onClick={toggleDropdownContentHandler}>

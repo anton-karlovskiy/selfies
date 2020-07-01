@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 
 import GalleryHeader from './GalleryHeader';
 import ImageList from './ImageList';
@@ -85,7 +85,7 @@ const Gallery = ({
 
 	const toggleAllImagesHandler = useCallback(event => {
 		event.persist();
-		setSelectedStatusList(prevState => prevState.fill(event.target.checked));
+		setSelectedStatusList(prevState => [...prevState].fill(event.target.checked));
 		setAllSelected(event.target.checked);
 	}, [setSelectedStatusList, setAllSelected]);
 
@@ -107,20 +107,24 @@ const Gallery = ({
 		}
 	}, [gifGenerationOpen, toggleImage, openImagesModal]);
 
-	const createGifHandler = async (width, filename) => {
+	const createGifHandler = useCallback(async (width, filename) => {
 		const selectedImages = images.filter((_, index) => selectedStatusList[index]);
-
+		
 		if (selectedImages.length > 0) {
 			// TODO: how to handle if ratio is not consistent across photos
 			const ratio = await getImageRatio(selectedImages[0].src);
 			const height = width / ratio;
 			await createGIF(oauthToken, selectedImages, width, height, filename);
 		}
-	};
+	}, [images, selectedStatusList, oauthToken]); // TODO: shallow compare
+
+	const selectedImagesCount = useMemo(() => (selectedStatusList.filter(selectedStatusListItem => selectedStatusListItem) || []).length, [selectedStatusList]);
+	const gifButtonDisabled = selectedImagesCount === 0;
 
 	return (
 		<>
 			<GalleryHeader
+				gifButtonDisabled={gifButtonDisabled}
 				gifGenerationOpen={gifGenerationOpen}
 				toggleGifGeneration={toggleGifGenerationHandler}
 				allSelected={allSelected}
