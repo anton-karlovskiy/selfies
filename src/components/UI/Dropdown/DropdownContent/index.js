@@ -7,14 +7,14 @@ import './dropdown-content.css';
 const DropdownContent = ({
   className,
   listItems,
-  close
+  closeDropdownContent
 }) => (
   <ul className={`dropdown-content ${className}`}>
     {listItems.map(listItem => (
       <DropdownContentItem
         key={listItem.id}
         label={listItem.label}
-        close={close}
+        closeDropdownContent={closeDropdownContent}
         onClick={listItem.onClick} />
     ))}
   </ul>

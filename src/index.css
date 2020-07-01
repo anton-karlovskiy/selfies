@@ -3,27 +3,30 @@
   --palette-bg-default: #303030;
   --palette-bg-paper: #424242;
   --palette-common-black: #000;
-  --palette-common-white: #fff;
-  --palette-text-primary: #fff;
+  --palette-common-white: #FFF;
+  --palette-text-primary: #FFF;
   --palette-text-secondary: rgba(255, 255, 255, 0.7);
   --palette-grey-500: #212121;
   --palette-grey-300: ##e0e0e0;
   --palette-grey-900: #171717;
   --shadows-4: 0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12);
   --typography-font-family: 'Roboto', 'Helvetica','Arial', sans-serif;
-  --typography-body1-font-size: 16px;
+  --typography-body1-font-size: 1rem;
   --typography-body1-line-height: 1.5;
   --typography-body1-letter-spacing: 0.00938em;
-  --typography-body2-font-size: 14px;
+  --typography-body2-font-size: 0.875rem;
   --typography-body2-line-height: 1.43;
   --typography-body2-letter-spacing: 0.01071em;
-  --typography-button-font-size: 14px;
+  --typography-button-font-size: 0.875rem;
   --typography-button-line-height: 1.75;
   --typography-button-letter-spacing: 0.02857em;
   --typography-font-weight-light: 300;
   --typography-font-weight-regular: 400;
   --typography-font-weight-medium: 500;
   --typography-font-weight-bold: 700;
+  --typography-h5-font-size: 1.5rem;
+  --typography-h5-line-height: 1.334;
+  --typography-h5-letter-spacing: 0em;
   --palette-pink-500: #e91e63;
   --palette-purple-500: #9c27b0;
   --palette-green-500: #4caf50;
@@ -33,9 +36,8 @@
   --palette-pink-700: #c2185b;
   --palette-blue-700: #1976d2;
   --palette-green-700: #388e3c;
-
-  --palette-bg-viewport: #0dc5c1;
-  --palette-action-disabled-background: rgba(0, 0, 0, 0.12);
+  --palette-background-paper: #424242;
+  --palette-action-disabled-background: rgba(255, 255, 255, 0.3);
 }
 
 * {
@@ -76,6 +78,7 @@ body {
   align-items: center;
   color: var(--palette-text-primary);
   font-family: var(--typography-font-family);
+  font-weight: var(--typography-font-weight-regular);
   font-size: var(--typography-body1-font-size);
   line-height: var(--typography-body1-line-height);
   letter-spacing: var(--typography-body1-letter-spacing);
@@ -83,7 +86,7 @@ body {
   text-align: center;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--palette-bg-viewport);
+  background-color: var(--palette-background-paper);
 }
 
 div#root {
@@ -104,10 +107,38 @@ p {
 }
 
 .font-weight-bold {
-  font-weight: var(--typography-font-weight-bold);
+  font-weight: var(--typography-font-weight-bold) !important;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.typography-body1 {
+  font-weight: var(--typography-font-weight-regular);
+  font-size: var(--typography-body1-font-size);
+  line-height: var(--typography-body1-line-height);
+  letter-spacing: var(--typography-body1-letter-spacing);
+}
+
+.typography-body2 {
+  font-weight: var(--typography-font-weight-regular);
+  font-size: var(--typography-body1-font-size);
+  line-height: var(--typography-body1-line-height);
+  letter-spacing: var(--typography-body1-letter-spacing);
+}
+
+.typography-button {
+  font-weight: var(--typography-font-weight-medium);
+  font-size: var(--typography-button-font-size);
+  line-height: var(--typography-button-line-height);
+  letter-spacing: var(--typography-button-letter-spacing);
+}
+
+.typography-h5 {
+  font-weight: var(--typography-font-weight-regular);
+  font-size: var(--typography-h5-font-size);
+  line-height: var(--typography-h5-line-height);
+  letter-spacing: var(--typography-h5-letter-spacing);
 }

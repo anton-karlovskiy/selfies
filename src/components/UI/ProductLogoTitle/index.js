@@ -36,7 +36,7 @@ const ProductLogoTitle = () => (
     </Link>
     <Link
       to={PAGES.HOME}
-      className='product-title'
+      className='product-title typography-h5'
       data-label='Upper Header'>
       {config.APP_NAME}
     </Link>

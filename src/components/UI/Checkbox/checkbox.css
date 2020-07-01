@@ -5,7 +5,6 @@
   position: relative;
   padding-left: 35px;
   cursor: pointer;
-  font-size: 18px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -24,21 +23,27 @@
 /* Create a custom checkbox */
 .checkmark {
   position: absolute;
-  top: 0;
+  top: 50%;
+  transform: translate(0, -50%);
   left: 0;
   height: 25px;
   width: 25px;
-  background-color: #eee;
+  background-color: #eee; /* TODO: hardcoded */
 }
 
 /* On mouse-over, add a grey background color */
 .container:hover input ~ .checkmark {
-  background-color: #ccc;
+  background-color: #ccc; /* TODO: hardcoded */
 }
 
 /* When the checkbox is checked, add a blue background */
 .container input:checked ~ .checkmark {
   background-color: var(--palette-blue-500);
+}
+
+/* When the checkbox is disabled, add a disabled background */
+.container input:disabled + .checkmark {
+  background-color: var(--palette-action-disabled-background);
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */

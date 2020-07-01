@@ -15,9 +15,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
 
-  font-size: var(--typography-button-font-size);
-  letter-spacing: var(--typography-button-letter-spacing);
-  font-weight: var(--typography-font-weight-bold);
   text-transform: uppercase;
 }
 

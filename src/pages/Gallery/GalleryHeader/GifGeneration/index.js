@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 
 import SelectAllCheckbox from './SelectAllCheckbox';
 import GifDropdown from './GifDropdown';
@@ -12,20 +12,38 @@ const GifGeneration = ({
   toggleAllImages,
   allSelected,
   createGif
-}) => (
-  <div className='gif-generation'>
-    {open && (
-      <>
-        <SelectAllCheckbox
-          checked={allSelected}
-          onChange={toggleAllImages} />
-        <GifDropdown createGif={createGif} />
-      </>
-    )}
-    <GifToggleButton
-      open={open}
-      onClick={toggle} />
-  </div>
-);
+}) => {
+  const [loadingGif, setLoadingGif] = useState(false);
+
+  const openLoadingGifHandler = useCallback(() => {
+    setLoadingGif(true);
+  }, [setLoadingGif]);
+
+  const closeLoadingGifHandler = useCallback(() => {
+    setLoadingGif(false);
+  }, [setLoadingGif]);
+
+  return (
+    <div className='gif-generation'>
+      {open && (
+        <>
+          <SelectAllCheckbox
+            disabled={loadingGif}
+            checked={allSelected}
+            onChange={toggleAllImages} />
+          <GifDropdown
+            loading={loadingGif}
+            openLoadingGif={openLoadingGifHandler}
+            closeLoadingGif={closeLoadingGifHandler}
+            createGif={createGif} />
+        </>
+      )}
+      <GifToggleButton
+        disabled={loadingGif}
+        open={open}
+        onClick={toggle} />
+    </div>
+  );
+};
 
 export default GifGeneration;

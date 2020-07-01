@@ -13,7 +13,7 @@ const Button = ({
 }) => (
   <button
     {...rest}
-    className={`button ${className}`}
+    className={`button font-weight-bold typography-button ${className}`}
     disabled={disabled || loading}>
     {loading ? (
     <LoadingSpinner

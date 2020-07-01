@@ -7,17 +7,17 @@ import './gif-toggle-button.css';
 
 const GifToggleButton = ({
   open,
-  onClick
+  ...rest
 }) => (
   <>
     {open ? (
       <ChevronRightFab
-        className='gif-toggle-button'
-        onClick={onClick} />
+        {...rest}
+        className='gif-toggle-button' />
     ) : (
       <ChevronLeftFab
-        className='gif-toggle-button'
-        onClick={onClick} />
+        {...rest}
+        className='gif-toggle-button' />
     )}
   </>
 );

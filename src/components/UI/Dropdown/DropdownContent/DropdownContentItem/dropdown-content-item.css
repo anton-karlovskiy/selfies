@@ -7,13 +7,12 @@
   cursor: pointer;
   outline: 0;
   /* mui styling */
-  color: rgba(0, 0, 0, 0.87);
-  font-size: 1rem;
+  color: rgba(0, 0, 0, 0.87);  /* TODO: hardcoded */
   padding: 6px 16px;
   text-align: left;
 }
 
 .dropdown-content-item:hover {
   /* mui styling */
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: rgba(0, 0, 0, 0.04);  /* TODO: hardcoded */
 }

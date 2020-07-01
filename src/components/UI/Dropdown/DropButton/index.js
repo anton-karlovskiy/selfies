@@ -7,9 +7,11 @@ import './drop-button.css';
 const DropButton = ({
   className,
   children,
-  onClick
+  onClick,
+  ...rest
 }) => (
   <Button
+    {...rest}
     onClick={onClick}
     className={`drop-button ${className}`}>
     {children}

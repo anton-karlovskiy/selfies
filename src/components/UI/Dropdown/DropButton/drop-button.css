@@ -3,6 +3,6 @@
   background-color: var(--palette-blue-500);
 }
 
-.drop-button:hover, .drop-button:focus {
+.drop-button:hover:not(:disabled), .drop-button:focus:not(:disabled) {
   background-color: var(--palette-blue-700);
 }

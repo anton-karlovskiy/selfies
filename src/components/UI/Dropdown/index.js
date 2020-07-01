@@ -5,29 +5,33 @@ import DropButton from './DropButton';
 import DropdownContent from './DropdownContent';
 import './dropdown.css';
 
-const Dropdown = ({ listItems }) => {
+const Dropdown = ({
+  listItems,
+  loading
+}) => {
   const [open, setOpen] = useState(false);
 
-  const openHandler = () => {
+  const toggleDropdownContentHandler = () => {
     setOpen(prevState => !prevState);
   };
 
-  const closeHandler = () => {
+  const closeDropdownContentHandler = () => {
     setOpen(false);
   };
 
   return (
     <div className='dropdown'>
       <DropButton
+        loading={loading}
         className='mui-box-shadow mui-border-radius'
-        onClick={openHandler}>
+        onClick={toggleDropdownContentHandler}>
         GIF
       </DropButton>
       {/* TODO: click away listener needed */}
       <DropdownContent
         className={open ? 'show' : ''}
         listItems={listItems}
-        close={closeHandler} />
+        closeDropdownContent={closeDropdownContentHandler} />
     </div>
   );
 };

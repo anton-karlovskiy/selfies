@@ -6,11 +6,11 @@ import './dropdown-content-item.css';
 const DropdownContentItem = ({
   label,
   onClick,
-  close
+  closeDropdownContent
 }) => {
   const onClickHandler = () => {
     onClick();
-    close();
+    closeDropdownContent();
   };
   
   return (
