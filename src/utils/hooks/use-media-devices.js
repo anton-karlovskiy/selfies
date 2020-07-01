@@ -2,9 +2,7 @@
 // MEMO: inspired by https://github.com/streamich/react-use/blob/master/docs/useMediaDevices.md
 import { useEffect, useState } from 'react';
 
-export const on = (obj, ...args) => obj.addEventListener(...args);
-
-export const off = (obj, ...args) => obj.removeEventListener(...args);
+import { off, on } from './util';
 
 const noop = () => {};
 

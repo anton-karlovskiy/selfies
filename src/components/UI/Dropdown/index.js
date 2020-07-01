@@ -1,8 +1,9 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import DropButton from './DropButton';
 import DropdownContent from './DropdownContent';
+import useClickAway from 'utils/hooks/use-click-away';
 import './dropdown.css';
 
 const Dropdown = ({
@@ -11,6 +12,11 @@ const Dropdown = ({
   disabled
 }) => {
   const [open, setOpen] = useState(false);
+
+  const ref = useRef(null);
+  useClickAway(ref, () => {
+    closeDropdownContentHandler();
+  });
 
   const toggleDropdownContentHandler = () => {
     setOpen(prevState => !prevState);
@@ -21,7 +27,9 @@ const Dropdown = ({
   };
 
   return (
-    <div className='dropdown'>
+    <div
+      ref={ref}
+      className='dropdown'>
       <DropButton
         disabled={disabled}
         loading={loading}
