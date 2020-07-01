@@ -107,19 +107,15 @@ const Gallery = ({
 		}
 	}, [gifGenerationOpen, toggleImage, openImagesModal]);
 
-	const createGifHandler = async width => {
-		// TODO: UX for starting GIF generation
-
+	const createGifHandler = async (width, filename) => {
 		const selectedImages = images.filter((_, index) => selectedStatusList[index]);
 
 		if (selectedImages.length > 0) {
 			// TODO: how to handle if ratio is not consistent across photos
 			const ratio = await getImageRatio(selectedImages[0].src);
 			const height = width / ratio;
-			await createGIF(oauthToken, selectedImages, width, height);
+			await createGIF(oauthToken, selectedImages, width, height, filename);
 		}
-
-		// TODO: UX for ending GIF generation
 	};
 
 	return (

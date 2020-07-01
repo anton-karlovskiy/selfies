@@ -20,7 +20,7 @@ module.exports = {
 	// TODO: do we need them for sure? what made us set like so?
 	RESOLUTION_1: {WIDTH: 720, HEIGHT: 405},
 	RESOLUTION_2: {WIDTH: 640, HEIGHT: 480},
-	GIF_NAME: 'visage.gif',
+	GIF_NAME_PREFIX: 'visage',
 	GIF_SIZES: [
 		{WIDTH: 100, LABEL: 'Small'},
 		{WIDTH: 200, LABEL: 'Medium'},

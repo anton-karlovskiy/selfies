@@ -3,7 +3,7 @@ import config from 'config';
 import saveBase64AsImageFile from 'utils/helpers/save-base64-as-image-file';
 import convertBlobToBase64 from 'utils/helpers/convert-blob-to-base64';
 
-const createGIF = async (oauthToken, images, width, height) => {
+const createGIF = async (oauthToken, images, width, height, filename) => {
   let base64Images = [];
   for (const image of images) {
     try {
@@ -32,8 +32,8 @@ const createGIF = async (oauthToken, images, width, height) => {
 	const gifshot = await import('gifshot');
 	await gifshot.createGIF(options, async obj => {
 		if (!obj.error) {
-			console.log('[createGIF] GIF successful');
-			saveBase64AsImageFile(obj.image, config.GIF_NAME);
+      console.log('[createGIF] GIF successful');
+      saveBase64AsImageFile(obj.image, filename);
 		} else {
 			console.log('[createGIF] GIF error obj.error => ', obj.error);
 		}
