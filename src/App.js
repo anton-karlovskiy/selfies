@@ -32,7 +32,6 @@ const App = () => {
     }
   });
 
-  // TODO: loadingGAPI spinner on buttons
   console.log('[App] GAPI script loadingGAPI => ', loadingGAPI);
   console.log('[App] GAPI script errorGAPI => ', errorGAPI);
   console.log('[App] GAPI script loadingAuth2GAPI => ', loadingAuth2GAPI);
@@ -42,7 +41,6 @@ const App = () => {
 	const [signedIn, setSignedIn] = useState(false);
 
   const gapiAuth2Load = () => {
-		// TODO: cache logic by local storage to avoid unnecessary request
     // RE: https://github.com/google/google-api-javascript-client/blob/master/docs/auth.md#the-standalone-auth-client
     // RE: https://github.com/google/google-api-javascript-client/blob/master/docs/cors.md#how-to-use-cors-to-access-google-apis
 		// Load the auth2 library

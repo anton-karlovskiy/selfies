@@ -8,7 +8,7 @@ import serializeToQueryParam from 'utils/helpers/serialize-to-query-param';
 const searchFolder = async (oauthToken, folderName) => {
   let folderId;
   try {
-    // TODO: user might remove the folder without clearing local storage
+    // TODO: user might remove the folder without clearing local storage so we can cache it via workbox using proper cache strategy
     folderId = (loadState() || {})[LOCAL_STORAGE_KEYS.FOLDER_ID];
     if (folderId) {
       console.log('[searchFolder] folderId from local storage => ', folderId);
@@ -32,7 +32,7 @@ const searchFolder = async (oauthToken, folderName) => {
     const files = json.files;
 		if (files?.length > 0) {
       folderId = files[0].id;
-      // TODO: user might remove the folder without clearing local storage
+      // TODO: user might remove the folder without clearing local storage so we can cache it via workbox using proper cache strategy
       saveState({[LOCAL_STORAGE_KEYS.FOLDER_ID]: folderId});
 		}
 	} catch (error) {

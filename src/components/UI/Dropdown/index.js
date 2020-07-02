@@ -37,7 +37,6 @@ const Dropdown = ({
         onClick={toggleDropdownContentHandler}>
         GIF
       </DropButton>
-      {/* TODO: click away listener needed */}
       <DropdownContent
         className={open ? 'show' : ''}
         listItems={listItems}

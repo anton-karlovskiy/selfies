@@ -1,5 +1,5 @@
 
-// TODO: not used but keep it
+// MEMO: not used but keep it
 // MEMO: inspired by https://stackoverflow.com/questions/30047056/is-it-possible-to-check-if-the-user-has-a-camera-and-microphone-and-if-the-permi/30047627
 import { useState } from 'react';
 

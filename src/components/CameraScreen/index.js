@@ -33,7 +33,6 @@ const CameraScreen = ({
 			return;
 		}
 	
-		// TODO: we could combine this logic into one
 		let folderId = await searchFolder(oauthToken, config.FOLDER_NAME);
 		if (!folderId) {
 			folderId = await createFolder(oauthToken, config.FOLDER_NAME);

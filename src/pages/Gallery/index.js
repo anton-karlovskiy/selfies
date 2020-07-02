@@ -90,6 +90,7 @@ const Gallery = ({
 				console.log('[Gallery useEffect] something went wrong errorGAPI, errorAuth2GAPI => ', errorGAPI, errorAuth2GAPI);
 			}
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [loadingGAPI, loadingAuth2GAPI, errorGAPI, errorAuth2GAPI]);
 
 	useEffect(() => {
@@ -105,6 +106,7 @@ const Gallery = ({
 				history.replace(PAGES.HOME);
 			}
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [errorImagesFromGoogleDrive]);
 
 	const toggleGifGenerationHandler = useCallback(() => {
