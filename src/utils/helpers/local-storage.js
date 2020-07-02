@@ -1,5 +1,5 @@
 
-const STORAGE_KEY = 'visage';
+const STORAGE_KEY = 'selfies';
 
 const saveState = state => {
   try {

@@ -1,6 +1,6 @@
 {
-  "short_name": "Visage",
-  "name": "Visage",
+  "short_name": "Selfies",
+  "name": "Selfies",
   "icons": [
     {
       "src": "favicon.ico",
@@ -54,7 +54,7 @@
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff",
-  "description": "Visage description",
+  "description": "Take a selfie everyday and generate an animated GIF of previous selfies",
   "orientation": "any",
   "dir": "ltr",
   "lang": "en-US"
