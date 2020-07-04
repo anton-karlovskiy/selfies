@@ -9,8 +9,8 @@ module.exports = {
 	API_KEY: process.env.API_KEY,
 	CLIENT_ID: process.env.CLIENT_ID,
 
-	// TODO: double check the scope usage
-	GOOGLE_DRIVE_SCOPE: 'https://www.googleapis.com/auth/drive',
+	// RE: https://developers.google.com/drive/api/v3/about-auth
+	GOOGLE_DRIVE_SCOPE: 'https://www.googleapis.com/auth/drive.file',
 
 	FOLDER_NAME: 'selfies',
 	FILE_PREFIX: 'selfie-',
