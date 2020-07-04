@@ -21,6 +21,9 @@
 
 .image {
   margin: 2px;
+  /* ray test touch < */
+  padding: 2px;
+  /* ray test touch > */
   width: 162px;
   height: 162px;
   display: flex;
@@ -29,9 +32,15 @@
   background-color: var(--palette-pink-300);
 }
 
+/* ray test touch < */
 .image img {
-  object-fit: contain;
+  object-fit: cover;
+  /* MEMO: override */
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
 }
+/* ray test touch > */
 
 @media screen and (min-width: 600px) {
   .dot {

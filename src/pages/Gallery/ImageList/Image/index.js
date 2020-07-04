@@ -14,6 +14,7 @@ const Image = ({
   const createdDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
   // MEMO: https://github.com/stereobooster/react-ideal-image/issues/153
+  // RE: https://github.com/stereobooster/react-ideal-image/blob/master/introduction.md#cancel-download
   return (
     <div
       className='image-container'
@@ -21,8 +22,8 @@ const Image = ({
       <IdealImage
         className='image'
         // TODO: must be based on intrinsic width/height
-        width={200}
-        height={200}
+        // width={200}
+        // height={200}
         placeholder={{color: '#f06292'}}
         // TODO: double check width
         srcSet={[{width: 200, src}]}
