@@ -22,6 +22,7 @@ const getNewFolderId = async (oauthToken, folderName) => {
   try {
     let addedFolderResponse = await addFolder(oauthToken, folderName);
     if (addedFolderResponse.status === 401) {
+      console.log('[Gallery getImagesFromGoogleDrive] refresh token');
       const refreshedOauthToken = getRefreshedOauthToken();
       addedFolderResponse = await addFolder(refreshedOauthToken, folderName);
     }

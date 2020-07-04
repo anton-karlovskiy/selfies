@@ -55,6 +55,7 @@ const Gallery = ({
 		try {
 			let imagesFromGoogleDriveResponse = await getImagesFromGoogleDriveResponse(oauthToken, folderId, mimeType);
 			if (imagesFromGoogleDriveResponse.status === 401) {
+				console.log('[Gallery getImagesFromGoogleDrive] refresh token');
 				const refreshedOauthToken = getRefreshedOauthToken();
 				imagesFromGoogleDriveResponse = await getImagesFromGoogleDriveResponse(refreshedOauthToken, folderId, mimeType);
 			}
