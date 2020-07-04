@@ -12,7 +12,7 @@ import ImageList from './ImageList';
 import LoadingSpinner from 'components/UI/LoadingSpinner';
 import AdaptiveImagesModal from 'components/AdaptiveImagesModal';
 import config from 'config';
-import createGIF from 'services/create-gif';
+import generateGIF from 'services/generate-gif';
 import getFolderId from 'services/get-folder-id';
 import serializeToQueryParam from 'utils/helpers/serialize-to-query-param';
 import getImageRatio from 'utils/helpers/get-image-ratio';
@@ -139,7 +139,7 @@ const Gallery = ({
 			// TODO: how to handle if ratio is not consistent across photos
 			const ratio = await getImageRatio(selectedImages[0].src);
 			const height = width / ratio;
-			await createGIF(oauthToken, selectedImages, width, height, filename);
+			await generateGIF(oauthToken, selectedImages, width, height, filename);
 		}
 	}, [images, selectedStatusList, oauthToken]); // TODO: shallow compare
 

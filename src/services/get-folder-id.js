@@ -36,9 +36,9 @@ const getFolderId = async (oauthToken, folderName) => {
 
     let folderIdResponse = await getFolderIdResponse(oauthToken, folderName);
     if (folderIdResponse.status === 401) {
-      console.log('[Gallery getImagesFromGoogleDrive] refresh token');
+      console.log('[getFolderId] refresh token');
       const refreshedOauthToken = getRefreshedOauthToken();
-      folderIdResponse = getFolderIdResponse(refreshedOauthToken, folderName);
+      folderIdResponse = await getFolderIdResponse(refreshedOauthToken, folderName);
     }
     const folderIdJson = await folderIdResponse.json();
 

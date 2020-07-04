@@ -2,6 +2,20 @@
 // TODO: double check the algorithm
 import config from 'config';
 import generateFilename from 'utils/helpers/generate-filename';
+import getRefreshedOauthToken from 'services/get-refreshed-oauth-token';
+
+const postImageFile = async (oauthToken, boundary, multipartRequestBody) => {
+  const imageFileResponse = await fetch(`${config.V3_GOOGLE_DRIVE_UPLOAD_FILES_API_ENDPOINT}?uploadType=multipart&fields=id`, {
+    method: 'POST',
+    headers: new Headers({
+      'Content-Type': 'multipart/mixed; boundary="' + boundary + '"',
+      'Authorization': `Bearer ${oauthToken}`
+    }),
+    body: multipartRequestBody
+  });
+
+  return imageFileResponse;
+};
 
 const uploadImageFile = async (oauthToken, dataUri, folderId, mimeType) => {
   try {
@@ -29,14 +43,12 @@ const uploadImageFile = async (oauthToken, dataUri, folderId, mimeType) => {
       base64Data +
       closeDelimiter;
     
-    await fetch(`${config.V3_GOOGLE_DRIVE_UPLOAD_FILES_API_ENDPOINT}?uploadType=multipart&fields=id`, {
-      method: 'POST',
-      headers: new Headers({
-        'Content-Type': 'multipart/mixed; boundary="' + boundary + '"',
-        'Authorization': `Bearer ${oauthToken}`
-      }),
-      body: multipartRequestBody
-    });
+    const imageFileResponse = await postImageFile(oauthToken, boundary, multipartRequestBody);
+    if (imageFileResponse.status === 401) {
+      console.log('[uploadImageFile] refresh token');
+      const refreshedOauthToken = getRefreshedOauthToken();
+      await postImageFile(refreshedOauthToken, boundary, multipartRequestBody);
+    }
   } catch (error) {
     console.log('[uploadImageFile] error => ', error);
   }

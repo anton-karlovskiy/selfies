@@ -1,5 +1,9 @@
 
-import React, { Suspense, lazy, useState, useCallback } from 'react';
+import React, {
+  Suspense,
+  lazy,
+  useState
+} from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import LoadingSpinner from 'components/UI/LoadingSpinner';
@@ -14,6 +18,22 @@ import './App.css';
 
 const Home = lazy(() => import(/* webpackChunkName: 'home' */ 'pages/Home'));
 const Gallery = lazy(() => import(/* webpackChunkName: 'gallery' */ 'pages/Gallery'));
+
+const signInHandler = async () => {
+  try {
+    await window.gapi.auth2.getAuthInstance().signIn();
+  } catch (error) {
+    console.log('[signInHandler] error => ', error);
+  }
+};
+
+const signOutHandler = async () => {
+  try {
+    await window.gapi.auth2.getAuthInstance().signOut();
+  } catch (error) {
+    console.log('[signOutHandler] error => ', error);
+  }
+};
 
 const App = () => {
   const [loadingAuth2GAPI, setLoadingAuth2GAPI] = useState(true);
@@ -83,22 +103,6 @@ const App = () => {
     // TODO: re-render
     setSignedIn(newSignedIn);
 	};
-
-	const signInHandler = useCallback(async () => {
-    try {
-      await window.gapi.auth2.getAuthInstance().signIn();
-    } catch (error) {
-      console.log('[App signInHandler] error => ', error);
-    }
-	}, []);
-
-	const signOutHandler = useCallback(async () => {
-    try {
-      await window.gapi.auth2.getAuthInstance().signOut();
-    } catch (error) {
-      console.log('[App signOutHandler] error => ', error);
-    }
-  }, []);
 
   const oauthToken = (loadState() || {})[LOCAL_STORAGE_KEYS.OAUTH_TOKEN];
   console.log('[App] oauthToken => ', oauthToken);
