@@ -7,8 +7,8 @@ import config from 'config';
 import generateFilename from 'utils/helpers/generate-filename';
 import saveBase64AsImageFile from 'utils/helpers/save-base64-as-image-file';
 import getCameraResolution from 'utils/helpers/get-camera-resolution';
-import searchFolder from 'services/search-folder';
-import createFolder from 'services/create-folder';
+import getFolderId from 'services/get-folder-id';
+import getNewFolderId from 'services/get-new-folder-id';
 import uploadImageFile from 'services/upload-image-file';
 import useMediaDevices from 'utils/hooks/use-media-devices';
 import 'react-html5-camera-photo/build/css/index.css';
@@ -33,9 +33,9 @@ const CameraScreen = ({
 			return;
 		}
 	
-		let folderId = await searchFolder(oauthToken, config.FOLDER_NAME);
+		let folderId = await getFolderId(oauthToken, config.FOLDER_NAME);
 		if (!folderId) {
-			folderId = await createFolder(oauthToken, config.FOLDER_NAME);
+			folderId = await getNewFolderId(oauthToken, config.FOLDER_NAME);
 		}
 		uploadImageFile(oauthToken, dataUri, folderId, config.IMAGE_MIME_TYPE);
 	};

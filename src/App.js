@@ -37,10 +37,8 @@ const App = () => {
   console.log('[App] GAPI script loadingAuth2GAPI => ', loadingAuth2GAPI);
   console.log('[App] GAPI script errorAuth2GAPI => ', errorAuth2GAPI);
   
-  // ray test touch <
   // TODO: double check rendering -> just two times due to the following
   const [signedIn, setSignedIn] = useState(null);
-  // ray test touch >
 
   const gapiAuth2Load = () => {
     // RE: https://github.com/google/google-api-javascript-client/blob/master/docs/auth.md#the-standalone-auth-client
@@ -134,12 +132,10 @@ const App = () => {
                       <Gallery
                         {...props}
                         oauthToken={oauthToken}
-                        // ray test touch <
                         loadingGAPI={loadingGAPI}
                         loadingAuth2GAPI={loadingAuth2GAPI}
                         errorGAPI={errorGAPI}
                         errorAuth2GAPI={errorAuth2GAPI} />
-                        // ray test touch >
                     ) : (
                       <Redirect to={PAGES.HOME} />
                     )}
