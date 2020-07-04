@@ -13,7 +13,7 @@ module.exports = {
 	GOOGLE_DRIVE_SCOPE: 'https://www.googleapis.com/auth/drive',
 
 	FOLDER_NAME: 'selfies',
-	FILE_PREFIX: 'selfies-',
+	FILE_PREFIX: 'selfie-',
 	// APP_ID: '663657110257', // TODO: not used
 	// IDEAL_WIDTH: 720, // TODO: not used
 	// IDEAL_HEIGHT: 405, // TODO: not used

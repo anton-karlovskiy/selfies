@@ -15,19 +15,38 @@ import config from 'config';
 import createGIF from 'services/create-gif';
 import searchFolder from 'services/search-folder';
 import serializeToQueryParam from 'utils/helpers/serialize-to-query-param';
-import validateArg from 'utils/helpers/validate-arg';
 import getImageRatio from 'utils/helpers/get-image-ratio';
-import { PAGES } from 'utils/constants/links';
+// ray test touch <
+import getRefreshedOauthToken from 'services/get-refreshed-oauth-token';
+// ray test touch >
+
+// ray test touch <
+const getImagesFromGoogleDriveResponse = async (oauthToken, folderId, mimeType) => {
+	const queryObject = {
+		q: `mimeType="${mimeType}" and "${folderId}" in parents and fullText contains "${config.FILE_PREFIX}" and trashed = false`,
+		fields: 'nextPageToken, files(id, createdTime, webContentLink)',
+		spaces: 'drive',
+		corpora: 'user'
+	};
+	const imagesFromGoogleDriveResponse = await fetch(serializeToQueryParam(queryObject, config.V3_GOOGLE_DRIVE_FILES_API_ENDPOINT), {
+		headers: new Headers({
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${oauthToken}`
+		})
+	});
+
+	return imagesFromGoogleDriveResponse;
+};
+// ray test touch >
 
 const Gallery = ({
 	oauthToken,
+	// ray test touch <
 	loadingGAPI,
 	loadingAuth2GAPI,
 	errorGAPI,
 	errorAuth2GAPI,
-	history,
-	signOut,
-	getRefreshedOauthToken
+	// ray test touch >
 }) => {
 	const [images, setImages] = useState([]);
 	const [gifGenerationOpen, setGifGenerationOpen] = useState(false);
@@ -37,29 +56,22 @@ const Gallery = ({
 	const [imagesModalOpen, setImagesModalOpen] = useState(false);
 	const [currentModalIndex, setCurrentModalIndex] = useState(null);
 	const [loadingImagesFromGoogleDrive, setLoadingImagesFromGoogleDrive] = useState(true);
-	const [errorImagesFromGoogleDrive, setErrorImagesFromGoogleDrive] = useState(null);
 
-	const getImagesFromGoogleDrive = async (folderId = validateArg(), mimeType) => {
+
+	// ray test touch <
+	const getImagesFromGoogleDrive = async (oauthToken, folderId = '', mimeType) => {
+	// ray test touch >
 		try {
-			const queryObject = {
-				q: `mimeType="${mimeType}" and "${folderId}" in parents and fullText contains "${config.FILE_PREFIX}" and trashed = false`,
-				fields: 'nextPageToken, files(id, createdTime, webContentLink)',
-				spaces: 'drive',
-				corpora: 'user'
-			};
-			const response = await fetch(serializeToQueryParam(queryObject, config.V3_GOOGLE_DRIVE_FILES_API_ENDPOINT), {
-				headers: new Headers({
-					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${oauthToken}`
-				})
-			});
-			const json = await response.json();
-
-			if (json.error) {
-				throw new Error(json.error.message);
+			// ray test touch <
+			let imagesFromGoogleDriveResponse = await getImagesFromGoogleDriveResponse(oauthToken, folderId, mimeType);
+			if (imagesFromGoogleDriveResponse.status === 401) {
+				const refreshedOauthToken = getRefreshedOauthToken();
+				imagesFromGoogleDriveResponse = await getImagesFromGoogleDriveResponse(refreshedOauthToken, folderId, mimeType);
 			}
+			// ray test touch >
+			const imagesFromGoogleDriveJson = await imagesFromGoogleDriveResponse.json();
 
-			const images = json.files.map(file => ({
+			const images = imagesFromGoogleDriveJson.files.map(file => ({
 				id: file.id,
 				src: file.webContentLink,
 				createdTime: file.createdTime
@@ -71,16 +83,20 @@ const Gallery = ({
 			setLoadingImagesFromGoogleDrive(false);
 		} catch (error) {
 			console.log('[Gallery getImagesFromGoogleDrive] error => ', error.name, error.message);
-			setErrorImagesFromGoogleDrive(error.message);
+			// ray test touch <
+			// TODO: directly here refresh token without using local state
+			// setErrorImagesFromGoogleDrive(error.message);
+			// ray test touch >
 			setLoadingImagesFromGoogleDrive(false);
 		}
 	};
 	
 	const initGalleryHandler = async oauthToken => {
 		const folderId = await searchFolder(oauthToken, config.FOLDER_NAME);
-		getImagesFromGoogleDrive(folderId, config.IMAGE_MIME_TYPE);
+		getImagesFromGoogleDrive(oauthToken, folderId, config.IMAGE_MIME_TYPE);
 	};
 
+	// ray test touch <
 	useEffect(() => {
 		if (!loadingGAPI && !loadingAuth2GAPI) {
 			if (errorGAPI === null && errorAuth2GAPI === null) {
@@ -92,22 +108,25 @@ const Gallery = ({
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [loadingGAPI, loadingAuth2GAPI, errorGAPI, errorAuth2GAPI]);
+	// ray test touch >
 
-	useEffect(() => {
-		// TODO: hardcoded
-		if (errorImagesFromGoogleDrive === 'Invalid Credentials') {
-			try {
-				const refreshedOauthToken = getRefreshedOauthToken();
-				console.log('[Gallery useEffect Invalid Credentials] refreshedOauthToken => ', refreshedOauthToken);
-				initGalleryHandler(refreshedOauthToken);
-			} catch (error) {
-				console.log('[Gallery useEffect Invalid Credentials] error => ', error);
-				signOut();
-				history.replace(PAGES.HOME);
-			}
-		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [errorImagesFromGoogleDrive]);
+	// ray test touch <
+	// useEffect(() => {
+	// 	// TODO: Invalid Credentials hardcoded
+	// 	if (errorImagesFromGoogleDrive === 'Invalid Credentials') {
+	// 		try {
+	// 			const refreshedOauthToken = getRefreshedOauthToken();
+	// 			console.log('[Gallery useEffect Invalid Credentials] refreshedOauthToken => ', refreshedOauthToken);
+	// 			initGalleryHandler(refreshedOauthToken);
+	// 		} catch (error) {
+	// 			console.log('[Gallery useEffect Invalid Credentials] error => ', error);
+	// 			signOut();
+	// 			history.replace(PAGES.HOME);
+	// 		}
+	// 	}
+	// // eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [errorImagesFromGoogleDrive]);
+	// ray test touch >
 
 	const toggleGifGenerationHandler = useCallback(() => {
 		setGifGenerationOpen(prevState => !prevState);
@@ -168,7 +187,9 @@ const Gallery = ({
 				allSelected={allSelected}
 				toggleAllImages={toggleAllImagesHandler}
 				createGif={createGifHandler} />
-			{loadingGAPI || loadingImagesFromGoogleDrive ? (
+			{/* ray test touch < */}
+			{loadingGAPI || loadingAuth2GAPI || loadingImagesFromGoogleDrive ? (
+			// ray test touch >
 				<LoadingSpinner centerViewport />
 			) : (
 				<ImageList
