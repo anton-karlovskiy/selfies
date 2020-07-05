@@ -4,16 +4,20 @@ import React, { memo } from 'react';
 import LogInFab from 'components/LogInFab';
 import LogOutFab from 'components/LogOutFab';
 import LibraryFab from 'components/LibraryFab';
-import './footer.css';
+// ray test touch <
+import FooterWrapper from 'parts/FooterWrapper';
+// ray test touch >
+import './home-footer.css';
 
-const Footer = ({
+const HomeFooter = ({
   loading,
   signedIn,
   signIn,
   signOut,
   navigateToGallery
 }) => (
-  <footer className='footer'>
+  // ray test touch <
+  <FooterWrapper className='home-footer'>
     {signedIn ? (
       <LogOutFab
         onClick={signOut} />
@@ -26,7 +30,8 @@ const Footer = ({
       loading={loading}
       disabled={!signedIn}
       onClick={navigateToGallery} />
-  </footer>
+  </FooterWrapper>
+  // ray test touch >
 );
 
-export default memo(Footer);
+export default memo(HomeFooter);

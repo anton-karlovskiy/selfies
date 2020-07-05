@@ -1,0 +1,11 @@
+
+.home-footer {
+  position: fixed;
+  /* ray test touch < */
+  /* bottom: 0;
+  width: 100%; */
+  /* ray test touch > */
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+}

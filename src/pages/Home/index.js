@@ -5,7 +5,10 @@ import React, {
 } from 'react';
 
 import CameraScreen from 'components/CameraScreen';
-import Footer from 'parts/Footer';
+// ray test touch <
+import HomeFooter from './HomeFooter';
+import ContentWrapper from 'parts/ContentWrapper';
+// ray test touch >
 import { PAGES } from 'utils/constants/links';
 
 const Home = ({
@@ -22,11 +25,13 @@ const Home = ({
 
 	return (
 		<>
-			<CameraScreen
-				loading={loading}
-				signedIn={signedIn}
-				oauthToken={oauthToken} />
-			<Footer
+			<ContentWrapper>
+				<CameraScreen
+					loading={loading}
+					signedIn={signedIn}
+					oauthToken={oauthToken} />
+			</ContentWrapper>
+			<HomeFooter
 				loading={loading}
 				signedIn={signedIn}
 				signIn={signIn}

@@ -1,0 +1,9 @@
+
+/* ray test touch < */
+.footer-wrapper {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: var(--footer-height);
+}
+/* ray test touch > */
