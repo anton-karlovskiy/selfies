@@ -18,6 +18,22 @@ const resolution = getCameraResolution();
 
 const checkWebcam = media => !!(media?.devices || []).find(device => device.kind === 'videoinput');
 
+const onTakePhotoAnimationDoneHandler = dataUri => {
+	console.log('[onTakePhotoAnimationDoneHandler] dataUri => ', dataUri);
+};
+
+const onCameraErrorHandler = error => {
+	console.log('[onCameraErrorHandler] error => ', error);
+};
+
+const onCameraStartHandler = stream => {
+	console.log('[onCameraStart] stream => ', stream);
+};
+
+const onCameraStopHandler = () => {
+	console.log('[onCameraStopHandler]');
+};
+
 const CameraScreen = ({
 	loading,
 	signedIn,
@@ -45,6 +61,10 @@ const CameraScreen = ({
 			{hasWebcam ? (
 				<Camera
 					onTakePhoto={onTakePhotoHandler}
+					onTakePhotoAnimationDone={onTakePhotoAnimationDoneHandler}
+					onCameraError={onCameraErrorHandler}
+					onCameraStart={onCameraStartHandler}
+					onCameraStop={onCameraStopHandler}
 					idealFacingMode={FACING_MODES.USER}
 					idealResolution={resolution} // TODO: do we need it for sure?
 					imageType={IMAGE_TYPES.JPG}
