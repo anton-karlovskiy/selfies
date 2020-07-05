@@ -22,8 +22,8 @@ const Image = ({
       <IdealImage
         className='image'
         // TODO: must be based on intrinsic width/height
-        // width={200}
-        // height={200}
+        width={200}
+        height={200}
         placeholder={{color: '#f06292'}}
         // TODO: double check width
         srcSet={[{width: 200, src}]}
