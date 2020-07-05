@@ -17,3 +17,11 @@
 .react-html5-camera-photo-fullscreen {
   display: flex;
 }
+.react-html5-camera-photo-fullscreen > #display-error {
+  position: fixed;
+  color: unset;
+  background-color: unset;
+}
+.react-html5-camera-photo-fullscreen > #display-error ~ #container-circles {
+  pointer-events: none;
+}

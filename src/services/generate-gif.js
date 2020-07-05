@@ -65,7 +65,8 @@ const generateGIF = async (oauthToken, images, width, height, filename) => {
     images: base64Images,
 		// TODO: double check options usage
 		gifWidth: width,
-		gifHeight: height
+    gifHeight: height,
+    interval: 0.2
   };
   
   console.log('[generateGIF] options => ', options);
