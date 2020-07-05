@@ -9,3 +9,11 @@
 .camera-screen.disabled-capture-button > div > #container-circles {
   pointer-events: none;
 }
+
+/* MEMO: override lib style */
+.react-html5-camera-photo-fullscreen > video {
+  object-fit: cover;
+}
+.react-html5-camera-photo-fullscreen {
+  display: flex;
+}

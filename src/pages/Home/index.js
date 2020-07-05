@@ -23,7 +23,7 @@ const Home = ({
 
 	return (
 		<>
-			<ContentWrapper>
+			<ContentWrapper style={{paddingBottom: 0}}>
 				<CameraScreen
 					loading={loading}
 					signedIn={signedIn}

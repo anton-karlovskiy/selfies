@@ -5,9 +5,14 @@ import './content-wrapper.css';
 
 const ContentWrapper = ({
   className,
-  children
+  children,
+  ...rest
 }) => (
-  <div className={`content-wrapper ${className}`}>{children}</div>
+  <div
+    {...rest}
+    className={`content-wrapper ${className}`}>
+    {children}
+  </div>
 );
 
 export default ContentWrapper;

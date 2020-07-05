@@ -60,6 +60,7 @@ const CameraScreen = ({
 		<div className={`camera-screen ${loading ? 'disabled-capture-button' : ''}`}>
 			{hasWebcam ? (
 				<Camera
+					isFullscreen
 					onTakePhoto={onTakePhotoHandler}
 					onTakePhotoAnimationDone={onTakePhotoAnimationDoneHandler}
 					onCameraError={onCameraErrorHandler}

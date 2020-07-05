@@ -32,7 +32,7 @@
 
 .image img {
   object-fit: cover;
-  /* MEMO: override */
+  /* MEMO: override lib style */
   width: 100% !important;
   height: 100% !important;
   margin: 0 !important;

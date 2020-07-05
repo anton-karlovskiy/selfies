@@ -26,15 +26,17 @@ const LoadingSpinner = ({
   margin = 0,
   centerViewport = false
 }) => (
-  <div
-    style={{
-      width: `${width}px`,
-      height: `${height}px`,
-      margin: `${margin}px auto`,
-      borderWidth: `${borderWidth}em`
-    }}
-    className={`loader ${centerViewport ? 'center-viewport' : ''}`}>
-    Loading...
+  <div className={centerViewport ? 'center-viewport' : ''}>
+    <div
+      style={{
+        width: `${width}px`,
+        height: `${height}px`,
+        margin: `${margin}px auto`,
+        borderWidth: `${borderWidth}em`
+      }}
+      className='loader'>
+      Loading...
+    </div>
   </div>
 );
 
