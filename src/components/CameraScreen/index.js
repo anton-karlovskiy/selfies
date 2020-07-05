@@ -48,7 +48,6 @@ const CameraScreen = ({
 					idealFacingMode={FACING_MODES.USER}
 					idealResolution={resolution} // TODO: do we need it for sure?
 					imageType={IMAGE_TYPES.JPG}
-					isFullscreen // TODO: tweak for correct aspect ratio
 					isMaxResolution={true} />
 			) : (
 				<ErrorMessage>A camera could not be found.</ErrorMessage>

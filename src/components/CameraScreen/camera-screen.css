@@ -1,8 +1,4 @@
 
-.react-html5-camera-photo > video {
-  display: block !important;
-}
-
 .camera-screen > div > #container-circles {
   position: fixed;
   bottom: 90px;
