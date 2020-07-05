@@ -1,5 +1,4 @@
 
-// ray test touch <
 import React from 'react';
 
 import FooterWrapper from 'parts/FooterWrapper';
@@ -9,4 +8,3 @@ const GalleryFooter = () => (
 );
 
 export default GalleryFooter;
-// ray test touch >

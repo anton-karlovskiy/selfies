@@ -1,5 +1,4 @@
 
-// ray test touch <
 import React from 'react';
 
 import './content-wrapper.css';
@@ -12,4 +11,3 @@ const ContentWrapper = ({
 );
 
 export default ContentWrapper;
-// ray test touch >

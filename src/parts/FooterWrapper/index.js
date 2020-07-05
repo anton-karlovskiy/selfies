@@ -1,5 +1,4 @@
 
-// ray test touch <
 import React from 'react';
 
 import './footer-wrapper.css';
@@ -14,4 +13,3 @@ const FooterWrapper = ({
 );
 
 export default FooterWrapper;
-// ray test touch >

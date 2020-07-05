@@ -11,18 +11,14 @@ import GalleryHeader from './GalleryHeader';
 import ImageList from './ImageList';
 import LoadingSpinner from 'components/UI/LoadingSpinner';
 import AdaptiveImagesModal from 'components/AdaptiveImagesModal';
-// ray test touch <
 import GalleryFooter from './GalleryFooter';
-// ray test touch >
 import config from 'config';
 import generateGIF from 'services/generate-gif';
 import getFolderId from 'services/get-folder-id';
 import serializeToQueryParam from 'utils/helpers/serialize-to-query-param';
 import getImageRatio from 'utils/helpers/get-image-ratio';
 import getRefreshedOauthToken from 'services/get-refreshed-oauth-token';
-// ray test touch <
 import ContentWrapper from 'parts/ContentWrapper';
-// ray test touch >
 
 const getImagesFromGoogleDriveResponse = async (oauthToken, folderId, mimeType) => {
 	const queryObject = {
@@ -154,9 +150,7 @@ const Gallery = ({
 
 	return (
 		<>
-			{/* ray test touch < */}
 			<ContentWrapper>
-			{/* ray test touch > */}
 				<GalleryHeader
 					gifButtonDisabled={gifButtonDisabled}
 					gifGenerationOpen={gifGenerationOpen}
@@ -180,9 +174,7 @@ const Gallery = ({
 					</>
 				)}
 			</ContentWrapper>
-			{/* ray test touch < */}
 			<GalleryFooter />
-			{/* ray test touch > */}
 		</>
 	);
 };

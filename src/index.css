@@ -40,9 +40,7 @@
   --palette-teal-700: #00796b;
   --palette-background-paper: #424242;
   --palette-action-disabled-background: rgba(255, 255, 255, 0.3);
-  /* ray test touch < */
   --footer-height: 5.5rem;
-  /* ray test touch > */
 }
 
 * {
@@ -102,13 +100,9 @@ body {
   }
 }
 
-/* ray test touch < */
 div#root {
   width: 100%;
-  /* position: relative;
-  min-height: 100vh; */
 }
-/* ray test touch > */
 
 a {
   font-weight: var(--typography-font-weight-regular);

@@ -5,10 +5,8 @@ import React, {
 } from 'react';
 
 import CameraScreen from 'components/CameraScreen';
-// ray test touch <
 import HomeFooter from './HomeFooter';
 import ContentWrapper from 'parts/ContentWrapper';
-// ray test touch >
 import { PAGES } from 'utils/constants/links';
 
 const Home = ({
