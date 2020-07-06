@@ -73,15 +73,7 @@ const App = () => {
 		gapiAuth2.init({
 			apiKey: config.API_KEY,
       clientId: config.CLIENT_ID,
-      scope: config.GOOGLE_DRIVE_SCOPE,
-      // ray test touch <
-      // MEMO: https://accounts.google.com/signin/oauth/error?authError=ChVyZWRpcmVjdF91cmlfbWlzbWF0Y2gSxwJUaGUgcmVkaXJlY3QgVVJJIGluIHRoZSByZXF1ZXN0LCBodHRwczovL3Zpc2FnZS04NmFmZS53ZWIuYXBwLCBkb2VzIG5vdCBtYXRjaCB0aGUgb25lcyBhdXRob3JpemVkIGZvciB0aGUgT0F1dGggY2xpZW50LiBUbyB1cGRhdGUgdGhlIGF1dGhvcml6ZWQgcmVkaXJlY3QgVVJJcywgdmlzaXQ6IGh0dHBzOi8vY29uc29sZS5kZXZlbG9wZXJzLmdvb2dsZS5jb20vYXBpcy9jcmVkZW50aWFscy9vYXV0aGNsaWVudC82NjM2NTcxMTAyNTctZmI2cWk0aGI0Zm5qYnIxYjQ5NWhhYWo4NGJ2NjkyZWkuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20_cHJvamVjdD02NjM2NTcxMTAyNTcaRWh0dHA6Ly9kZXZlbG9wZXJzLmdvb2dsZS5jb20vYWNjb3VudHMvZG9jcy9PQXV0aDJMb2dpbiNzZXRyZWRpcmVjdHVyaSCQAw%3D%3D&client_id=663657110257-fb6qi4hb4fnjbr1b495haaj84bv692ei.apps.googleusercontent.com
-      // uxMode: 'redirect',
-      // ux_mode: 'redirect',
-      // redirectUri: 'https://visage-86afe.web.app'
-      // redirect_uri: 'http://localhost:3000' 
-      // redirectUri: 'http://localhost:3000'
-      // ray test touch >
+      scope: config.GOOGLE_DRIVE_SCOPE
 		}).then(() => {
       setLoadingAuth2GAPI(false);
       
