@@ -146,6 +146,7 @@ const App = () => {
                   </>
                 )
               } />
+            <Redirect to={PAGES.HOME} />
           </Switch>
         </Suspense>
       </Router>
