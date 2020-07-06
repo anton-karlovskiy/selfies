@@ -4,7 +4,7 @@ import React from 'react';
 import FooterWrapper from 'parts/FooterWrapper';
 
 const GalleryFooter = () => (
-  <FooterWrapper className='gallery-footer'></FooterWrapper>
+  <FooterWrapper></FooterWrapper>
 );
 
 export default GalleryFooter;

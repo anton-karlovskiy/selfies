@@ -19,19 +19,19 @@ const resolution = getCameraResolution();
 const checkWebcam = media => !!(media?.devices || []).find(device => device.kind === 'videoinput');
 
 const onTakePhotoAnimationDoneHandler = dataUri => {
-	console.log('[onTakePhotoAnimationDoneHandler] dataUri => ', dataUri);
+	console.log('[CameraScreen onTakePhotoAnimationDoneHandler] dataUri => ', dataUri);
 };
 
 const onCameraErrorHandler = error => {
-	console.log('[onCameraErrorHandler] error => ', error);
+	console.log('[CameraScreen onCameraErrorHandler] error => ', error);
 };
 
 const onCameraStartHandler = stream => {
-	console.log('[onCameraStart] stream => ', stream);
+	console.log('[CameraScreen onCameraStart] stream => ', stream);
 };
 
 const onCameraStopHandler = () => {
-	console.log('[onCameraStopHandler]');
+	console.log('[CameraScreen onCameraStopHandler]');
 };
 
 const CameraScreen = ({
