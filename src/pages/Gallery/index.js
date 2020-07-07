@@ -42,7 +42,7 @@ const Gallery = ({
 	loadingGAPI,
 	loadingAuth2GAPI,
 	errorGAPI,
-	errorAuth2GAPI,
+	errorAuth2GAPI
 }) => {
 	const [images, setImages] = useState([]);
 	const [gifGenerationOpen, setGifGenerationOpen] = useState(false);

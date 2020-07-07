@@ -7,6 +7,7 @@ import React, {
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import LoadingSpinner from 'components/UI/LoadingSpinner';
+import LazyLoadingErrorBoundary from 'components/UI/LazyLoadingErrorBoundary';
 import useScript from 'utils/hooks/use-script';
 import config from 'config';
 import { PAGES } from 'utils/constants/links';
@@ -110,45 +111,47 @@ const App = () => {
   return (
     <div className='App'>
       <Router>
-        <Suspense fallback={<LoadingSpinner centerViewport />}>
-          <Switch>
-            <Route
-              exact
-              path={PAGES.HOME}
-              render={
-                props => (
-                  <Home
-                    {...props}
-                    loading={loadingGAPI || loadingAuth2GAPI}
-                    oauthToken={oauthToken}
-                    signedIn={signedIn}
-                    signIn={signInHandler}
-                    signOut={signOutHandler} />
-                )
-              } />
-            <Route
-              exact
-              path={PAGES.GALLERY}
-              render={
-                props => (
-                  <>
-                    {oauthToken ? (
-                      <Gallery
-                        {...props}
-                        oauthToken={oauthToken}
-                        loadingGAPI={loadingGAPI}
-                        loadingAuth2GAPI={loadingAuth2GAPI}
-                        errorGAPI={errorGAPI}
-                        errorAuth2GAPI={errorAuth2GAPI} />
-                    ) : (
-                      <Redirect to={PAGES.HOME} />
-                    )}
-                  </>
-                )
-              } />
-            <Redirect to={PAGES.HOME} />
-          </Switch>
-        </Suspense>
+        <LazyLoadingErrorBoundary>
+          <Suspense fallback={<LoadingSpinner centerViewport />}>
+            <Switch>
+              <Route
+                exact
+                path={PAGES.HOME}
+                render={
+                  props => (
+                    <Home
+                      {...props}
+                      loading={loadingGAPI || loadingAuth2GAPI}
+                      oauthToken={oauthToken}
+                      signedIn={signedIn}
+                      signIn={signInHandler}
+                      signOut={signOutHandler} />
+                  )
+                } />
+              <Route
+                exact
+                path={PAGES.GALLERY}
+                render={
+                  props => (
+                    <>
+                      {oauthToken ? (
+                        <Gallery
+                          {...props}
+                          oauthToken={oauthToken}
+                          loadingGAPI={loadingGAPI}
+                          loadingAuth2GAPI={loadingAuth2GAPI}
+                          errorGAPI={errorGAPI}
+                          errorAuth2GAPI={errorAuth2GAPI} />
+                      ) : (
+                        <Redirect to={PAGES.HOME} />
+                      )}
+                    </>
+                  )
+                } />
+              <Redirect to={PAGES.HOME} />
+            </Switch>
+          </Suspense>
+        </LazyLoadingErrorBoundary>
       </Router>
     </div>
   );
