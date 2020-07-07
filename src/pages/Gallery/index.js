@@ -134,14 +134,14 @@ const Gallery = ({
 		}
 	}, [gifGenerationOpen, toggleImage, openImagesModal]);
 
-	const createGifHandler = useCallback(async (width, filename) => {
+	const createGifHandler = useCallback(async (width, filename, callback) => {
 		const selectedImages = images.filter((_, index) => selectedStatusList[index]);
 		
 		if (selectedImages.length > 0) {
 			// TODO: how to handle if ratio is not consistent across photos
 			const ratio = await getImageRatio(selectedImages[0].thumbnailLink);
 			const height = width / ratio;
-			await generateGIF(oauthToken, selectedImages, width, height, filename);
+			await generateGIF(oauthToken, selectedImages, width, height, filename, callback);
 		}
 	}, [images, selectedStatusList, oauthToken]); // TODO: shallow compare
 

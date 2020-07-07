@@ -16,8 +16,7 @@ const GifDropdown = ({
     label: GIF_SIZE.LABEL,
     onClick: async () => {
       openLoadingGif();
-      await createGif(GIF_SIZE.WIDTH, `${config.GIF_NAME_PREFIX}-${GIF_SIZE.LABEL.toLowerCase()}.gif`);
-      closeLoadingGif();
+      await createGif(GIF_SIZE.WIDTH, `${config.GIF_NAME_PREFIX}-${GIF_SIZE.LABEL.toLowerCase()}.gif`, closeLoadingGif);
     }
   })), [createGif, openLoadingGif, closeLoadingGif]);
 

@@ -3,6 +3,7 @@ import config from 'config';
 import saveBase64AsImageFile from 'utils/helpers/save-base64-as-image-file';
 import convertBlobToBase64 from 'utils/helpers/convert-blob-to-base64';
 import getRefreshedOauthToken from 'services/get-refreshed-oauth-token';
+import gifshot from 'gifshot';
 
 // TODO: https://google-chrome.atlassian.net/browse/GOOGLE-98?focusedCommentId=10789
 // const getImageDownloadResponses = async (oauthToken, images) => {
@@ -25,7 +26,7 @@ const getImageDownloadResponse = async (oauthToken, imageId) => {
   return imageDownloadResponse;
 };
 
-const generateGIF = async (oauthToken, images, width, height, filename) => {
+const generateGIF = async (oauthToken, images, width, height, filename, callback) => {
   let base64Images = [];
   for (const image of images) {
     try {
@@ -71,13 +72,14 @@ const generateGIF = async (oauthToken, images, width, height, filename) => {
   
   console.log('[generateGIF] options => ', options);
 
-	const gifshot = await import('gifshot');
-	await gifshot.createGIF(options, async obj => {
+	gifshot.createGIF(options, obj => {
 		if (!obj.error) {
       console.log('[generateGIF] GIF successful');
       saveBase64AsImageFile(obj.image, filename);
+      callback();
 		} else {
-			console.log('[generateGIF] GIF error obj.error => ', obj.error);
+      console.log('[generateGIF] GIF error obj.error => ', obj.error);
+      callback();
 		}
 	});
 };
