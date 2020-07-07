@@ -13,7 +13,7 @@ const ImageList = ({
     {images.map((image, index) => (
       <Image
         key={image.id}
-        src={image.src}
+        src={image.thumbnailLink}
         createdTime={image.createdTime}
         selectedStatus={selectedStatusList[index]}
         onClick={onClick(index)} />

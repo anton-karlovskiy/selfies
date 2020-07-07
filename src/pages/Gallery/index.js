@@ -23,9 +23,7 @@ import ContentWrapper from 'parts/ContentWrapper';
 const getImagesFromGoogleDriveResponse = async (oauthToken, folderId, mimeType) => {
 	const queryObject = {
 		q: `mimeType="${mimeType}" and "${folderId}" in parents and fullText contains "${config.FILE_PREFIX}" and trashed = false`,
-		// ray test touch <
 		fields: 'nextPageToken, files(id, createdTime, thumbnailLink)',
-		// ray test touch >
 		spaces: 'drive',
 		corpora: 'user'
 	};
@@ -67,9 +65,7 @@ const Gallery = ({
 
 			const images = imagesFromGoogleDriveJson.files.map(file => ({
 				id: file.id,
-				// ray test touch <
-				src: file.thumbnailLink,
-				// ray test touch >
+				thumbnailLink: file.thumbnailLink,
 				createdTime: file.createdTime
 			}));
 			images.sort((a, b) => (a.createdTime < b.createdTime ? 1 : -1));
@@ -143,7 +139,7 @@ const Gallery = ({
 		
 		if (selectedImages.length > 0) {
 			// TODO: how to handle if ratio is not consistent across photos
-			const ratio = await getImageRatio(selectedImages[0].src);
+			const ratio = await getImageRatio(selectedImages[0].thumbnailLink);
 			const height = width / ratio;
 			await generateGIF(oauthToken, selectedImages, width, height, filename);
 		}

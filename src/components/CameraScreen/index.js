@@ -19,9 +19,7 @@ const resolution = getCameraResolution();
 const checkWebcam = media => !!(media?.devices || []).find(device => device.kind === 'videoinput');
 
 const onTakePhotoAnimationDoneHandler = dataUri => {
-	// ray test touch <
 	console.log('[CameraScreen onTakePhotoAnimationDoneHandler] dataUri.length => ', dataUri.length, 'byte(s)');
-	// ray test touch >
 };
 
 const onCameraErrorHandler = error => {
