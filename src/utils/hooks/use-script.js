@@ -36,6 +36,7 @@ const useScript = ({
       setLoading(false);
     };
     const handleError = error => {
+      setLoading(false);
       setError(error);
     };
 
