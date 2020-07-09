@@ -25,6 +25,8 @@ const Home = ({
 		<>
 			<ContentWrapper style={{paddingBottom: 0}}>
 				<CameraScreen
+					// TODO: actually we don't need to wait as long as we have the oauth token in the local storage
+					// TODO: but we just wait until auth2 is loaded to confirm and refresh the oauth token
 					loading={loading}
 					signedIn={signedIn}
 					oauthToken={oauthToken} />

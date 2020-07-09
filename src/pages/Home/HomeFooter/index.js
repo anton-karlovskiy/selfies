@@ -17,6 +17,7 @@ const HomeFooter = ({
   <FooterWrapper className='home-footer'>
     {signedIn ? (
       <LogOutFab
+        loading={loading}
         onClick={signOut} />
     ) : (
       <LogInFab

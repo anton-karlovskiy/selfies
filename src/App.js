@@ -94,7 +94,7 @@ const App = () => {
 	};
 
 	const updateSigninStatus = newSignedIn => {
-    console.log('[App updateSigninStatus] signedIn, newSignedIn => ', signedIn, newSignedIn);
+    console.log('[App updateSigninStatus] newSignedIn => ', newSignedIn);
 
     if (newSignedIn) {
       getRefreshedOauthToken();
@@ -108,6 +108,9 @@ const App = () => {
 
   const oauthToken = (loadState() || {})[LOCAL_STORAGE_KEYS.OAUTH_TOKEN];
   console.log('[App] oauthToken => ', oauthToken);
+
+  const hybridSignedIn = signedIn || !!oauthToken;
+  console.log('[App] hybridSignedIn => ', hybridSignedIn);
   
   return (
     <div className='App'>
@@ -124,7 +127,7 @@ const App = () => {
                       {...props}
                       loading={loadingGAPI || loadingAuth2GAPI}
                       oauthToken={oauthToken}
-                      signedIn={signedIn}
+                      signedIn={hybridSignedIn}
                       signIn={signInHandler}
                       signOut={signOutHandler} />
                   )
@@ -135,7 +138,7 @@ const App = () => {
                 render={
                   props => (
                     <>
-                      {oauthToken ? (
+                      {hybridSignedIn ? (
                         <Gallery
                           {...props}
                           oauthToken={oauthToken}
