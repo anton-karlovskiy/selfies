@@ -66,7 +66,10 @@ const Gallery = ({
 			const images = imagesFromGoogleDriveJson.files.map(file => ({
 				id: file.id,
 				thumbnailLink: file.thumbnailLink,
-				src: file.webContentLink,
+				// TODO: we could use thumbnailLink as a workaround on mobile by considering the intrinsic dimension
+				// src: file.webContentLink,
+				// src: file.thumbnailLink.replace('s220', 's1280'),
+				src: file.thumbnailLink,
 				createdTime: file.createdTime
 			}));
 			images.sort((a, b) => (a.createdTime < b.createdTime ? 1 : -1));
