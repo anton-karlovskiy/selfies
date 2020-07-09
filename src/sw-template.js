@@ -28,24 +28,49 @@ if ('function' === typeof importScripts) {
 
     workbox.precaching.cleanupOutdatedCaches();
 
-    // ray test touch <
     /* custom cache rules */
     const CACHE_VERSION = 1;
 
     // Shorthand identifier mapped to specific versioned cache.
     const CACHES_NAMES = {
       THUMBNAIL_LINKS: `thumbnail-links-${CACHE_VERSION}`,
-      GOOGLE_APIS: `google-apis-${CACHE_VERSION}`
+      GOOGLE_APIS: `google-apis-${CACHE_VERSION}`,
+      PRODUCTION: 'PRODUCTION'
     };
 
+    // MEMO: caching routes
     workbox.routing.registerRoute(
-      /.*(?:googleapis)\.com.*$/,
+      new workbox.routing.NavigationRoute(
+        new workbox.strategies.NetworkFirst({
+          cacheName: CACHES_NAMES.PRODUCTION
+        })
+      )
+    );
+
+    // TODO: 'https://www.googleapis.com/drive/v3/*', is not working -> lack of regular expression knowledge
+    // MEMO: caching folder ID and gallery images data
+    workbox.routing.registerRoute(
+      /.*(?:www.googleapis)\.com.*$/,
       new workbox.strategies.NetworkFirst({
         cacheName: CACHES_NAMES.GOOGLE_APIS
       })
     );
-    // ray test touch >
 
+    // MEMO: https://developers.google.com/web/tools/workbox/guides/handle-third-party-requests#force_caching_of_opaque_responses
+    const cacheOpaqueResponsesPlugin = new workbox.cacheableResponse.CacheableResponsePlugin({
+      statuses: [0, 200]
+    });
+
+    const thumbnailsStrategy = new workbox.strategies.NetworkFirst({
+      cacheName: CACHES_NAMES.THUMBNAIL_LINKS,
+      plugins: [cacheOpaqueResponsesPlugin]
+    });
+
+    // MEMO: caching gallery images sources
+    workbox.routing.registerRoute(
+      /.*(?:lh3.googleusercontent)\.com.*$/,
+      thumbnailsStrategy
+    );
   } else {
     console.log('Workbox could not be loaded. No Offline support');
   }
