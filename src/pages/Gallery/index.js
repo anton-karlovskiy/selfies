@@ -87,16 +87,15 @@ const Gallery = ({
 	};
 
 	useEffect(() => {
-		// ray test touch <
 		if (!loadingGAPI && !loadingAuth2GAPI) {
 			if (errorGAPI === null && errorAuth2GAPI === null) {
 				console.log('[Gallery useEffect] neither errorGAPI nor errorAuth2GAPI');
 			} else {
 				console.log('[Gallery useEffect] something went wrong: errorGAPI, errorAuth2GAPI => ', errorGAPI, errorAuth2GAPI);
 			}
+			// TODO: offline support while there are errors with loading GAPI scripts
 			initGalleryHandler(oauthToken);
 		}
-		// ray test touch >
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [loadingGAPI, loadingAuth2GAPI, errorGAPI, errorAuth2GAPI]);
 

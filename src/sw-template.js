@@ -33,9 +33,10 @@ if ('function' === typeof importScripts) {
 
     // Shorthand identifier mapped to specific versioned cache.
     const CACHES_NAMES = {
+      PRODUCTION: 'PRODUCTION',
       THUMBNAIL_LINKS: `thumbnail-links-${CACHE_VERSION}`,
       GOOGLE_APIS: `google-apis-${CACHE_VERSION}`,
-      PRODUCTION: 'PRODUCTION'
+      GAPI: 'GAPI'
     };
 
     // MEMO: caching routes
@@ -47,8 +48,18 @@ if ('function' === typeof importScripts) {
       )
     );
 
+    // MEMO: caching
+    // https://apis.google.com/js/api.js
+    // https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.en.yyhByYeMTAc.O/m=auth2/rt=j/sv=1/d=1/ed=1/am=wQc/rs=AGLTcCN9qAMm_5_ztFCxaPySR5cb8QjKkw/cb=gapi.loaded_0
+    workbox.routing.registerRoute(
+      /.*(?:apis.google)\.com.*$/,
+      new workbox.strategies.NetworkFirst({
+        cacheName: CACHES_NAMES.GAPI
+      })
+    );
+
     // TODO: 'https://www.googleapis.com/drive/v3/*', is not working -> lack of regular expression knowledge
-    // MEMO: caching folder ID and gallery images data
+    // MEMO: caching folder ID and payload data of gallery images
     workbox.routing.registerRoute(
       /.*(?:www.googleapis)\.com.*$/,
       new workbox.strategies.NetworkFirst({
@@ -66,7 +77,7 @@ if ('function' === typeof importScripts) {
       plugins: [cacheOpaqueResponsesPlugin]
     });
 
-    // MEMO: caching gallery images sources
+    // MEMO: caching sources of gallery images
     workbox.routing.registerRoute(
       /.*(?:lh3.googleusercontent)\.com.*$/,
       thumbnailsStrategy
