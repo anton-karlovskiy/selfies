@@ -48,13 +48,19 @@ if ('function' === typeof importScripts) {
       )
     );
 
-    // MEMO: caching
+    // MEMO: https://developers.google.com/web/tools/workbox/guides/handle-third-party-requests#force_caching_of_opaque_responses
+    const cacheOpaqueResponsesPlugin = new workbox.cacheableResponse.CacheableResponsePlugin({
+      statuses: [0, 200]
+    });
+
+    // MEMO: caching the following links
     // https://apis.google.com/js/api.js
     // https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.en.yyhByYeMTAc.O/m=auth2/rt=j/sv=1/d=1/ed=1/am=wQc/rs=AGLTcCN9qAMm_5_ztFCxaPySR5cb8QjKkw/cb=gapi.loaded_0
     workbox.routing.registerRoute(
       /.*(?:apis.google)\.com.*$/,
       new workbox.strategies.NetworkFirst({
-        cacheName: CACHES_NAMES.GAPI
+        cacheName: CACHES_NAMES.GAPI,
+        plugins: [cacheOpaqueResponsesPlugin]
       })
     );
 
@@ -67,20 +73,13 @@ if ('function' === typeof importScripts) {
       })
     );
 
-    // MEMO: https://developers.google.com/web/tools/workbox/guides/handle-third-party-requests#force_caching_of_opaque_responses
-    const cacheOpaqueResponsesPlugin = new workbox.cacheableResponse.CacheableResponsePlugin({
-      statuses: [0, 200]
-    });
-
-    const thumbnailsStrategy = new workbox.strategies.NetworkFirst({
-      cacheName: CACHES_NAMES.THUMBNAIL_LINKS,
-      plugins: [cacheOpaqueResponsesPlugin]
-    });
-
     // MEMO: caching sources of gallery images
     workbox.routing.registerRoute(
       /.*(?:lh3.googleusercontent)\.com.*$/,
-      thumbnailsStrategy
+      new workbox.strategies.NetworkFirst({
+        cacheName: CACHES_NAMES.THUMBNAIL_LINKS,
+        plugins: [cacheOpaqueResponsesPlugin]
+      })
     );
   } else {
     console.log('Workbox could not be loaded. No Offline support');
