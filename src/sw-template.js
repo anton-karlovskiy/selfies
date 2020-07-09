@@ -35,6 +35,7 @@ if ('function' === typeof importScripts) {
     const CACHES_NAMES = {
       PRODUCTION: 'PRODUCTION',
       THUMBNAIL_LINKS: `thumbnail-links-${CACHE_VERSION}`,
+      FULLSIZE_LINKS: `fullsize-links-${CACHE_VERSION}`,
       GOOGLE_APIS: `google-apis-${CACHE_VERSION}`,
       GAPI: 'GAPI'
     };
@@ -59,13 +60,15 @@ if ('function' === typeof importScripts) {
     // MEMO: URL pattern ->
     // https://apis.google.com/js/api.js
     // https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.en.yyhByYeMTAc.O/m=auth2/rt=j/sv=1/d=1/ed=1/am=wQc/rs=AGLTcCN9qAMm_5_ztFCxaPySR5cb8QjKkw/cb=gapi.loaded_0
-    workbox.routing.registerRoute(
-      /.*(?:apis.google)\.com.*$/,
-      new workbox.strategies.NetworkFirst({
-        cacheName: CACHES_NAMES.GAPI,
-        plugins: [cacheOpaqueResponsesPlugin]
-      })
-    );
+    // TODO: block since it's error prone while offline
+    // RE: https://google-chrome.atlassian.net/browse/GOOGLE-98?focusedCommentId=10799
+    // workbox.routing.registerRoute(
+    //   /.*(?:apis.google)\.com.*$/,
+    //   new workbox.strategies.NetworkFirst({
+    //     cacheName: CACHES_NAMES.GAPI,
+    //     plugins: [cacheOpaqueResponsesPlugin]
+    //   })
+    // );
 
     // TODO: 'https://www.googleapis.com/drive/v3/*', is not working -> lack of Regular Expression knowledge
     // MEMO: cors response
@@ -73,6 +76,8 @@ if ('function' === typeof importScripts) {
     // MEMO: URL pattern -> https://www.googleapis.com/drive/v3/files?q=mimeType%3D"application%2Fvnd.google-apps.folder" and fullText contains "selfies" and trashed%3Dfalse&fields=nextPageToken%2C files(id%2C name)&spaces=drive&corpora=user 
     // MEMO: caching payload data of gallery images
     // MEMO: URL pattern -> https://www.googleapis.com/drive/v3/files?q=mimeType%3D"image%2Fjpeg" and "1k4XuuvGFRCWGRaS4pGPUsEmofSUIttrG" in parents and fullText contains "selfie-" and trashed %3D false&fields=nextPageToken%2C files(id%2C createdTime%2C thumbnailLink)&spaces=drive&corpora=user
+    // MEMO: caching downloaded images to be generated into a GIF
+    // MEMO: URL pattern -> https://www.googleapis.com/drive/v3/files/1zVPSqL2MjmXsIyearJK4L66kuKgz5hPT?alt=media
     workbox.routing.registerRoute(
       /.*(?:www.googleapis)\.com.*$/,
       new workbox.strategies.NetworkFirst({
@@ -87,6 +92,17 @@ if ('function' === typeof importScripts) {
       /.*(?:lh3.googleusercontent)\.com.*$/,
       new workbox.strategies.NetworkFirst({
         cacheName: CACHES_NAMES.THUMBNAIL_LINKS,
+        plugins: [cacheOpaqueResponsesPlugin]
+      })
+    );
+
+    // MEMO: opaque response
+    // MEMO: caching sources of gallery images (full sizes)
+    // MEMO: URL pattern -> https://drive.google.com/uc?id=1zVPSqL2MjmXsIyearJK4L66kuKgz5hPT&export=download
+    workbox.routing.registerRoute(
+      /.*(?:drive.google)\.com.*$/,
+      new workbox.strategies.NetworkFirst({
+        cacheName: CACHES_NAMES.FULLSIZE_LINKS,
         plugins: [cacheOpaqueResponsesPlugin]
       })
     );
