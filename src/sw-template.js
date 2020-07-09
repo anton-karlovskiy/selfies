@@ -26,16 +26,26 @@ if ('function' === typeof importScripts) {
     /* injection point for manifest files. */
     workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
 
-    /* custom cache rules */
-    workbox.routing.registerRoute(
-      new workbox.routing.NavigationRoute(
-        new workbox.strategies.NetworkFirst({
-          cacheName: 'PRODUCTION'
-        })
-      )
-    );
-
     workbox.precaching.cleanupOutdatedCaches();
+
+    // ray test touch <
+    /* custom cache rules */
+    const CACHE_VERSION = 1;
+
+    // Shorthand identifier mapped to specific versioned cache.
+    const CACHES_NAMES = {
+      THUMBNAIL_LINKS: `thumbnail-links-${CACHE_VERSION}`,
+      GOOGLE_APIS: `google-apis-${CACHE_VERSION}`
+    };
+
+    workbox.routing.registerRoute(
+      /.*(?:googleapis)\.com.*$/,
+      new workbox.strategies.NetworkFirst({
+        cacheName: CACHES_NAMES.GOOGLE_APIS
+      })
+    );
+    // ray test touch >
+
   } else {
     console.log('Workbox could not be loaded. No Offline support');
   }
