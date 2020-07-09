@@ -53,7 +53,10 @@ if ('function' === typeof importScripts) {
       statuses: [0, 200]
     });
 
-    // MEMO: caching the following links
+    // TODO: if we drop GAPI totally, we don't have to cache the following entry set
+    // MEMO: opaque response
+    // MEMO: caching GAPI scripts
+    // MEMO: URL pattern ->
     // https://apis.google.com/js/api.js
     // https://apis.google.com/_/scs/apps-static/_/js/k=oz.gapi.en.yyhByYeMTAc.O/m=auth2/rt=j/sv=1/d=1/ed=1/am=wQc/rs=AGLTcCN9qAMm_5_ztFCxaPySR5cb8QjKkw/cb=gapi.loaded_0
     workbox.routing.registerRoute(
@@ -64,8 +67,12 @@ if ('function' === typeof importScripts) {
       })
     );
 
-    // TODO: 'https://www.googleapis.com/drive/v3/*', is not working -> lack of regular expression knowledge
-    // MEMO: caching folder ID and payload data of gallery images
+    // TODO: 'https://www.googleapis.com/drive/v3/*', is not working -> lack of Regular Expression knowledge
+    // MEMO: cors response
+    // MEMO: caching folder ID
+    // MEMO: URL pattern -> https://www.googleapis.com/drive/v3/files?q=mimeType%3D"application%2Fvnd.google-apps.folder" and fullText contains "selfies" and trashed%3Dfalse&fields=nextPageToken%2C files(id%2C name)&spaces=drive&corpora=user 
+    // MEMO: caching payload data of gallery images
+    // MEMO: URL pattern -> https://www.googleapis.com/drive/v3/files?q=mimeType%3D"image%2Fjpeg" and "1k4XuuvGFRCWGRaS4pGPUsEmofSUIttrG" in parents and fullText contains "selfie-" and trashed %3D false&fields=nextPageToken%2C files(id%2C createdTime%2C thumbnailLink)&spaces=drive&corpora=user
     workbox.routing.registerRoute(
       /.*(?:www.googleapis)\.com.*$/,
       new workbox.strategies.NetworkFirst({
@@ -73,7 +80,9 @@ if ('function' === typeof importScripts) {
       })
     );
 
-    // MEMO: caching sources of gallery images
+    // MEMO: opaque response
+    // MEMO: caching sources of gallery images (thumbnails)
+    // MEMO: URL pattern -> https://lh3.googleusercontent.com/2MGOktq7Puhg3T_LoEFKBcE9yKQLsYWluwA3Km912LUXfVhwBvCOQO_v6-ZQO0JCyLiTgGXwVIw=s220
     workbox.routing.registerRoute(
       /.*(?:lh3.googleusercontent)\.com.*$/,
       new workbox.strategies.NetworkFirst({

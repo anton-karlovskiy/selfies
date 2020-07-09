@@ -66,6 +66,9 @@ const Gallery = ({
 			const images = imagesFromGoogleDriveJson.files.map(file => ({
 				id: file.id,
 				thumbnailLink: file.thumbnailLink,
+				// ray test touch <
+				src: file.thumbnailLink,
+				// ray test touch >
 				createdTime: file.createdTime
 			}));
 			images.sort((a, b) => (a.createdTime < b.createdTime ? 1 : -1));
