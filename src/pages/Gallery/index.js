@@ -15,7 +15,7 @@ import GalleryFooter from './GalleryFooter';
 import config from 'config';
 import generateGIF from 'services/generate-gif';
 import getFolderId from 'services/get-folder-id';
-import serializeToQueryParam from 'utils/helpers/serialize-to-query-param';
+import serializeToQueryParams from 'utils/helpers/serialize-to-query-params';
 import getImageRatio from 'utils/helpers/get-image-ratio';
 import getRefreshedOauthToken from 'services/get-refreshed-oauth-token';
 import ContentWrapper from 'parts/ContentWrapper';
@@ -27,7 +27,7 @@ const getImagesFromGoogleDriveResponse = async (oauthToken, folderId, mimeType) 
 		spaces: 'drive',
 		corpora: 'user'
 	};
-	const imagesFromGoogleDriveResponse = await fetch(serializeToQueryParam(queryObject, config.V3_GOOGLE_DRIVE_FILES_API_ENDPOINT), {
+	const imagesFromGoogleDriveResponse = await fetch(serializeToQueryParams(queryObject, config.V3_GOOGLE_DRIVE_FILES_API_ENDPOINT), {
 		headers: new Headers({
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${oauthToken}`

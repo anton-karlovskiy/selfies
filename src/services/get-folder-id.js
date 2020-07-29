@@ -1,6 +1,6 @@
 
 import config from 'config';
-import serializeToQueryParam from 'utils/helpers/serialize-to-query-param';
+import serializeToQueryParams from 'utils/helpers/serialize-to-query-params';
 import getRefreshedOauthToken from 'services/get-refreshed-oauth-token';
 // TODO: user might remove the folder without clearing local storage so we can cache it via workbox using proper cache strategy
 // import { LOCAL_STORAGE_KEYS } from 'utils/constants';
@@ -13,7 +13,7 @@ const getFolderIdResponse = async (oauthToken, folderName) => {
     spaces: 'drive',
     corpora: 'user'
   };
-  const folderIdResponse = await fetch(serializeToQueryParam(queryObject, config.V3_GOOGLE_DRIVE_FILES_API_ENDPOINT), {
+  const folderIdResponse = await fetch(serializeToQueryParams(queryObject, config.V3_GOOGLE_DRIVE_FILES_API_ENDPOINT), {
     headers: new Headers({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${oauthToken}`

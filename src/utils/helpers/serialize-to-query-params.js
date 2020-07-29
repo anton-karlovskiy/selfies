@@ -1,5 +1,5 @@
 
-const serializeToQueryParam = (queryObject, prefix = '') => {
+const serializeToQueryParams = (queryObject, prefix = '') => {
   const queryString = [];
   for (const key in queryObject)
     if (queryObject.hasOwnProperty(key)) {
@@ -8,4 +8,4 @@ const serializeToQueryParam = (queryObject, prefix = '') => {
   return `${prefix}?${queryString.join('&')}`;
 };
 
-export default serializeToQueryParam;
+export default serializeToQueryParams;

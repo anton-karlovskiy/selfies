@@ -49,7 +49,7 @@ const App = () => {
 			gapiAuth2Load();
     },
     onerror: () => {
-      console.log('[App useScript onerror]');
+      console.log('[GAPI script onerror]');
       setLoadingAuth2GAPI(false);
     }
   });
