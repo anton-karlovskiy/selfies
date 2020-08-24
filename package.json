@@ -27,7 +27,8 @@
     "firebase-deploy": "firebase deploy",
     "now-deploy": "now --prod",
     "netlify-deploy": "netlify deploy --prod",
-    "analyze": "source-map-explorer 'build/static/js/*.js'"
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "analyze-webpack-bundle": "node scripts/analyze.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -45,7 +46,9 @@
     ]
   },
   "devDependencies": {
+    "progress-bar-webpack-plugin": "^2.1.0",
     "source-map-explorer": "^2.4.2",
+    "webpack-bundle-analyzer": "^3.8.0",
     "workbox-build": "^5.1.3"
   }
 }
