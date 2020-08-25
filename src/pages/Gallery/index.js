@@ -60,7 +60,7 @@ const Gallery = ({ oauthToken }) => {
 			}
 			const imagesFromGoogleDriveJson = await imagesFromGoogleDriveResponse.json();
 
-			const images = imagesFromGoogleDriveJson.files.map(file => ({
+			const images = imagesFromGoogleDriveJson?.files?.map(file => ({
 				id: file.id,
 				thumbnailLink: file.thumbnailLink,
 				// TODO: we could use thumbnailLink as a workaround on mobile by considering the intrinsic dimension
@@ -68,7 +68,7 @@ const Gallery = ({ oauthToken }) => {
 				// src: file.thumbnailLink.replace('s220', 's1280'),
 				src: file.thumbnailLink,
 				createdTime: file.createdTime
-			}));
+			})) || [];
 			images.sort((a, b) => (a.createdTime < b.createdTime ? 1 : -1));
 
 			console.log('[Gallery getImagesFromGoogleDrive] images => ', images);
