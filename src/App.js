@@ -109,6 +109,11 @@ const App = () => {
   const oauthToken = (loadState() || {})[LOCAL_STORAGE_KEYS.OAUTH_TOKEN];
   console.log('[App] oauthToken => ', oauthToken);
 
+  /**
+   * MEMO: 
+   * authenticated by making a network request while online.
+   * authenticated by the token from the local storage while offline.
+   */
   const hybridSignedIn = signedIn || !!oauthToken;
   console.log('[App] hybridSignedIn => ', hybridSignedIn);
   

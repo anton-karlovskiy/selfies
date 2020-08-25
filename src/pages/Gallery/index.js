@@ -163,7 +163,7 @@ const Gallery = ({
 					allSelected={allSelected}
 					toggleAllImages={toggleAllImagesHandler}
 					createGif={createGifHandler} />
-				{/* TODO: we wouldn't have to wait until GAPI scripts are loaded as we drop JS Client Library */}
+				{/* TODO: we do not have to wait until GAPI scripts are loaded as we dropped JS Client Library */}
 				{loadingGAPI || loadingAuth2GAPI || loadingImagesFromGoogleDrive ? (
 					<LoadingSpinner centerViewport />
 				) : (

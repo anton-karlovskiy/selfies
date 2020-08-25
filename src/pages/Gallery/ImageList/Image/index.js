@@ -24,7 +24,7 @@ const Image = ({
         // TODO: must be based on intrinsic width/height
         width={200}
         height={200}
-        placeholder={{color: '#f06292'}}
+        placeholder={{color: 'var(--palette-pink-300)'}}
         // TODO: double check width
         srcSet={[{width: 200, src}]}
         loader='image' />
