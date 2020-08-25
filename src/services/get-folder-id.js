@@ -2,9 +2,6 @@
 import config from 'config';
 import serializeToQueryParams from 'utils/helpers/serialize-to-query-params';
 import getRefreshedOauthToken from 'services/get-refreshed-oauth-token';
-// TODO: user might remove the folder without clearing local storage so we can cache it via workbox using proper cache strategy
-// import { LOCAL_STORAGE_KEYS } from 'utils/constants';
-// import { saveState, loadState } from 'utils/helpers/local-storage';
 
 const getFolderIdResponse = async (oauthToken, folderName) => {
   const queryObject = {
@@ -27,13 +24,6 @@ const getFolderIdResponse = async (oauthToken, folderName) => {
 const getFolderId = async (oauthToken, folderName) => {
   try {
     let folderId;
-    // TODO: user might remove the folder without clearing local storage so we can cache it via workbox using proper cache strategy
-    // folderId = (loadState() || {})[LOCAL_STORAGE_KEYS.FOLDER_ID];
-    // if (folderId) {
-    //   console.log('[getFolderId] folderId from local storage => ', folderId);
-    //   return folderId;
-    // }
-
     let folderIdResponse = await getFolderIdResponse(oauthToken, folderName);
     if (folderIdResponse.status === 401) {
       console.log('[getFolderId] refresh token');
@@ -45,8 +35,6 @@ const getFolderId = async (oauthToken, folderName) => {
     const files = folderIdJson.files;
 		if (files?.length > 0) {
       folderId = files[0].id;
-      // TODO: user might remove the folder without clearing local storage so we can cache it via workbox using proper cache strategy
-      // saveState({[LOCAL_STORAGE_KEYS.FOLDER_ID]: folderId});
     }
 
     console.log('[getFolderId] folderId from Google Drive => ', folderId);
