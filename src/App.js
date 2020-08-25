@@ -146,12 +146,6 @@ const App = () => {
                       {hybridSignedIn ? (
                         <Gallery
                           {...props}
-                          // ray test touch <
-                          // loadingGAPI={loadingGAPI}
-                          // loadingAuth2GAPI={loadingAuth2GAPI}
-                          // errorGAPI={errorGAPI}
-                          // errorAuth2GAPI={errorAuth2GAPI}
-                          // ray test touch >
                           oauthToken={oauthToken} />
                       ) : (
                         <Redirect to={PAGES.HOME} />

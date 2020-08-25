@@ -1,5 +1,4 @@
 
-// ray test touch <
 import React from 'react';
 
 import './annotation.css';
@@ -17,4 +16,3 @@ const Annotation = ({
 );
 
 export default Annotation;
-// ray test touch >
