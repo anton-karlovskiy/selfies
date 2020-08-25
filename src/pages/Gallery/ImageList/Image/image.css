@@ -27,7 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--palette-pink-300);
+  font-size: var(--typography-body2-font-size);
 }
 
 .image img {
