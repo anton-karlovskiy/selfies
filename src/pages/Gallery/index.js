@@ -7,18 +7,24 @@ import React, {
 	memo
 } from 'react';
 
+import ContentWrapper from 'parts/ContentWrapper';
 import GalleryHeader from './GalleryHeader';
 import ImageList from './ImageList';
 import LoadingSpinner from 'components/UI/LoadingSpinner';
 import AdaptiveImagesModal from 'components/AdaptiveImagesModal';
 import GalleryFooter from './GalleryFooter';
+// ray test touch <
+import Annotation from 'components/Annotation';
+// ray test touch >
 import config from 'config';
 import generateGIF from 'services/generate-gif';
 import getFolderId from 'services/get-folder-id';
+import getRefreshedOauthToken from 'services/get-refreshed-oauth-token';
 import serializeToQueryParams from 'utils/helpers/serialize-to-query-params';
 import getImageRatio from 'utils/helpers/get-image-ratio';
-import getRefreshedOauthToken from 'services/get-refreshed-oauth-token';
-import ContentWrapper from 'parts/ContentWrapper';
+// ray test touch <
+import MESSAGES from 'utils/constants/messages';
+// ray test touch >
 
 const getImagesFromGoogleDriveResponse = async (oauthToken, folderId, mimeType) => {
 	const queryObject = {
@@ -39,10 +45,12 @@ const getImagesFromGoogleDriveResponse = async (oauthToken, folderId, mimeType) 
 
 const Gallery = ({
 	oauthToken,
-	loadingGAPI,
-	loadingAuth2GAPI,
-	errorGAPI,
-	errorAuth2GAPI
+	// ray test touch <
+	// loadingGAPI,
+	// loadingAuth2GAPI,
+	// errorGAPI,
+	// errorAuth2GAPI
+	// ray test touch >
 }) => {
 	const [images, setImages] = useState([]);
 	const [gifGenerationOpen, setGifGenerationOpen] = useState(false);
@@ -52,6 +60,9 @@ const Gallery = ({
 	const [imagesModalOpen, setImagesModalOpen] = useState(false);
 	const [currentModalIndex, setCurrentModalIndex] = useState(null);
 	const [loadingImagesFromGoogleDrive, setLoadingImagesFromGoogleDrive] = useState(true);
+	// ray test touch <
+	const [errorImagesFromGoogleDrive, setErrorImagesFromGoogleDrive] = useState('');
+	// ray test touch >
 
 	const getImagesFromGoogleDrive = async (oauthToken, folderId = '', mimeType) => {
 		try {
@@ -81,6 +92,9 @@ const Gallery = ({
 			setLoadingImagesFromGoogleDrive(false);
 		} catch (error) {
 			console.log('[Gallery getImagesFromGoogleDrive] error => ', error);
+			// ray test touch <
+			setErrorImagesFromGoogleDrive(MESSAGES.SOMETHING_WENT_WRONG);
+			// ray test touch >
 			setLoadingImagesFromGoogleDrive(false);
 		}
 	};
@@ -90,18 +104,24 @@ const Gallery = ({
 		getImagesFromGoogleDrive(oauthToken, folderId, config.IMAGE_MIME_TYPE);
 	};
 
+	// ray test touch <
+	// useEffect(() => {
+	// 	if (!loadingGAPI && !loadingAuth2GAPI) {
+	// 		if (errorGAPI === null && errorAuth2GAPI === null) {
+	// 			console.log('[Gallery useEffect] neither errorGAPI nor errorAuth2GAPI');
+	// 		} else {
+	// 			console.log('[Gallery useEffect] something went wrong: errorGAPI, errorAuth2GAPI => ', errorGAPI, errorAuth2GAPI);
+	// 		}
+	// 		// TODO: offline support while there are errors with loading GAPI scripts
+	// 		initGalleryHandler(oauthToken);
+	// 	}
+	// // eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [loadingGAPI, loadingAuth2GAPI, errorGAPI, errorAuth2GAPI]);
 	useEffect(() => {
-		if (!loadingGAPI && !loadingAuth2GAPI) {
-			if (errorGAPI === null && errorAuth2GAPI === null) {
-				console.log('[Gallery useEffect] neither errorGAPI nor errorAuth2GAPI');
-			} else {
-				console.log('[Gallery useEffect] something went wrong: errorGAPI, errorAuth2GAPI => ', errorGAPI, errorAuth2GAPI);
-			}
-			// TODO: offline support while there are errors with loading GAPI scripts
-			initGalleryHandler(oauthToken);
-		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [loadingGAPI, loadingAuth2GAPI, errorGAPI, errorAuth2GAPI]);
+		initGalleryHandler(oauthToken);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+	// ray test touch >
 
 	const toggleGifGenerationHandler = useCallback(() => {
 		setGifGenerationOpen(prevState => !prevState);
@@ -163,20 +183,41 @@ const Gallery = ({
 					allSelected={allSelected}
 					toggleAllImages={toggleAllImagesHandler}
 					createGif={createGifHandler} />
+				{/* ray test touch < */}
 				{/* TODO: we do not have to wait until GAPI scripts are loaded as we dropped JS Client Library */}
-				{loadingGAPI || loadingAuth2GAPI || loadingImagesFromGoogleDrive ? (
+				{/* {loadingGAPI || loadingAuth2GAPI || loadingImagesFromGoogleDrive ? ( */}
+				{loadingImagesFromGoogleDrive ? (
+				// ray test touch >
 					<LoadingSpinner centerViewport />
 				) : (
 					<>
-						<ImageList
-							images={images}
-							selectedStatusList={selectedStatusList}
-							onClick={imageOnClickHandler} />
-						<AdaptiveImagesModal
-							views={images}
-							open={imagesModalOpen}
-							onClose={closeImagesModalHandler}
-							currentIndex={currentModalIndex} />
+						{errorImagesFromGoogleDrive ? (
+							<Annotation
+								style={{
+									color: 'var(--palette-secondary-main)'
+								}}
+								text={errorImagesFromGoogleDrive} />
+						) : (
+							<>
+								{images.length > 0 ? (
+									<ImageList
+										images={images}
+										selectedStatusList={selectedStatusList}
+										onClick={imageOnClickHandler} />
+								) : (
+									<Annotation
+										style={{
+											color: 'var(--palette-info-main)'
+										}}
+										text={MESSAGES.NO_IMAGES} />
+								)}
+								<AdaptiveImagesModal
+									views={images}
+									open={imagesModalOpen}
+									onClose={closeImagesModalHandler}
+									currentIndex={currentModalIndex} />
+							</>
+						)}
 					</>
 				)}
 			</ContentWrapper>
