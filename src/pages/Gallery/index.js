@@ -159,9 +159,8 @@ const Gallery = ({ oauthToken }) => {
 					<>
 						{errorImagesFromGoogleDrive ? (
 							<Annotation
-								style={{
-									color: 'var(--palette-secondary-main)'
-								}}
+								align='center'
+								color='error'
 								text={errorImagesFromGoogleDrive} />
 						) : (
 							<>
@@ -172,9 +171,8 @@ const Gallery = ({ oauthToken }) => {
 										onClick={imageOnClickHandler} />
 								) : (
 									<Annotation
-										style={{
-											color: 'var(--palette-info-main)'
-										}}
+										align='center'
+										color='info'
 										text={MESSAGES.NO_IMAGES} />
 								)}
 								<AdaptiveImagesModal
