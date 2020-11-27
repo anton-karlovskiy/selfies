@@ -28,6 +28,8 @@
   align-items: center;
   justify-content: center;
   font-size: var(--typography-body2-font-size);
+  background-color: var(--palette-pink-300);
+  user-select: none;
 }
 
 .image img {
