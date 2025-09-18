@@ -1,133 +1,126 @@
+# 📸 Visage — Camera & GIF Creator Web App  
 
-## Installation
+A **React + PWA web application** that allows users to **capture selfies, store them on Google Drive, and generate GIFs**.  
+Built with **create-react-app**, optimized with **code-splitting**, and enhanced with **Progressive Web App (PWA) features** for offline use and caching.  
 
-```
+🌐 Live demo: [visage-86afe.web.app](https://visage-86afe.web.app)  
+
+## ⚙️ Installation  
+
+```bash
 npm install
 npm start
 npm run build
 ```
 
-## Build version on Firebase
+## 🏗️ Architecture
 
-https://visage-86afe.web.app
+### 1. 🔑 Authentication
 
-## Architecture
+- Users can sign in with their Google account.
 
-1. Authentication
-    
-    Users sign in to the app with their Google accounts on the home page.
+- Signed-in users’ selfies are uploaded to a dedicated selfies folder in Google Drive.
 
-2. Taking a picture
+- Non-signed-in users can still take pictures, which are stored locally on their device.
 
-    Users can take a picture and save it.
+### 2. 📷 Taking Pictures
 
-    If a signed-in user takes a picture, it is uploaded to the "selfies" folder in his/her Google Drive.
-    If a non-signed-in user takes a picture, it is stored in his/her device.
+- Uses the browser Media API (navigator.mediaDevices.getUserMedia) to access the camera.
 
-3. Viewing pictures and creating a GIF
+- Captured images are either stored locally or synced to Google Drive depending on authentication status.
 
-    Signed-in users can view pictures they have taken and create a GIF file made up of some of the pictures.
+### 3. 🖼️ Viewing & Creating GIFs
 
-    Users can see all the pictures from the "selfies" folder in their Google Drive.
-    Users can also choose one of the sizes among "small" / "medium" / "large" options for the GIF they want to create. The created GIF file is downloaded.
+- Signed-in users can view all photos stored in their Google Drive selfies folder.
 
-4. Page hierarchy
+- Users can generate a GIF from selected pictures with customizable sizes: small, medium, large.
 
-    This web app consists of 2 pages i.e. Home page and Gallery Page.
+- Created GIFs are available for download.
 
-## Tech stack
+### 4. 📑 Page Structure
 
-  This web app was bootstrapped with create-react-app.
-  It uses a browser API called "navigator.mediaDevices.getUserMedia" to access the device camera and take a picture.
-  It uses Google API for authentication and storing pictures to Google Drive.
+- Home Page → authentication and picture capture
 
-  This web app uses [code-splitting](https://reactjs.org/docs/code-splitting.html) for performance optimization and is powered by PWA.
+- Gallery Page → manage images, create GIFs
 
-### Caching strategy for PWA features
+## 🛠️ Tech Stack
 
-- GET method
+- Frontend: [create-react-app](https://create-react-app.dev)
 
-  According to https://github.com/addyosmani/launch/issues/9#issue-624626333, I applied the `network-first` caching strategy but I wondered if it would be more appropriate to apply the `cache-first` caching strategy for gallery images since image IDs are unique.
-  What about the `stale-while-revalidate` caching strategy for folder ID?
+- Authentication & Storage: Google API (Drive integration)
 
-  * How to cache folder ID (DONE)
+- Camera Access: [MediaDevices API](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia)
 
-    URL pattern: `https://www.googleapis.com/drive/v3/files?q=mimeType%3D"application%2Fvnd.google-apps.folder" and fullText contains "selfies" and trashed%3Dfalse&fields=nextPageToken%2C files(id%2C name)&spaces=drive&corpora=user`
-    
-    Caching strategy: `Network-first`
+- Performance: [React code-splitting](https://reactjs.org/docs/code-splitting.html)
 
-  * How to cache access token or refresh token for offline use (potential TODO)
+- PWA: Offline-first with caching strategies via Workbox
 
-    This will be a problem we should dig into when we drop the whole GAPI library. It's beyond discussion for now.
+## ⚡ PWA Caching Strategy
 
-  * How to cache payload data of gallery images (DONE)
+The app uses tailored caching strategies for different resources to balance performance and freshness:
 
-    URL pattern (cors response): `https://www.googleapis.com/drive/v3/files?q=mimeType%3D"image%2Fjpeg" and "1k4XuuvGFRCWGRaS4pGPUsEmofSUIttrG" in parents and fullText contains "selfie-" and trashed %3D false&fields=nextPageToken%2C files(id%2C createdTime%2C thumbnailLink)&spaces=drive&corpora=user`
-    
-    Caching strategy: `Network-first`
+### ✅ Implemented
 
-  * How to cache sources of gallery images (thumbnails) (DONE)
+- Folder ID requests (Google Drive API) → Network-first
 
-    URL pattern (opaque response): `https://lh3.googleusercontent.com/2MGOktq7Puhg3T_LoEFKBcE9yKQLsYWluwA3Km912LUXfVhwBvCOQO_v6-ZQO0JCyLiTgGXwVIw=s220`
+- Gallery image payload data (JSON responses) → Network-first
 
-    Caching strategy: `Network-first`
+- Image thumbnails (Googleusercontent) → Network-first with cacheOpaqueResponsesPlugin
 
-  * How to update the gallery view with background synced images (uploaded while offline) as well as already cached ones (potential TODO)
+- Full-size image previews (Google Drive) → Network-first with cacheOpaqueResponsesPlugin
 
-    This will be a problem we should dig into when we want to implement uploading a photo while offline using background sync. It's beyond discussion for now.
+### 📝 Potential Improvements
 
-  * How to cache gallery images (full sizes) that we can open by clicking each tile (TODO)
+- Full-size gallery images: Background caching when idle → enables offline GIF generation.
 
-    For now, we do not cache full-size gallery images but thumbnails so if we could cache them, we would be able to generate a GIF while offline.
+- Access/refresh tokens: Explore caching for offline authentication if GAPI is dropped.
 
-    When an image is opened as a preview by clicking the thumbnail, it's cached but it would be much better if we could cache full-size images in the background while the user is in idle status.
+- Background sync: Offline upload of captured selfies when connectivity is restored.
 
-  ```
-  /**
-  * MEMO: cors response
-  * MEMO: caching folder ID
-  * MEMO: URL pattern -> https://www.googleapis.com/drive/v3/files?q=mimeType%3D"application%2Fvnd.google-apps.folder" and fullText contains "selfies" and trashed%3Dfalse&fields=nextPageToken%2C files(id%2C name)&spaces=drive&corpora=user
-  * MEMO: caching payload data of gallery images
-  * MEMO: URL pattern -> https://www.googleapis.com/drive/v3/files?q=mimeType%3D"image%2Fjpeg" and "1k4XuuvGFRCWGRaS4pGPUsEmofSUIttrG" in parents and fullText contains "selfie-" and trashed %3D false&fields=nextPageToken%2C files(id%2C createdTime%2C thumbnailLink)&spaces=drive&corpora=user
-  * MEMO: caching downloaded images to be generated into a GIF
-  * MEMO: URL pattern -> https://www.googleapis.com/drive/v3/files/1zVPSqL2MjmXsIyearJK4L66kuKgz5hPT?alt=media
-  */
-  workbox.routing.registerRoute(
-    /.*(?:www.googleapis)\.com.*$/,
-    new workbox.strategies.NetworkFirst({
-      cacheName: CACHES_NAMES.GOOGLE_APIS
-    })
-  );
+- Gallery updates: Merge cached + background-synced images seamlessly.
 
-  /**
-  * MEMO: opaque response
-  * MEMO: caching sources of gallery images (thumbnails)
-  * MEMO: URL pattern -> https://lh3.googleusercontent.com/2MGOktq7Puhg3T_LoEFKBcE9yKQLsYWluwA3Km912LUXfVhwBvCOQO_v6-ZQO0JCyLiTgGXwVIw=s220
-  */
-  workbox.routing.registerRoute(
-    /.*(?:lh3.googleusercontent)\.com.*$/,
-    new workbox.strategies.NetworkFirst({
-      cacheName: CACHES_NAMES.THUMBNAIL_LINKS,
-      plugins: [cacheOpaqueResponsesPlugin]
-    })
-  );
+## 📂 Example Workbox Rules
 
-  /**
-  * MEMO: opaque response
-  * MEMO: caching sources of gallery images (full sizes)
-  * MEMO: URL pattern -> https://drive.google.com/uc?id=1zVPSqL2MjmXsIyearJK4L66kuKgz5hPT&export=download
-  */
-  workbox.routing.registerRoute(
-    /.*(?:drive.google)\.com.*$/,
-    new workbox.strategies.NetworkFirst({
-      cacheName: CACHES_NAMES.FULLSIZE_LINKS,
-      plugins: [cacheOpaqueResponsesPlugin]
-    })
-  );
-  ```
+```js
+// Google Drive API responses (CORS)
+workbox.routing.registerRoute(
+  /.*(?:www.googleapis)\.com.*$/,
+  new workbox.strategies.NetworkFirst({
+    cacheName: CACHES_NAMES.GOOGLE_APIS
+  })
+);
 
-- POST method
+// Image thumbnails (opaque responses)
+workbox.routing.registerRoute(
+  /.*(?:lh3.googleusercontent)\.com.*$/,
+  new workbox.strategies.NetworkFirst({
+    cacheName: CACHES_NAMES.THUMBNAIL_LINKS,
+    plugins: [cacheOpaqueResponsesPlugin]
+  })
+);
 
-  * How to upload a captured image while offline using background sync (potential TODO)
+// Full-size image links (opaque responses)
+workbox.routing.registerRoute(
+  /.*(?:drive.google)\.com.*$/,
+  new workbox.strategies.NetworkFirst({
+    cacheName: CACHES_NAMES.FULLSIZE_LINKS,
+    plugins: [cacheOpaqueResponsesPlugin]
+  })
+);
+```
 
-    This will be a problem we should dig into when we want to implement uploading a photo while offline using background sync. It's beyond discussion for now.
+## 🎯 Key Highlights
+
+- 📷 Seamless camera integration with `getUserMedia`
+
+- ☁️ Google Drive synchronization for signed-in users
+
+- 🎞️ GIF creation with adjustable sizes
+
+- ⚡ Optimized performance with code-splitting & PWA caching
+
+- 🌑 Offline-ready experience with Workbox strategies
+
+## 📄 License
+
+MIT — free to use, adapt, and improve.
